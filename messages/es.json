@@ -1,0 +1,95 @@
+{
+  "common": {
+    "phone": "Teléfono",
+    "menu": "Menú",
+    "noPhoto": "Sin foto",
+    "seeTribute": "Ver homenaje →",
+    "noObituaries": "No hay esquelas publicadas.",
+    "noWakeRooms": "No hay salas publicadas en este momento."
+  },
+  "nav": {
+    "home": "Inicio",
+    "services": "Servicios",
+    "obituaries": "Esquelas",
+    "wakeRooms": "Salas de velatorio",
+    "contact": "Contacto",
+    "familyAccess": "Acceso familiares"
+  },
+  "locale": {
+    "label": "Idioma",
+    "ca": "Català",
+    "es": "Castellà"
+  },
+  "obituaries": {
+    "title": "Esquelas",
+    "eyebrow": "ESQUELAS",
+    "empty": "No hay esquelas visibles.",
+    "notFound": "Esquela no encontrada",
+    "obituarySection": "Obituario",
+    "places": {
+      "eyebrow": "LUGARES DE LA CEREMONIA",
+      "heading": "Cómo llegar",
+      "churchLabel": "Misa / funeral",
+      "cemeteryLabel": "Entierro",
+      "mapsLink": "Cómo llegar (Google Maps)"
+    }
+  },
+  "wakeRooms": {
+    "eyebrow": "SALAS DE VELATORIO",
+    "title": "Salas de velatorio",
+    "intro": "Espacios acogedores para acompañar a los familiares antes de la despedida.",
+    "mapsLink": "Cómo llegar (Google Maps)"
+  },
+  "commemorative": {
+    "eyebrow": "MENSAJE CONMEMORATIVO",
+    "heading": "Deja un recuerdo",
+    "intro": "Escribe un mensaje para conmemorar al difunto. Se lo entregaremos a los familiares en la sala de velatorio.",
+    "privacyNote": "El mensaje no se publica en la web.",
+    "senderNameLabel": "Tu nombre",
+    "messageLabel": "Mensaje",
+    "submit": "Enviar mensaje",
+    "submitting": "Enviando...",
+    "success": "Mensaje enviado. Gracias.",
+    "sendAnother": "Enviar otro mensaje",
+    "errorGeneric": "No se ha podido enviar el mensaje.",
+    "errorNotFound": "Esquela no encontrada."
+  },
+  "family": {
+    "accessTitle": "Acceso familiares",
+    "accessIntro": "Introduce el código que te ha facilitado la funeraria para acceder a tu esquela.",
+    "codeLabel": "Código de acceso",
+    "submit": "Acceder",
+    "submitting": "Accediendo...",
+    "accessError": "Error de acceso",
+    "logout": "Cerrar sesión",
+    "photoTitle": "Foto de la esquela",
+    "photoIntro": "Puedes enviar una foto digital del difunto, o llevarla en papel a la funeraria. En cualquier caso, el empleado la retocará (recorte, tamaño, ajustes…) antes de publicarla en la esquela. Tu foto no se muestra directamente en la web.",
+    "photoPendingTitle": "Foto recibida — pendiente de retocar",
+    "photoPendingText": "El empleado está preparando la foto para la esquela. Hasta entonces, la esquela pública continuará con la foto actual (si la hay).",
+    "photoRejectedTitle": "No se ha podido utilizar esta foto",
+    "photoRejectedText": "El empleado no ha podido trabajar con la última imagen enviada. Puedes enviar otra.",
+    "photoSentAlt": "Foto enviada",
+    "photoSentOriginal": "Foto enviada — versión original",
+    "photoUploadError": "Error al subir la foto.",
+    "photoSuccess": "Foto enviada. El empleado la retocará y la publicará en la esquela.",
+    "photoSubmitting": "Enviando...",
+    "photoSubmit": "Enviar foto",
+    "obituaryTitle": "Obituario",
+    "obituaryIntro": "Homenaje poético, separado del texto formal de la esquela.",
+    "obituaryEmpty": "Aún no hay obituario.",
+    "obituaryCustomize": "Personaliza el obituario",
+    "poemLabel": "Elegir un poema (opcional)",
+    "poemNone": "— Sin poema —",
+    "customTextLabel": "Texto personalizado (opcional)",
+    "customTextPlaceholder": "Escribe un texto de homenaje...",
+    "customTextHint": "Puedes elegir un poema, escribir texto propio, o combinar ambos.",
+    "poemPreview": "Vista previa: {title}",
+    "obituarySaveError": "Error al guardar el obituario.",
+    "obituarySaved": "Obituario guardado.",
+    "obituarySaving": "Guardando...",
+    "obituarySave": "Guardar obituario"
+  },
+  "metadata": {
+    "description": "Web de {brandName}"
+  }
+}

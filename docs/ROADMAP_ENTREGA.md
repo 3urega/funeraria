@@ -1,0 +1,272 @@
+# Roadmap de entrega — 0 → 100%
+
+> **Audiencia:** Product Manager · **Última actualización:** julio 2026  
+> **Progreso global:** 58 / 88 tareas (**66%**)
+
+Documento maestro sintético. El detalle técnico está en los enlaces de cada fase.  
+Los agentes deben **marcar `[x]`** al completar cada ítem — ver [`AGENTS.md`](../AGENTS.md).
+
+---
+
+## Leyenda
+
+| Símbolo | Significado |
+|---------|-------------|
+| `[x]` | Hecho: cumple requisitos y es **entregable** (no placeholder ni esqueleto) |
+| `[ ]` | Pendiente |
+| 📄 | Documentación de referencia |
+
+> **Regla:** rutas que existen pero son HTML genérico sin identidad visual, diseño acordado o funcionalidad completa del requisito → **no marcar `[x]`**. Ver criterios en [`AGENTS.md`](../AGENTS.md).
+
+---
+
+## Fase 0 — Discovery y documentación
+
+📄 [DOCUMENTO_REQUISITOS.md](./DOCUMENTO_REQUISITOS.md) · [arquitectura.md](./arquitectura.md) · [ESTRATEGIA_DESARROLLO_LOCAL.md](./ESTRATEGIA_DESARROLLO_LOCAL.md)
+
+- [x] **RD-001** — Reverse-engineering del legacy Angular + DRS ampliado
+- [x] **RD-002** — Arquitectura objetivo (Next.js monolito + Supabase prod)
+- [x] **RD-003** — Estrategia desarrollo local (SQLite, `./storage/`, sin Docker)
+- [x] **RD-004** — Dominio esquela vs obituario documentado
+- [x] **RD-005** — Flujo foto esquela (familiar envía → empleado retoca → publica)
+- [x] **RD-006** — Flujo foto en paper (escaneo desde backoffice)
+- [x] **RD-007** — Página pública esquela (mapas, mensajes, flores) especificada
+- [x] **RD-008** — E-commerce flores + admin catálogo especificado
+- [x] **RD-009** — Plantilla visual esquela (patrón Pujols) documentada
+- [x] **RD-010** — Formulario admin esquela + preview especificado
+- [x] **RD-011** — Este roadmap maestro (`ROADMAP_ENTREGA.md`)
+- [x] **RD-012** — Catálogo de lugares: iglesias, cementerios, salas de vetlla ([`requisits-lugares.md`](./legacy/requisits-lugares.md))
+
+---
+
+## Fase 1 — Fundación técnica (MVP scaffold)
+
+- [x] **RD-020** — Proyecto Next.js 16 + TypeScript + Tailwind en raíz del repo
+- [x] **RD-021** — Route groups: `(public)`, `(family)`, `admin`
+- [x] **RD-022** — SQLite + Drizzle (`data/dev.db`, scripts `db:setup` / `db:reset`)
+- [x] **RD-023** — Storage local (`./storage/`) + API `/api/media/[...path]`
+- [x] **RD-024** — Seed demo (funerària Pujols, esquela Ramon, código `DEMO1234`)
+- [x] **RD-025** — Auth admin mock (`admin@local.dev` / `admin123`)
+- [x] **RD-026** — Auth familiar JWT (cookie `family_session`, 24 h)
+- [x] **RD-027** — Middleware protección rutas admin y `/mi-esquela`
+- [x] **RD-028** — Assets legacy copiados a `public/rescate/` *(integrados en home y páginas públicas — RD-058)*
+
+---
+
+## Fase 2 — Modelo de datos
+
+- [x] **RD-030** — Tablas core: `funeral_homes`, `site_config`, `churches`, `cemeteries`
+- [x] **RD-031** — Tabla `obituaries` con campos esquela estructurados
+- [x] **RD-032** — Campos foto moderada (`customImagePath`, `familyImageStatus`)
+- [x] **RD-033** — Campos obituario familiar (`obituarioPoemTemplateId`, `obituarioText`)
+- [x] **RD-034** — Tabla `poem_templates` + seed
+- [x] **RD-035** — Tabla `content_sections` (estructura, sin UI)
+- [x] **RD-038** — Tabla `wake_rooms` + `obituaries.wakeRoomId` (sales de vetlla)
+- [x] **RD-036** — Tabla `commemorative_messages` (missatges conmemoratius) *(#7)*
+- [ ] **RD-037** — Tablas `flower_products` + `flower_orders`
+
+---
+
+## Fase 3 — Plantilla esquela impresa
+
+📄 [requisits-esquela-plantilla.md](./legacy/requisits-esquela-plantilla.md)
+
+- [x] **RD-040** — Componente `EsquelaPrintLayout` con patrón visual Pujols
+- [x] **RD-041** — Builder `buildEsquelaPrintData()` (campos → textos)
+- [x] **RD-042** — Integración técnica de la plantilla en `/esquelas/[slug]` y `/mi-esquela`
+- [x] **RD-043** — `siteConfig`: `brandName`, `mortuaryDefault`, `contact.website`
+- [x] **RD-044** — Estilos finales alineados 1:1 con PDF impreso (tipografía, márgenes)
+
+---
+
+## Fase 4 — Web pública (mínimo viable)
+
+📄 [requisits-esquela-publica.md](./legacy/requisits-esquela-publica.md) · [requisits-home-plantilla.md](./legacy/requisits-home-plantilla.md) · [requisits-home-cms.md](./legacy/requisits-home-cms.md)
+
+- [ ] **RD-050** — Home pública (`/`) segons mockup [`home-referencia-mockup.png`](./legacy/home-referencia-mockup.png) — 7 seccions + capçalera, identitat des de `site_config` *(esquelet actual no compta)*
+- [x] **RD-051** — Listado esquelas (`/esquelas`) con diseño de producto *(PublicSiteShell, cards unificadas, textura Pujols — #5)*
+- [ ] **RD-052** — Página pública del difunto (`/esquelas/[slug]`) completa según requisitos *(plantilla + obituario + mapas + missatges — #6–7; falta flores — RD-056)*
+- [x] **RD-053** — Obituario poètic en secció separada (si existeix)
+- [x] **RD-054** — Secció llocs: església + cementiri amb enllaços Google Maps *(EsquelaPlacesSection — #6)*
+- [x] **RD-055** — Formulari missatge conmemoratiu (text + nom → sala de vetlla) *(#7)*
+- [ ] **RD-056** — Catàleg flors + checkout des de l'esquela
+- [ ] **RD-057** — Home corporativa amb seccions editables (hero, serveis, why_us, CTA…) — veure [`requisits-home-cms.md`](./legacy/requisits-home-cms.md)
+- [x] **RD-058** — Integració assets `public/rescate/` + identitat visual legacy *(home, listado esquelas, sales de vetlla — #5)*
+- [x] **RD-059** — Pàgina pública sales de vetlla (`/sales-de-vetlla`) — nom, foto, text + identitat Pujols *(#5)*
+
+---
+
+## Fase 5 — Zona familiar
+
+📄 [requisits-obituary.md](./legacy/requisits-obituary.md)
+
+- [x] **RD-060** — Pàgina accés per codi (`/acceso`)
+- [x] **RD-061** — Validació codi + errors (`NO_OBITUARY`, `NOT_ACTIVE`)
+- [x] **RD-062** — Vista `/mi-esquela` (esquela + obituari separats)
+- [x] **RD-063** — Enviar foto esquela (queda pendent de retocar, no publica)
+- [x] **RD-064** — Personalitzar obituari (poema + text)
+- [x] **RD-065** — Logout familiar
+- [ ] **RD-066** — Notificació a l'empleat quan arriba foto pendent
+
+---
+
+## Fase 5b — Catálogo de lugares (admin) — **prerrequisito formulario esquela**
+
+📄 [requisits-lugares.md](./legacy/requisits-lugares.md)
+
+L'empleat ha de poder **assignar** església, cementiri i sala de vetlla des de catàlegs abans de crear esquelas.
+
+- [x] **RD-067** — CRUD esglésies (`/admin/lugares/iglesias`) — nom, ciutat, geoloc Google, foto
+- [x] **RD-068** — CRUD cementiris (`/admin/lugares/cementerios`) — nom, ciutat, geoloc Google, foto
+- [x] **RD-069** — CRUD sales de vetlla (`/admin/lugares/salas-vetlla`) — nom, text, foto, actiu
+
+---
+
+## Fase 6 — Backoffice esquelas
+
+📄 [requisits-esquela-admin-form.md](./legacy/requisits-esquela-admin-form.md)
+
+> **Depèn de:** Fase 5b (RD-067, RD-068, RD-069) per als `<select>` de llocs.
+
+- [x] **RD-070** — Login admin (`/admin/login`)
+- [x] **RD-071** — Dashboard amb estadístiques bàsiques
+- [x] **RD-072** — Llistat esquelas (taula + badge foto familiar pendent)
+- [x] **RD-073** — Crear esquela (`/admin/esquelas/nueva`) — formulari + preview viu
+- [x] **RD-074** — Editar esquela (`/admin/esquelas/[id]`) — formulari + preview viu
+- [x] **RD-075** — Upload foto retocada / escanejada → `imagePath`
+- [x] **RD-076** — Gestionar foto familiar pendent (veure, descarregar, publicar retoc)
+- [x] **RD-077** — Generar `visitCode` i `slug` automàtics
+- [ ] **RD-078** — Pestanya comandes flors per difunt
+- [x] **RD-079** — Pestanya missatges conmemoratius per difunt *(#7)*
+
+---
+
+## Fase 7 — E-commerce flors
+
+📄 [requisits-flores.md](./legacy/requisits-flores.md) · [requisits-flores-admin.md](./legacy/requisits-flores-admin.md)
+
+- [ ] **RD-080** — CRUD productes flors (`/admin/flores`) — nom, preu, foto, actiu
+- [ ] **RD-081** — Upload imatge producte
+- [ ] **RD-082** — Catàleg públic a l'esquela (només productes actius)
+- [ ] **RD-083** — Checkout amb dedicatòria obligatòria + dades comprador
+- [ ] **RD-084** — Integració pasarel·la de pagament (Stripe / Redsys — TBD)
+- [ ] **RD-085** — Llistat comandes admin (global + per difunt)
+- [ ] **RD-086** — Estats comanda (`paid` → `in_preparation` → `delivered`)
+
+---
+
+## Fase 8 — Admin complementari
+
+- [ ] **RD-092** — CRUD poemes obituari (`poem_templates`)
+- [ ] **RD-093** — Configuració funerària (`site_config`) — contacte, marca, casa mortuòria
+- [ ] **RD-094** — CMS seccions home (`content_sections`) — veure [`requisits-home-cms.md`](./legacy/requisits-home-cms.md)
+
+> Iglesias, cementerios y salas de vetlla → **Fase 5b** (RD-067–069).
+
+---
+
+## Fase 9 — Producción e idiomas
+
+📄 [arquitectura.md](./arquitectura.md) · [ESTRATEGIA_DESARROLLO_LOCAL.md](./ESTRATEGIA_DESARROLLO_LOCAL.md)
+
+- [ ] **RD-100** — Migració schema SQLite → Supabase PostgreSQL
+- [ ] **RD-101** — Storage local → Supabase Storage (paths compatibles)
+- [ ] **RD-102** — Auth admin → Supabase Auth
+- [ ] **RD-103** — Deploy Vercel (preview PR + producció)
+- [ ] **RD-104** — Variables entorn prod + secrets
+- [ ] **RD-105** — i18n next-intl (CA principal + ES; admin i18n pendent)
+- [ ] **RD-106** — Theming per client (colors, logo des de `site_config`)
+
+---
+
+## Fase 10 — Calidad y entrega
+
+- [ ] **RD-110** — Tests E2E fluxos crítics (acces familiar, esquela pública, admin login)
+- [ ] **RD-111** — Revisió accessibilitat (esquela, formularis)
+- [ ] **RD-112** — Revisió SEO esquelas (`generateMetadata`, sitemap)
+- [ ] **RD-113** — Documentació desplegament per al client
+- [ ] **RD-114** — Formació empleats (guia backoffice)
+- [ ] **RD-115** — Entrega producció + handoff
+
+---
+
+## Mapa de documentación
+
+| Tema | Documento |
+|------|-----------|
+| Requisitos completos | [DOCUMENTO_REQUISITOS.md](./DOCUMENTO_REQUISITOS.md) |
+| Arquitectura | [arquitectura.md](./arquitectura.md) |
+| Dev local | [ESTRATEGIA_DESARROLLO_LOCAL.md](./ESTRATEGIA_DESARROLLO_LOCAL.md) |
+| Esquela vs obituario | [legacy/requisits-obituary.md](./legacy/requisits-obituary.md) |
+| Plantilla impresa | [legacy/requisits-esquela-plantilla.md](./legacy/requisits-esquela-plantilla.md) |
+| Formulari admin esquela | [legacy/requisits-esquela-admin-form.md](./legacy/requisits-esquela-admin-form.md) |
+| Pàgina pública visitant | [legacy/requisits-esquela-publica.md](./legacy/requisits-esquela-publica.md) |
+| Home — plantilla visual | [legacy/requisits-home-plantilla.md](./legacy/requisits-home-plantilla.md) |
+| Home — CMS / contingut | [legacy/requisits-home-cms.md](./legacy/requisits-home-cms.md) |
+| Mockup home (referència) | [legacy/home-referencia-mockup.png](./legacy/home-referencia-mockup.png) |
+| Missatges conmemoratius | [legacy/requisits-missatges.md](./legacy/requisits-missatges.md) |
+| Compra flors | [legacy/requisits-flores.md](./legacy/requisits-flores.md) |
+| Admin e-commerce flors | [legacy/requisits-flores-admin.md](./legacy/requisits-flores-admin.md) |
+| Lugares (iglesias, cementerios, salas) | [legacy/requisits-lugares.md](./legacy/requisits-lugares.md) |
+| Exemple visual | [legacy/2020025.jpg](./legacy/2020025.jpg) |
+
+---
+
+## Resumen ejecutivo PM
+
+| Área | Hecho | Pendiente | Prioridad siguiente |
+|------|-------|-----------|---------------------|
+| Documentación | 100% | Roadmap vivo | Mantener al día |
+| Infra + scaffold | 100% | — | — |
+| Esquela plantilla web | 98% | Flores en página pública (RD-056) | Mitjana |
+| Zona familiar | 85% | Notificaciones (RD-066); UI sin pulir | Baixa |
+| Web pública | 55% | Flores en esquela (RD-056), home validación (RD-050) | **Alta** |
+| Backoffice esquelas | 90% | Pestanya flors (RD-078) | Mitjana |
+| Catálogo lugares | 100% | — | — |
+| E-commerce flors | 0% | Todo el módulo | Alta |
+| Admin complementario | 0% | Poemas, CMS, config | Media |
+| Producción | 0% | Supabase + Vercel + i18n | Final |
+
+**Siguiente hito recomendado:** RD-056 (e-commerce flores) — issue #8.
+
+---
+
+## GitHub issues (publicadas)
+
+Batch: [`manifest.roadmap-pendiente-v1.json`](./issues/manifest.roadmap-pendiente-v1.json) — [ver todas en GitHub](https://github.com/3urega/funeraria/issues).
+
+| # | Roadmap | Issue | Estado |
+|---|---------|-------|--------|
+| 1 | RD-073, RD-077 | [Admin crear esquela](https://github.com/3urega/funeraria/issues/1) | Implementado (#1, jul 2026) |
+| 2 | RD-074 | [Admin editar esquela](https://github.com/3urega/funeraria/issues/2) | Implementado (#2, jul 2026) |
+| 3 | RD-075, RD-076 | [Admin fotos esquela](https://github.com/3urega/funeraria/issues/3) | Implementado (#3, jul 2026) |
+| 4 | RD-040, RD-044 | [Plantilla Pujols 1:1](https://github.com/3urega/funeraria/issues/4) | Implementado (#4, jul 2026) |
+| 5 | RD-051, RD-058, RD-059 | [Web pública identidad](https://github.com/3urega/funeraria/issues/5) | Implementado (#5, jul 2026) |
+| 6 | RD-054 | [Esquela: mapas](https://github.com/3urega/funeraria/issues/6) | Implementado (#6, jul 2026) |
+| 7 | RD-036, RD-055, RD-079 | [Missatges](https://github.com/3urega/funeraria/issues/7) | Implementado (#7, jul 2026) |
+| 8 | RD-037, RD-080–086 | [Flores e-commerce](https://github.com/3urega/funeraria/issues/8) | [rd-080-086-flores-ecommerce.md](./issues/rd-080-086-flores-ecommerce.md) |
+| 9 | RD-092–094 | [Admin complementario](https://github.com/3urega/funeraria/issues/9) | [rd-092-094-admin-complement.md](./issues/rd-092-094-admin-complement.md) |
+| 10 | RD-100–104 | [Producción](https://github.com/3urega/funeraria/issues/10) | [rd-100-104-produccion.md](./issues/rd-100-104-produccion.md) |
+
+Ítems pendientes sin issue dedicada aún: RD-050/057 (home validación/CMS), RD-066 (notif.), RD-105 (i18n admin), RD-110–115 (calidad).
+
+---
+
+## Historial de progreso
+
+| Fecha | Tareas | % | Notas |
+|-------|--------|---|-------|
+| 2026-07-06 | 58/88 | 66% | Missatges conmemoratius — schema, formulari públic, pestanya admin (#7, RD-036, RD-055, RD-079). |
+| 2026-07-06 | 55/88 | 63% | Esquela pública sección lugares + Google Maps — EsquelaPlacesSection (#6, RD-054). |
+| 2026-07-06 | 54/88 | 61% | Web pública identidad Pujols — PublicSiteShell, `/esquelas`, `/sales-de-vetlla` (#5, RD-051, RD-058, RD-059). |
+| 2026-07-06 | 52/88 | 59% | Plantilla esquela Pujols 1:1 — EsquelaPrintLayout + format-brand-name (#4, RD-040, RD-044). |
+| 2026-07-06 | 50/88 | 57% | Upload foto admin + gestió foto familiar pendent (#3, RD-075, RD-076). |
+| 2026-07-06 | 48/88 | 55% | Editar esquela admin + PUT API + enllaços llistat (#2, RD-074). |
+| 2026-07-06 | 47/88 | 53% | Crear esquela admin + preview viu + slug/visitCode (#1, RD-073, RD-077). |
+| 2026-07-04 | 45/88 | 51% | CRUD esglésies + cementiris amb geoloc Google Places (RD-067, RD-068). |
+| 2026-07-04 | 43/88 | 49% | Home Pujols implementada (7 secciones + assets) — RD-050 pendiente validación visual. |
+| 2026-07-04 | 43/88 | 49% | Auditoría honestidad: desmarcados RD-040, RD-051, RD-052 (placeholders). Ajuste % ejecutivo. |
+| 2026-07-04 | 46/88 | 52% | Corrección: RD-050 home desmarcada — solo placeholder, falta identidad visual. |
+| 2026-07-04 | 47/88 | 53% | CRUD sales de vetlla + pàgina pública `/sales-de-vetlla`. |
+| 2026-07-04 | 45/87 | 52% | Catálogo lugares documentado; schema `wake_rooms`. |
+| 2026-07-04 | 43/84 | 51% | Roadmap inicial. Scaffold, plantilla esquela, zona familiar, docs completas. |

@@ -1,0 +1,29 @@
+{
+  "repo": "3urega/funeraria",
+  "sourceDoc": "docs/ROADMAP_ENTREGA.md",
+  "batch": "roadmap-pendiente-v1",
+  "publishedAt": "2026-07-06",
+  "issues": [
+    {
+      "githubNumber": 8,
+      "url": "https://github.com/3urega/funeraria/issues/8",
+      "title": "RD-080: E-commerce flores (catalogo + checkout + admin)",
+      "bodyFile": "docs/issues/rd-080-086-flores-ecommerce.md",
+      "roadmapId": "RD-080"
+    },
+    {
+      "githubNumber": 9,
+      "url": "https://github.com/3urega/funeraria/issues/9",
+      "title": "RD-092: Admin complementario (poemas + config + CMS home)",
+      "bodyFile": "docs/issues/rd-092-094-admin-complement.md",
+      "roadmapId": "RD-092"
+    },
+    {
+      "githubNumber": 10,
+      "url": "https://github.com/3urega/funeraria/issues/10",
+      "title": "RD-100: Produccion Supabase + Vercel",
+      "bodyFile": "docs/issues/rd-100-104-produccion.md",
+      "roadmapId": "RD-100"
+    }
+  ]
+}

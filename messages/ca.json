@@ -1,0 +1,95 @@
+{
+  "common": {
+    "phone": "Telèfon",
+    "menu": "Menú",
+    "noPhoto": "Sense foto",
+    "seeTribute": "Veure homenatge →",
+    "noObituaries": "No hi ha esqueles publicades.",
+    "noWakeRooms": "No hi ha sales publicades en aquest moment."
+  },
+  "nav": {
+    "home": "Inici",
+    "services": "Serveis",
+    "obituaries": "Esqueles",
+    "wakeRooms": "Sales de vetlla",
+    "contact": "Contacte",
+    "familyAccess": "Accés familiars"
+  },
+  "locale": {
+    "label": "Idioma",
+    "ca": "Català",
+    "es": "Castellà"
+  },
+  "obituaries": {
+    "title": "Esqueles",
+    "eyebrow": "ESQUELES",
+    "empty": "No hi ha esqueles visibles.",
+    "notFound": "Esquela no trobada",
+    "obituarySection": "Obituari",
+    "places": {
+      "eyebrow": "LLOCS DE LA CERIMÒNIA",
+      "heading": "Com arribar",
+      "churchLabel": "Missa / funeral",
+      "cemeteryLabel": "Enterrament",
+      "mapsLink": "Com arribar (Google Maps)"
+    }
+  },
+  "wakeRooms": {
+    "eyebrow": "SALES DE VETLLA",
+    "title": "Sales de vetlla",
+    "intro": "Espais acollidors per acompanyar als familiars abans del comiat.",
+    "mapsLink": "Com arribar (Google Maps)"
+  },
+  "commemorative": {
+    "eyebrow": "MISSATGE CONMEMORATIU",
+    "heading": "Deixa un record",
+    "intro": "Escriu un missatge per conmemorar el difunt. El lliurarem als familiars a la sala de vetlla.",
+    "privacyNote": "El missatge no es publica a la web.",
+    "senderNameLabel": "El teu nom",
+    "messageLabel": "Missatge",
+    "submit": "Enviar missatge",
+    "submitting": "Enviant...",
+    "success": "Missatge enviat. Gràcies.",
+    "sendAnother": "Enviar un altre missatge",
+    "errorGeneric": "No s'ha pogut enviar el missatge.",
+    "errorNotFound": "Esquela no trobada."
+  },
+  "family": {
+    "accessTitle": "Accés familiars",
+    "accessIntro": "Introdueix el codi que t'ha facilitat la funerària per accedir a la teva esquela.",
+    "codeLabel": "Codi d'accés",
+    "submit": "Accedir",
+    "submitting": "Accedint...",
+    "accessError": "Error d'accés",
+    "logout": "Tancar sessió",
+    "photoTitle": "Foto de l'esquela",
+    "photoIntro": "Pots enviar una foto digital del difunt, o portar-la en paper a la funerària. En qualsevol cas, l'empleat la retocarà (retall, mida, ajustos…) abans de publicar-la a l'esquela. La teva foto no es mostra directament a la web.",
+    "photoPendingTitle": "Foto rebuda — pendent de retocar",
+    "photoPendingText": "L'empleat està preparant la foto per a l'esquela. Fins llavors, l'esquela pública continuarà amb la foto actual (si n'hi ha).",
+    "photoRejectedTitle": "No s'ha pogut utilitzar aquesta foto",
+    "photoRejectedText": "L'empleat no ha pogut treballar amb la darrera imatge enviada. Pots enviar-ne una altra.",
+    "photoSentAlt": "Foto enviada",
+    "photoSentOriginal": "Foto enviada — versió original",
+    "photoUploadError": "Error en pujar la foto.",
+    "photoSuccess": "Foto enviada. L'empleat la retocarà i la publicarà a l'esquela.",
+    "photoSubmitting": "Enviant...",
+    "photoSubmit": "Enviar foto",
+    "obituaryTitle": "Obituari",
+    "obituaryIntro": "Homenatge poètic, separat del text formal de l'esquela.",
+    "obituaryEmpty": "Encara no hi ha obituari.",
+    "obituaryCustomize": "Personalitza l'obituari",
+    "poemLabel": "Triar un poema (opcional)",
+    "poemNone": "— Cap poema —",
+    "customTextLabel": "Text personalitzat (opcional)",
+    "customTextPlaceholder": "Escriu un text d'homenatge...",
+    "customTextHint": "Pots triar un poema, escriure text propi, o combinar els dos.",
+    "poemPreview": "Vista prèvia: {title}",
+    "obituarySaveError": "Error en guardar l'obituari.",
+    "obituarySaved": "Obituari guardat.",
+    "obituarySaving": "Guardant...",
+    "obituarySave": "Guardar obituari"
+  },
+  "metadata": {
+    "description": "Web de {brandName}"
+  }
+}
