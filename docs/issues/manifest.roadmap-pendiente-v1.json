@@ -5,13 +5,6 @@
   "publishedAt": "2026-07-06",
   "issues": [
     {
-      "githubNumber": 8,
-      "url": "https://github.com/3urega/funeraria/issues/8",
-      "title": "RD-080: E-commerce flores (catalogo + checkout + admin)",
-      "bodyFile": "docs/issues/rd-080-086-flores-ecommerce.md",
-      "roadmapId": "RD-080"
-    },
-    {
       "githubNumber": 9,
       "url": "https://github.com/3urega/funeraria/issues/9",
       "title": "RD-092: Admin complementario (poemas + config + CMS home)",

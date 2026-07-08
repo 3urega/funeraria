@@ -1,7 +1,7 @@
 # Roadmap de entrega — 0 → 100%
 
 > **Audiencia:** Product Manager · **Última actualización:** julio 2026  
-> **Progreso global:** 58 / 88 tareas (**66%**)
+> **Progreso global:** 69 / 88 tareas (**78%**)
 
 Documento maestro sintético. El detalle técnico está en los enlaces de cada fase.  
 Los agentes deben **marcar `[x]`** al completar cada ítem — ver [`AGENTS.md`](../AGENTS.md).
@@ -63,7 +63,7 @@ Los agentes deben **marcar `[x]`** al completar cada ítem — ver [`AGENTS.md`]
 - [x] **RD-035** — Tabla `content_sections` (estructura, sin UI)
 - [x] **RD-038** — Tabla `wake_rooms` + `obituaries.wakeRoomId` (sales de vetlla)
 - [x] **RD-036** — Tabla `commemorative_messages` (missatges conmemoratius) *(#7)*
-- [ ] **RD-037** — Tablas `flower_products` + `flower_orders`
+- [x] **RD-037** — Tablas `flower_products` + `flower_orders` *(#8)*
 
 ---
 
@@ -85,11 +85,11 @@ Los agentes deben **marcar `[x]`** al completar cada ítem — ver [`AGENTS.md`]
 
 - [ ] **RD-050** — Home pública (`/`) segons mockup [`home-referencia-mockup.png`](./legacy/home-referencia-mockup.png) — 7 seccions + capçalera, identitat des de `site_config` *(esquelet actual no compta)*
 - [x] **RD-051** — Listado esquelas (`/esquelas`) con diseño de producto *(PublicSiteShell, cards unificadas, textura Pujols — #5)*
-- [ ] **RD-052** — Página pública del difunto (`/esquelas/[slug]`) completa según requisitos *(plantilla + obituario + mapas + missatges — #6–7; falta flores — RD-056)*
+- [x] **RD-052** — Página pública del difunto (`/esquelas/[slug]`) completa según requisitos *(plantilla + obituario + mapas + missatges + flors — #6–8)*
 - [x] **RD-053** — Obituario poètic en secció separada (si existeix)
 - [x] **RD-054** — Secció llocs: església + cementiri amb enllaços Google Maps *(EsquelaPlacesSection — #6)*
 - [x] **RD-055** — Formulari missatge conmemoratiu (text + nom → sala de vetlla) *(#7)*
-- [ ] **RD-056** — Catàleg flors + checkout des de l'esquela
+- [x] **RD-056** — Catàleg flors + checkout des de l'esquela *(#8)*
 - [ ] **RD-057** — Home corporativa amb seccions editables (hero, serveis, why_us, CTA…) — veure [`requisits-home-cms.md`](./legacy/requisits-home-cms.md)
 - [x] **RD-058** — Integració assets `public/rescate/` + identitat visual legacy *(home, listado esquelas, sales de vetlla — #5)*
 - [x] **RD-059** — Pàgina pública sales de vetlla (`/sales-de-vetlla`) — nom, foto, text + identitat Pujols *(#5)*
@@ -136,7 +136,7 @@ L'empleat ha de poder **assignar** església, cementiri i sala de vetlla des de 
 - [x] **RD-075** — Upload foto retocada / escanejada → `imagePath`
 - [x] **RD-076** — Gestionar foto familiar pendent (veure, descarregar, publicar retoc)
 - [x] **RD-077** — Generar `visitCode` i `slug` automàtics
-- [ ] **RD-078** — Pestanya comandes flors per difunt
+- [x] **RD-078** — Pestanya comandes flors per difunt *(#8)*
 - [x] **RD-079** — Pestanya missatges conmemoratius per difunt *(#7)*
 
 ---
@@ -145,13 +145,13 @@ L'empleat ha de poder **assignar** església, cementiri i sala de vetlla des de 
 
 📄 [requisits-flores.md](./legacy/requisits-flores.md) · [requisits-flores-admin.md](./legacy/requisits-flores-admin.md)
 
-- [ ] **RD-080** — CRUD productes flors (`/admin/flores`) — nom, preu, foto, actiu
-- [ ] **RD-081** — Upload imatge producte
-- [ ] **RD-082** — Catàleg públic a l'esquela (només productes actius)
-- [ ] **RD-083** — Checkout amb dedicatòria obligatòria + dades comprador
-- [ ] **RD-084** — Integració pasarel·la de pagament (Stripe / Redsys — TBD)
-- [ ] **RD-085** — Llistat comandes admin (global + per difunt)
-- [ ] **RD-086** — Estats comanda (`paid` → `in_preparation` → `delivered`)
+- [x] **RD-080** — CRUD productes flors (`/admin/flores`) — nom, preu, foto, actiu *(#8)*
+- [x] **RD-081** — Upload imatge producte *(#8)*
+- [x] **RD-082** — Catàleg públic a l'esquela (només productes actius) *(#8)*
+- [x] **RD-083** — Checkout amb dedicatòria obligatòria + dades comprador *(#8)*
+- [x] **RD-084** — Integració pasarel·la de pagament (stub dev → `paid`) *(#8; Stripe/Redsys pendent prod)*
+- [x] **RD-085** — Llistat comandes admin (global + per difunt) *(#8)*
+- [x] **RD-086** — Estats comanda (`paid` → `in_preparation` → `delivered`) *(#8)*
 
 ---
 
@@ -218,16 +218,16 @@ L'empleat ha de poder **assignar** església, cementiri i sala de vetlla des de 
 |------|-------|-----------|---------------------|
 | Documentación | 100% | Roadmap vivo | Mantener al día |
 | Infra + scaffold | 100% | — | — |
-| Esquela plantilla web | 98% | Flores en página pública (RD-056) | Mitjana |
+| Esquela plantilla web | 100% | — | — |
 | Zona familiar | 85% | Notificaciones (RD-066); UI sin pulir | Baixa |
-| Web pública | 55% | Flores en esquela (RD-056), home validación (RD-050) | **Alta** |
-| Backoffice esquelas | 90% | Pestanya flors (RD-078) | Mitjana |
+| Web pública | 75% | Home validación (RD-050) | Mitjana |
+| Backoffice esquelas | 100% | — | — |
 | Catálogo lugares | 100% | — | — |
-| E-commerce flors | 0% | Todo el módulo | Alta |
-| Admin complementario | 0% | Poemas, CMS, config | Media |
+| E-commerce flors | 100% | Pasarela real prod (Stripe/Redsys) | Baixa |
+| Admin complementario | 0% | Poemas, CMS, config | **Alta** |
 | Producción | 0% | Supabase + Vercel + i18n | Final |
 
-**Siguiente hito recomendado:** RD-056 (e-commerce flores) — issue #8.
+**Siguiente hito recomendado:** RD-092 (admin complementario) — issue #9.
 
 ---
 
@@ -244,7 +244,7 @@ Batch: [`manifest.roadmap-pendiente-v1.json`](./issues/manifest.roadmap-pendient
 | 5 | RD-051, RD-058, RD-059 | [Web pública identidad](https://github.com/3urega/funeraria/issues/5) | Implementado (#5, jul 2026) |
 | 6 | RD-054 | [Esquela: mapas](https://github.com/3urega/funeraria/issues/6) | Implementado (#6, jul 2026) |
 | 7 | RD-036, RD-055, RD-079 | [Missatges](https://github.com/3urega/funeraria/issues/7) | Implementado (#7, jul 2026) |
-| 8 | RD-037, RD-080–086 | [Flores e-commerce](https://github.com/3urega/funeraria/issues/8) | [rd-080-086-flores-ecommerce.md](./issues/rd-080-086-flores-ecommerce.md) |
+| 8 | RD-037, RD-056, RD-078, RD-080–086 | [Flores e-commerce](https://github.com/3urega/funeraria/issues/8) | Implementado (#8, jul 2026) |
 | 9 | RD-092–094 | [Admin complementario](https://github.com/3urega/funeraria/issues/9) | [rd-092-094-admin-complement.md](./issues/rd-092-094-admin-complement.md) |
 | 10 | RD-100–104 | [Producción](https://github.com/3urega/funeraria/issues/10) | [rd-100-104-produccion.md](./issues/rd-100-104-produccion.md) |
 
@@ -256,6 +256,7 @@ Batch: [`manifest.roadmap-pendiente-v1.json`](./issues/manifest.roadmap-pendient
 
 | Fecha | Tareas | % | Notas |
 |-------|--------|---|-------|
+| 2026-07-08 | 69/88 | 78% | E-commerce flors — schema, admin catàleg/comandes, checkout públic stub (#8, RD-037, RD-052, RD-056, RD-078, RD-080–086). |
 | 2026-07-06 | 58/88 | 66% | Missatges conmemoratius — schema, formulari públic, pestanya admin (#7, RD-036, RD-055, RD-079). |
 | 2026-07-06 | 55/88 | 63% | Esquela pública sección lugares + Google Maps — EsquelaPlacesSection (#6, RD-054). |
 | 2026-07-06 | 54/88 | 61% | Web pública identidad Pujols — PublicSiteShell, `/esquelas`, `/sales-de-vetlla` (#5, RD-051, RD-058, RD-059). |
