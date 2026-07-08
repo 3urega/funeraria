@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
-import { getEnv } from "@/lib/config/env";
 import { getFuneralHomeById, getSiteConfig } from "@/lib/db/queries";
+import { getFuneralHomeId } from "./tenant-id";
 
-/** Funerària activa d'aquesta instància (una per desplegament). */
-export function getFuneralHomeId(): string {
-  return getEnv().FUNERAL_HOME_ID;
-}
+export { getFuneralHomeId } from "./tenant-id";
 
 /** Nom comercial visible: `site_config.brand_name` → `funeral_homes.name`. */
 export function resolveBrandName(

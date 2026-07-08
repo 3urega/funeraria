@@ -10,6 +10,7 @@ import {
 import { getStorage } from "@/lib/storage";
 import { EsquelaView } from "@/components/family/esquela-view";
 import { EsquelaPlacesSection } from "@/components/public/esquela-places-section";
+import { FlowerCatalogSection } from "@/components/public/flower-catalog-section";
 import { CommemorativeMessageSection } from "@/components/public/commemorative-message-section";
 
 type Props = { params: Promise<{ slug: string; locale: string }> };
@@ -74,6 +75,8 @@ export default async function EsquelaDetailPage({ params }: Props) {
         church={data.church ?? null}
         cemetery={data.cemetery ?? null}
       />
+
+      <FlowerCatalogSection obituaryId={data.obituary.id} />
 
       <CommemorativeMessageSection obituaryId={data.obituary.id} />
 

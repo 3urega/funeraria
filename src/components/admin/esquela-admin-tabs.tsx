@@ -2,18 +2,22 @@
 
 import { useState } from "react";
 
-type Tab = "esquela" | "messages";
+type Tab = "esquela" | "messages" | "flowers";
 
 type Props = {
   messageCount: number;
+  flowerOrderCount: number;
   esquelaPanel: React.ReactNode;
   messagesPanel: React.ReactNode;
+  flowersPanel: React.ReactNode;
 };
 
 export function EsquelaAdminTabs({
   messageCount,
+  flowerOrderCount,
   esquelaPanel,
   messagesPanel,
+  flowersPanel,
 }: Props) {
   const [tab, setTab] = useState<Tab>("esquela");
 
@@ -44,9 +48,25 @@ export function EsquelaAdminTabs({
             </span>
           ) : null}
         </button>
+        <button
+          type="button"
+          className={tabClass(tab === "flowers")}
+          onClick={() => setTab("flowers")}
+        >
+          Flors
+          {flowerOrderCount > 0 ? (
+            <span className="ml-1.5 rounded-full bg-zinc-200 px-2 py-0.5 text-xs font-medium">
+              {flowerOrderCount}
+            </span>
+          ) : null}
+        </button>
       </nav>
 
-      {tab === "esquela" ? esquelaPanel : messagesPanel}
+      {tab === "esquela"
+        ? esquelaPanel
+        : tab === "messages"
+          ? messagesPanel
+          : flowersPanel}
     </div>
   );
 }

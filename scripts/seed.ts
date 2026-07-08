@@ -7,6 +7,7 @@ import {
   churches,
   commemorativeMessages,
   contentSections,
+  flowerProducts,
   funeralHomes,
   obituaries,
   poemTemplates,
@@ -286,6 +287,50 @@ async function seed() {
     ])
     .run();
 
+  db.insert(flowerProducts)
+    .values([
+      {
+        id: "flw-001",
+        funeralHomeId: FUNERAL_HOME_ID,
+        name: "Corona clàssica",
+        description: "Corona tradicional de flors naturals, adequada per a funeral i vetlla.",
+        priceCents: 8500,
+        currency: "EUR",
+        imagePath: "flowers/flw-001/photo.png",
+        isActive: true,
+        sortOrder: 1,
+        createdAt: NOW,
+        updatedAt: NOW,
+      },
+      {
+        id: "flw-002",
+        funeralHomeId: FUNERAL_HOME_ID,
+        name: "Ramo de roses",
+        description: "Ramo de roses blanques i vermelles amb fullatge.",
+        priceCents: 4500,
+        currency: "EUR",
+        imagePath: "flowers/flw-002/photo.png",
+        isActive: true,
+        sortOrder: 2,
+        createdAt: NOW,
+        updatedAt: NOW,
+      },
+      {
+        id: "flw-003",
+        funeralHomeId: FUNERAL_HOME_ID,
+        name: "Centre funerari",
+        description: "Composició discreta per a sala de vetlla o cerimònia.",
+        priceCents: 6200,
+        currency: "EUR",
+        imagePath: "flowers/flw-003/photo.png",
+        isActive: true,
+        sortOrder: 3,
+        createdAt: NOW,
+        updatedAt: NOW,
+      },
+    ])
+    .run();
+
   db.insert(adminUsers)
     .values({
       id: "au-001",
@@ -301,6 +346,9 @@ async function seed() {
   await writePlaceholder("places/wake-rooms/wake-001/photo.png");
   await writePlaceholder("obituaries/obi-001/photo.png");
   await writePlaceholder("obituaries/obi-002/photo.png");
+  await writePlaceholder("flowers/flw-001/photo.png");
+  await writePlaceholder("flowers/flw-002/photo.png");
+  await writePlaceholder("flowers/flw-003/photo.png");
 
   console.log("Seed completado.");
 }

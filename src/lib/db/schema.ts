@@ -137,6 +137,47 @@ export const commemorativeMessages = sqliteTable("commemorative_messages", {
   createdAt: text("created_at").notNull(),
 });
 
+/** Catàleg de flors — gestionat des del backoffice */
+export const flowerProducts = sqliteTable("flower_products", {
+  id: text("id").primaryKey(),
+  funeralHomeId: text("funeral_home_id")
+    .notNull()
+    .references(() => funeralHomes.id),
+  name: text("name").notNull(),
+  description: text("description"),
+  priceCents: integer("price_cents").notNull(),
+  currency: text("currency").notNull().default("EUR"),
+  imagePath: text("image_path"),
+  isActive: integer("is_active", { mode: "boolean" }).notNull().default(true),
+  sortOrder: integer("sort_order").notNull().default(0),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+/** Comandes de flors vinculades a una esquela */
+export const flowerOrders = sqliteTable("flower_orders", {
+  id: text("id").primaryKey(),
+  obituaryId: text("obituary_id")
+    .notNull()
+    .references(() => obituaries.id),
+  funeralHomeId: text("funeral_home_id")
+    .notNull()
+    .references(() => funeralHomes.id),
+  productId: text("product_id")
+    .notNull()
+    .references(() => flowerProducts.id),
+  quantity: integer("quantity").notNull().default(1),
+  dedicationText: text("dedication_text").notNull(),
+  buyerName: text("buyer_name").notNull(),
+  buyerEmail: text("buyer_email").notNull(),
+  buyerPhone: text("buyer_phone").notNull(),
+  status: text("status").notNull(),
+  paymentReference: text("payment_reference"),
+  totalCents: integer("total_cents").notNull(),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
 export const contentSections = sqliteTable("content_sections", {
   id: text("id").primaryKey(),
   funeralHomeId: text("funeral_home_id")
@@ -167,3 +208,5 @@ export type Cemetery = typeof cemeteries.$inferSelect;
 export type WakeRoom = typeof wakeRooms.$inferSelect;
 export type PoemTemplate = typeof poemTemplates.$inferSelect;
 export type CommemorativeMessage = typeof commemorativeMessages.$inferSelect;
+export type FlowerProduct = typeof flowerProducts.$inferSelect;
+export type FlowerOrder = typeof flowerOrders.$inferSelect;

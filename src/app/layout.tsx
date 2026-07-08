@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
-import { getLocale, getTranslations } from "next-intl/server";
+import { getLocale } from "next-intl/server";
 import "./globals.css";
-import { getTenantBranding } from "@/lib/site/tenant";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -14,20 +13,13 @@ const playfair = Playfair_Display({
   variable: "--font-playfair",
 });
 
-export async function generateMetadata(): Promise<Metadata> {
-  const [{ brandName }, t] = await Promise.all([
-    getTenantBranding(),
-    getTranslations("metadata"),
-  ]);
-
-  return {
-    title: {
-      default: brandName,
-      template: `%s | ${brandName}`,
-    },
-    description: t("description", { brandName }),
-  };
-}
+export const metadata: Metadata = {
+  title: {
+    default: "Funerària",
+    template: "%s | Funerària",
+  },
+  description: "Web de funerària",
+};
 
 export default async function RootLayout({
   children,

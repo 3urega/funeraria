@@ -1,11 +1,13 @@
 import { and, desc, eq } from "drizzle-orm";
 import { getDb } from "@/lib/db";
-import { getFuneralHomeId } from "@/lib/site/tenant";
+import { getFuneralHomeId } from "@/lib/site/tenant-id";
 import {
   cemeteries,
   churches,
   commemorativeMessages,
   contentSections,
+  flowerOrders,
+  flowerProducts,
   funeralHomes,
   obituaries,
   poemTemplates,
@@ -13,6 +15,8 @@ import {
   wakeRooms,
 } from "@/lib/db/schema";
 import type { CreateCommemorativeMessageInput } from "@/lib/commemorative/schema";
+import type { FlowerCheckoutInput } from "@/lib/flowers/schema";
+import type { FlowerOrderStatus } from "@/lib/flowers/types";
 
 export async function getVisibleObituaries() {
   const db = getDb();
@@ -339,4 +343,167 @@ export async function insertCommemorativeMessage(
     .run();
 
   return { ok: true as const, id };
+}
+
+export async function getActiveFlowerProducts() {
+  const db = getDb();
+  return db
+    .select()
+    .from(flowerProducts)
+    .where(
+      and(
+        eq(flowerProducts.funeralHomeId, getFuneralHomeId()),
+        eq(flowerProducts.isActive, true),
+      ),
+    )
+    .orderBy(flowerProducts.sortOrder, flowerProducts.name)
+    .all();
+}
+
+export async function getAllFlowerProducts() {
+  const db = getDb();
+  return db
+    .select()
+    .from(flowerProducts)
+    .where(eq(flowerProducts.funeralHomeId, getFuneralHomeId()))
+    .orderBy(flowerProducts.sortOrder, flowerProducts.name)
+    .all();
+}
+
+export async function getFlowerProductById(id: string) {
+  const db = getDb();
+  return db
+    .select()
+    .from(flowerProducts)
+    .where(
+      and(
+        eq(flowerProducts.id, id),
+        eq(flowerProducts.funeralHomeId, getFuneralHomeId()),
+      ),
+    )
+    .get();
+}
+
+export async function getActiveFlowerProductById(id: string) {
+  const product = await getFlowerProductById(id);
+  if (!product?.isActive) return null;
+  return product;
+}
+
+export type FlowerOrderFilters = {
+  status?: FlowerOrderStatus;
+  obituaryId?: string;
+};
+
+export async function getAllFlowerOrders(filters: FlowerOrderFilters = {}) {
+  const db = getDb();
+  const conditions = [eq(flowerOrders.funeralHomeId, getFuneralHomeId())];
+  if (filters.status) {
+    conditions.push(eq(flowerOrders.status, filters.status));
+  }
+  if (filters.obituaryId) {
+    conditions.push(eq(flowerOrders.obituaryId, filters.obituaryId));
+  }
+
+  return db
+    .select({
+      order: flowerOrders,
+      product: flowerProducts,
+      obituary: obituaries,
+    })
+    .from(flowerOrders)
+    .innerJoin(flowerProducts, eq(flowerOrders.productId, flowerProducts.id))
+    .innerJoin(obituaries, eq(flowerOrders.obituaryId, obituaries.id))
+    .where(and(...conditions))
+    .orderBy(desc(flowerOrders.createdAt))
+    .all();
+}
+
+export async function getFlowerOrdersByObituaryId(obituaryId: string) {
+  const obituary = await getObituaryByIdForTenant(obituaryId);
+  if (!obituary) return [];
+  return getAllFlowerOrders({ obituaryId });
+}
+
+export async function getFlowerOrderById(id: string) {
+  const db = getDb();
+  return db
+    .select({
+      order: flowerOrders,
+      product: flowerProducts,
+      obituary: obituaries,
+    })
+    .from(flowerOrders)
+    .innerJoin(flowerProducts, eq(flowerOrders.productId, flowerProducts.id))
+    .innerJoin(obituaries, eq(flowerOrders.obituaryId, obituaries.id))
+    .where(
+      and(
+        eq(flowerOrders.id, id),
+        eq(flowerOrders.funeralHomeId, getFuneralHomeId()),
+      ),
+    )
+    .get();
+}
+
+export async function insertFlowerOrder(input: FlowerCheckoutInput) {
+  const obituary = await getObituaryById(input.obituaryId);
+  if (!obituary) {
+    return { ok: false as const, error: "NOT_FOUND" as const };
+  }
+  if (obituary.funeralHomeId !== getFuneralHomeId()) {
+    return { ok: false as const, error: "NOT_FOUND" as const };
+  }
+  if (!obituary.isVisible) {
+    return { ok: false as const, error: "NOT_VISIBLE" as const };
+  }
+
+  const product = await getActiveFlowerProductById(input.productId);
+  if (!product) {
+    return { ok: false as const, error: "PRODUCT_NOT_FOUND" as const };
+  }
+
+  const quantity = 1;
+  const totalCents = product.priceCents * quantity;
+  const id = `flo-${Date.now()}`;
+  const now = new Date().toISOString();
+
+  getDb()
+    .insert(flowerOrders)
+    .values({
+      id,
+      obituaryId: input.obituaryId,
+      funeralHomeId: getFuneralHomeId(),
+      productId: product.id,
+      quantity,
+      dedicationText: input.dedicationText,
+      buyerName: input.buyerName,
+      buyerEmail: input.buyerEmail,
+      buyerPhone: input.buyerPhone,
+      status: "paid",
+      paymentReference: `stub-dev-${id}`,
+      totalCents,
+      createdAt: now,
+      updatedAt: now,
+    })
+    .run();
+
+  return { ok: true as const, id };
+}
+
+export async function updateFlowerOrderStatus(
+  id: string,
+  status: FlowerOrderStatus,
+) {
+  const existing = await getFlowerOrderById(id);
+  if (!existing) {
+    return { ok: false as const, error: "NOT_FOUND" as const };
+  }
+
+  getDb()
+    .update(flowerOrders)
+    .set({ status, updatedAt: new Date().toISOString() })
+    .where(eq(flowerOrders.id, id))
+    .run();
+
+  return { ok: true as const };
 }

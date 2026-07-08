@@ -1,4 +1,4 @@
-export type StorageBucket = "obituaries" | "places" | "content" | "site";
+export type StorageBucket = "obituaries" | "places" | "content" | "site" | "flowers";
 
 export interface StorageAdapter {
   upload(

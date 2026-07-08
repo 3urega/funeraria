@@ -43,6 +43,12 @@ export default async function AdminDashboardLayout({
             Sales de vetlla
           </Link>
           <Link
+            href="/admin/flores"
+            className="rounded px-2 py-1 hover:bg-zinc-800"
+          >
+            Flors
+          </Link>
+          <Link
             href="/"
             className="mt-4 rounded px-2 py-1 text-zinc-400 hover:bg-zinc-800"
           >

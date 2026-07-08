@@ -3,11 +3,13 @@ import { notFound } from "next/navigation";
 import { EsquelaAdminForm } from "@/components/admin/esquela-admin-form";
 import { EsquelaAdminTabs } from "@/components/admin/esquela-admin-tabs";
 import { EsquelaMessagesPanel } from "@/components/admin/esquela-messages-panel";
+import { EsquelaFlowerOrdersPanel } from "@/components/admin/esquela-flower-orders-panel";
 import {
   getAllCemeteries,
   getAllChurches,
   getAllWakeRooms,
   getCommemorativeMessagesByObituaryId,
+  getFlowerOrdersByObituaryId,
   getFuneralHomeById,
   getObituaryByIdForTenant,
   getSiteConfig,
@@ -32,7 +34,7 @@ export default async function AdminEditarEsquelaPage({ params }: Props) {
   const obituary = await getObituaryByIdForTenant(id);
   if (!obituary) notFound();
 
-  const [churches, cemeteries, wakeRooms, siteConfig, funeralHome, messages] =
+  const [churches, cemeteries, wakeRooms, siteConfig, funeralHome, messages, flowerOrders] =
     await Promise.all([
       getAllChurches(),
       getAllCemeteries(),
@@ -40,6 +42,7 @@ export default async function AdminEditarEsquelaPage({ params }: Props) {
       getSiteConfig(),
       getFuneralHomeById(getFuneralHomeId()),
       getCommemorativeMessagesByObituaryId(id),
+      getFlowerOrdersByObituaryId(id),
     ]);
 
   const imageUrl = obituary.imagePath
@@ -63,6 +66,7 @@ export default async function AdminEditarEsquelaPage({ params }: Props) {
 
       <EsquelaAdminTabs
         messageCount={messages.length}
+        flowerOrderCount={flowerOrders.length}
         esquelaPanel={
           <EsquelaAdminForm
             obituary={obituary}
@@ -86,6 +90,7 @@ export default async function AdminEditarEsquelaPage({ params }: Props) {
           />
         }
         messagesPanel={<EsquelaMessagesPanel messages={messages} />}
+        flowersPanel={<EsquelaFlowerOrdersPanel orders={flowerOrders} />}
       />
     </div>
   );

@@ -6,7 +6,7 @@ import {
   verifyFamilySession,
   ADMIN_COOKIE,
   FAMILY_COOKIE,
-} from "@/lib/auth/session";
+} from "@/lib/auth/session-jwt";
 import { routing } from "@/i18n/routing";
 import {
   getLocaleFromPathname,
