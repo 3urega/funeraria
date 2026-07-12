@@ -1,7 +1,7 @@
 # Roadmap de entrega — 0 → 100%
 
 > **Audiencia:** Product Manager · **Última actualización:** julio 2026  
-> **Progreso global:** 74 / 91 tareas (**81%**)
+> **Progreso global:** 76 / 91 tareas (**84%**)
 
 Documento maestro sintético. El detalle técnico está en los enlaces de cada fase.  
 Los agentes deben **marcar `[x]`** al completar cada ítem — ver [`AGENTS.md`](../AGENTS.md).
@@ -107,7 +107,7 @@ Los agentes deben **marcar `[x]`** al completar cada ítem — ver [`AGENTS.md`]
 - [x] **RD-063** — Enviar foto esquela (queda pendent de retocar, no publica)
 - [x] **RD-064** — Personalitzar obituari (poema + text)
 - [x] **RD-065** — Logout familiar
-- [ ] **RD-066** — Notificació a l'empleat quan arriba foto pendent
+- [x] **RD-066** — Notificació a l'empleat quan arriba foto pendent *(#11, jul 2026)*
 
 ---
 
@@ -139,7 +139,7 @@ L'empleat ha de poder **assignar** església, cementiri i sala de vetlla des de 
 - [x] **RD-077** — Generar `visitCode` i `slug` automàtics
 - [x] **RD-078** — Pestanya comandes flors per difunt *(#8)*
 - [x] **RD-079** — Pestanya missatges conmemoratius per difunt *(#7)*
-- [ ] **RD-088** — Missatges: flag `reviewed` + filtre admin (legacy `Condolence.checked`) — veure [`legacy_project.md`](./legacy_project.md) §7
+- [x] **RD-088** — Missatges: flag `reviewed` + filtre admin (legacy `Condolence.checked`) — veure [`legacy_project.md`](./legacy_project.md) §7 *(#11, jul 2026)*
 
 ---
 
@@ -223,9 +223,9 @@ L'empleat ha de poder **assignar** església, cementiri i sala de vetlla des de 
 | Documentación | 100% | Roadmap vivo | Mantener al día |
 | Infra + scaffold | 100% | — | — |
 | Esquela plantilla web | 100% | — | — |
-| Zona familiar | 85% | Notificaciones (RD-066); UI sin pulir | Baja |
+| Zona familiar | 100% | UI sin pulir | Baja |
 | Web pública | 85% | Validación visual home (RD-050) | Media |
-| Backoffice esquelas | 95% | Flag `reviewed` missatges (RD-088) | Media |
+| Backoffice esquelas | 100% | — | — |
 | Catálogo lugares | 100% | — | — |
 | E-commerce flors | 85% | Stripe prod (RD-087); stub dev hecho (RD-084) | Media (pre-prod) |
 | Admin complementario | 100% | — | — |
@@ -251,9 +251,9 @@ Batch: [`manifest.roadmap-pendiente-v1.json`](./issues/manifest.roadmap-pendient
 | 8 | RD-037, RD-056, RD-078, RD-080–086 | [Flores e-commerce](https://github.com/3urega/funeraria/issues/8) | Implementado (#8, jul 2026) |
 | 9 | RD-092–094, RD-057 | [Admin complementario](https://github.com/3urega/funeraria/issues/9) | Implementado (#9, jul 2026) |
 | 10 | RD-100–104 | [Producción](https://github.com/3urega/funeraria/issues/10) | [rd-100-104-produccion.md](./issues/rd-100-104-produccion.md) |
-| 11 | RD-088, RD-066 | [Paridad legacy (missatges + foto)](https://github.com/3urega/funeraria/issues/11) | [rd-088-066-legacy-paridad.md](./issues/rd-088-066-legacy-paridad.md) |
+| 11 | RD-088, RD-066 | [Paridad legacy (missatges + foto)](https://github.com/3urega/funeraria/issues/11) | Implementado (#11, jul 2026) |
 
-Ítems pendientes sin issue dedicada aún: RD-050 (home validación), RD-066 (notif.), RD-087 (Stripe prod), RD-088 (missatges reviewed), RD-105 (i18n admin), RD-110–115 (calidad).
+Ítems pendientes sin issue dedicada aún: RD-050 (home validación), RD-087 (Stripe prod), RD-105 (i18n admin), RD-110–115 (calidad).
 
 ---
 
@@ -261,6 +261,7 @@ Batch: [`manifest.roadmap-pendiente-v1.json`](./issues/manifest.roadmap-pendient
 
 | Fecha | Tareas | % | Notas |
 |-------|--------|---|-------|
+| 2026-07-12 | 76/91 | 84% | Paridad legacy — missatges `reviewed`, dashboard pendents, stub notif. foto (#11, RD-066, RD-088). |
 | 2026-07-12 | 74/91 | 81% | Admin complementario — poemas, site_config, CMS home (#9, RD-092–094, RD-057). |
 | 2026-07-12 | 70/91 | 77% | Gap analysis legacy (`legacy_project.md`, RD-013); nous RD-087 (Stripe prod), RD-088 (missatges reviewed); notes RD-050/057/084/105. |
 | 2026-07-08 | 69/88 | 78% | E-commerce flors — schema, admin catàleg/comandes, checkout públic stub (#8, RD-037, RD-052, RD-056, RD-078, RD-080–086). |
