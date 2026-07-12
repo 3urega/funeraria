@@ -1,0 +1,14 @@
+{
+  "repo": "3urega/funeraria",
+  "sourceDoc": "docs/legacy_project.md",
+  "batch": "legacy-paridad-v1",
+  "issues": [
+    {
+      "title": "RD-088: Paridad legacy (missatges revisados + notif. foto familiar)",
+      "bodyFile": "docs/issues/rd-088-066-legacy-paridad.md",
+      "roadmapId": "RD-088",
+      "githubNumber": 11,
+      "githubUrl": "https://github.com/3urega/funeraria/issues/11"
+    }
+  ]
+}

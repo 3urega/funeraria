@@ -1,7 +1,7 @@
 # Roadmap de entrega — 0 → 100%
 
 > **Audiencia:** Product Manager · **Última actualización:** julio 2026  
-> **Progreso global:** 70 / 91 tareas (**77%**)
+> **Progreso global:** 74 / 91 tareas (**81%**)
 
 Documento maestro sintético. El detalle técnico está en los enlaces de cada fase.  
 Los agentes deben **marcar `[x]`** al completar cada ítem — ver [`AGENTS.md`](../AGENTS.md).
@@ -91,7 +91,7 @@ Los agentes deben **marcar `[x]`** al completar cada ítem — ver [`AGENTS.md`]
 - [x] **RD-054** — Secció llocs: església + cementiri amb enllaços Google Maps *(EsquelaPlacesSection — #6)*
 - [x] **RD-055** — Formulari missatge conmemoratiu (text + nom → sala de vetlla) *(#7)*
 - [x] **RD-056** — Catàleg flors + checkout des de l'esquela *(#8)*
-- [ ] **RD-057** — Home corporativa amb seccions editables des de CMS *(paritat funcional pública un cop **RD-094** actiu; veure [`requisits-home-cms.md`](./legacy/requisits-home-cms.md))*
+- [x] **RD-057** — Home corporativa amb seccions editables des de CMS *(RD-094, #9 jul 2026)*
 - [x] **RD-058** — Integració assets `public/rescate/` + identitat visual legacy *(home, listado esquelas, sales de vetlla — #5)*
 - [x] **RD-059** — Pàgina pública sales de vetlla (`/sales-de-vetlla`) — nom, foto, text + identitat Pujols *(#5)*
 
@@ -160,9 +160,9 @@ L'empleat ha de poder **assignar** església, cementiri i sala de vetlla des de 
 
 ## Fase 8 — Admin complementari
 
-- [ ] **RD-092** — CRUD poemes obituari (`poem_templates`)
-- [ ] **RD-093** — Configuració funerària (`site_config`) — contacte, marca, casa mortuòria, WhatsApp
-- [ ] **RD-094** — CMS seccions home (`content_sections`) — veure [`requisits-home-cms.md`](./legacy/requisits-home-cms.md)
+- [x] **RD-092** — CRUD poemes obituari (`poem_templates`) *(#9, jul 2026)*
+- [x] **RD-093** — Configuració funerària (`site_config`) — contacte, marca, casa mortuòria, WhatsApp *(#9)*
+- [x] **RD-094** — CMS seccions home (`content_sections`) — veure [`requisits-home-cms.md`](./legacy/requisits-home-cms.md) *(#9)*
 
 > Iglesias, cementerios y salas de vetlla → **Fase 5b** (RD-067–069).
 
@@ -224,14 +224,14 @@ L'empleat ha de poder **assignar** església, cementiri i sala de vetlla des de 
 | Infra + scaffold | 100% | — | — |
 | Esquela plantilla web | 100% | — | — |
 | Zona familiar | 85% | Notificaciones (RD-066); UI sin pulir | Baja |
-| Web pública | 80% | Validación visual home (RD-050); CMS (RD-094) | Media |
+| Web pública | 85% | Validación visual home (RD-050) | Media |
 | Backoffice esquelas | 95% | Flag `reviewed` missatges (RD-088) | Media |
 | Catálogo lugares | 100% | — | — |
 | E-commerce flors | 85% | Stripe prod (RD-087); stub dev hecho (RD-084) | Media (pre-prod) |
-| Admin complementario | 0% | Poemas, CMS, config (RD-092–094) | **Alta** |
+| Admin complementario | 100% | — | — |
 | Producción | 0% | Supabase + Vercel + i18n | Final |
 
-**Siguiente hito recomendado:** RD-050 (validación home con cliente) → RD-092 (admin complementario) — issue #9.
+**Siguiente hito recomendado:** RD-050 (validación home con cliente) → issue #10 (producción).
 
 ---
 
@@ -249,10 +249,11 @@ Batch: [`manifest.roadmap-pendiente-v1.json`](./issues/manifest.roadmap-pendient
 | 6 | RD-054 | [Esquela: mapas](https://github.com/3urega/funeraria/issues/6) | Implementado (#6, jul 2026) |
 | 7 | RD-036, RD-055, RD-079 | [Missatges](https://github.com/3urega/funeraria/issues/7) | Implementado (#7, jul 2026) |
 | 8 | RD-037, RD-056, RD-078, RD-080–086 | [Flores e-commerce](https://github.com/3urega/funeraria/issues/8) | Implementado (#8, jul 2026) |
-| 9 | RD-092–094 | [Admin complementario](https://github.com/3urega/funeraria/issues/9) | [rd-092-094-admin-complement.md](./issues/rd-092-094-admin-complement.md) |
+| 9 | RD-092–094, RD-057 | [Admin complementario](https://github.com/3urega/funeraria/issues/9) | Implementado (#9, jul 2026) |
 | 10 | RD-100–104 | [Producción](https://github.com/3urega/funeraria/issues/10) | [rd-100-104-produccion.md](./issues/rd-100-104-produccion.md) |
+| 11 | RD-088, RD-066 | [Paridad legacy (missatges + foto)](https://github.com/3urega/funeraria/issues/11) | [rd-088-066-legacy-paridad.md](./issues/rd-088-066-legacy-paridad.md) |
 
-Ítems pendientes sin issue dedicada aún: RD-050/057 (home validación/CMS), RD-066 (notif.), RD-087 (Stripe prod), RD-088 (missatges reviewed), RD-105 (i18n admin), RD-110–115 (calidad).
+Ítems pendientes sin issue dedicada aún: RD-050 (home validación), RD-066 (notif.), RD-087 (Stripe prod), RD-088 (missatges reviewed), RD-105 (i18n admin), RD-110–115 (calidad).
 
 ---
 
@@ -260,6 +261,7 @@ Batch: [`manifest.roadmap-pendiente-v1.json`](./issues/manifest.roadmap-pendient
 
 | Fecha | Tareas | % | Notas |
 |-------|--------|---|-------|
+| 2026-07-12 | 74/91 | 81% | Admin complementario — poemas, site_config, CMS home (#9, RD-092–094, RD-057). |
 | 2026-07-12 | 70/91 | 77% | Gap analysis legacy (`legacy_project.md`, RD-013); nous RD-087 (Stripe prod), RD-088 (missatges reviewed); notes RD-050/057/084/105. |
 | 2026-07-08 | 69/88 | 78% | E-commerce flors — schema, admin catàleg/comandes, checkout públic stub (#8, RD-037, RD-052, RD-056, RD-078, RD-080–086). |
 | 2026-07-06 | 58/88 | 66% | Missatges conmemoratius — schema, formulari públic, pestanya admin (#7, RD-036, RD-055, RD-079). |

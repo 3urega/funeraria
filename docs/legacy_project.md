@@ -587,7 +587,7 @@ Este documento inventaría el legacy. Para el **cruce con el proyecto Next.js** 
 
 | Documento | Contenido |
 |-----------|-----------|
-| [`ROADMAP_ENTREGA.md`](./ROADMAP_ENTREGA.md) | Estado actual por área (77% jul 2026, 70/91 tareas) |
+| [`ROADMAP_ENTREGA.md`](./ROADMAP_ENTREGA.md) | Estado actual por área (81% jul 2026, 74/91 tareas) |
 | [`DOCUMENTO_REQUISITOS.md`](./DOCUMENTO_REQUISITOS.md) | Requisitos objetivo del producto nuevo |
 | [`arquitectura.md`](./arquitectura.md) §20 | Tabla comparativa legacy vs Next.js + Supabase |
 | [`docs/legacy/`](./legacy/) | Especificaciones detalladas por módulo |
