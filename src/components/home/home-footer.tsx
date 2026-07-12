@@ -12,6 +12,7 @@ type Props = {
   phone: string;
   email: string;
   address: string;
+  whatsapp?: string;
   linkGroups: Array<{
     title: string;
     links: Array<{ label: string; href: string }>;
@@ -60,6 +61,7 @@ export async function HomeFooter({
   phone,
   email,
   address,
+  whatsapp,
   linkGroups,
   legal,
   textureUrl,
@@ -131,6 +133,18 @@ export async function HomeFooter({
                 </a>
               </li>
               <li>{address}</li>
+              {whatsapp && (
+                <li>
+                  <a
+                    href={`https://wa.me/${whatsapp.replace(/\D/g, "")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 hover:text-white"
+                  >
+                    WhatsApp
+                  </a>
+                </li>
+              )}
             </ul>
           </div>
         </div>

@@ -125,6 +125,29 @@ export async function getActivePoemTemplates() {
     .all();
 }
 
+export async function getAllPoemTemplates() {
+  const db = getDb();
+  return db
+    .select()
+    .from(poemTemplates)
+    .where(eq(poemTemplates.funeralHomeId, getFuneralHomeId()))
+    .all();
+}
+
+export async function getPoemTemplateById(id: string) {
+  const db = getDb();
+  return db
+    .select()
+    .from(poemTemplates)
+    .where(
+      and(
+        eq(poemTemplates.id, id),
+        eq(poemTemplates.funeralHomeId, getFuneralHomeId()),
+      ),
+    )
+    .get();
+}
+
 export async function getAllObituaries() {
   const db = getDb();
   return db
@@ -146,6 +169,64 @@ export async function getSiteConfig() {
     .from(siteConfig)
     .where(eq(siteConfig.funeralHomeId, getFuneralHomeId()))
     .get();
+}
+
+export async function updateSiteConfig(data: {
+  brandName: string;
+  mortuaryDefault?: string | null;
+  contact: {
+    phone: string;
+    email: string;
+    address: string;
+    website?: string | null;
+    whatsapp?: string | null;
+  };
+  theme: Record<string, string>;
+  logoPath?: string | null;
+}) {
+  const db = getDb();
+  const existing = await getSiteConfig();
+  const funeralHomeId = getFuneralHomeId();
+
+  if (existing) {
+    db.update(siteConfig)
+      .set({
+        brandName: data.brandName,
+        mortuaryDefault: data.mortuaryDefault ?? null,
+        contact: {
+          phone: data.contact.phone,
+          email: data.contact.email,
+          address: data.contact.address,
+          website: data.contact.website ?? undefined,
+          whatsapp: data.contact.whatsapp ?? undefined,
+        },
+        theme: data.theme,
+        ...(data.logoPath !== undefined ? { logoPath: data.logoPath } : {}),
+      })
+      .where(eq(siteConfig.id, existing.id))
+      .run();
+    return existing.id;
+  }
+
+  const id = `sc-${Date.now()}`;
+  db.insert(siteConfig)
+    .values({
+      id,
+      funeralHomeId,
+      brandName: data.brandName,
+      mortuaryDefault: data.mortuaryDefault ?? null,
+      contact: {
+        phone: data.contact.phone,
+        email: data.contact.email,
+        address: data.contact.address,
+        website: data.contact.website ?? undefined,
+        whatsapp: data.contact.whatsapp ?? undefined,
+      },
+      theme: data.theme,
+      logoPath: data.logoPath ?? null,
+    })
+    .run();
+  return id;
 }
 
 export async function getPublishedContentSections() {
@@ -174,6 +255,56 @@ export async function getContentSectionByKey(sectionKey: string) {
       ),
     )
     .get();
+}
+
+export async function getAllContentSectionsForAdmin() {
+  const db = getDb();
+  return db
+    .select()
+    .from(contentSections)
+    .where(eq(contentSections.funeralHomeId, getFuneralHomeId()))
+    .all();
+}
+
+export async function upsertContentSection(
+  sectionKey: string,
+  contentI18n: Record<string, unknown>,
+  isPublished: boolean,
+) {
+  const db = getDb();
+  const existing = await getContentSectionByKey(sectionKey);
+  const funeralHomeId = getFuneralHomeId();
+
+  if (existing) {
+    db.update(contentSections)
+      .set({ contentI18n, isPublished })
+      .where(eq(contentSections.id, existing.id))
+      .run();
+    return existing.id;
+  }
+
+  const sortOrderMap: Record<string, number> = {
+    top_bar: 0,
+    hero: 1,
+    services: 2,
+    why_us: 3,
+    obituaries_intro: 4,
+    cta_blocks: 5,
+    footer: 6,
+  };
+
+  const id = `cs-${sectionKey}`;
+  db.insert(contentSections)
+    .values({
+      id,
+      funeralHomeId,
+      sectionKey,
+      contentI18n,
+      isPublished,
+      sortOrder: sortOrderMap[sectionKey] ?? 99,
+    })
+    .run();
+  return id;
 }
 
 export async function getHomeContentSections() {

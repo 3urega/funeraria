@@ -48,6 +48,7 @@ export type HomePageData = {
   email: string;
   address: string;
   website?: string;
+  whatsapp?: string;
   theme: {
     primary: string;
     dark: string;

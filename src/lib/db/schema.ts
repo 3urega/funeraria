@@ -17,6 +17,7 @@ export const siteConfig = sqliteTable("site_config", {
     email: string;
     address: string;
     website?: string;
+    whatsapp?: string;
   }>(),
   brandName: text("brand_name"),
   mortuaryDefault: text("mortuary_default"),
@@ -210,3 +211,4 @@ export type PoemTemplate = typeof poemTemplates.$inferSelect;
 export type CommemorativeMessage = typeof commemorativeMessages.$inferSelect;
 export type FlowerProduct = typeof flowerProducts.$inferSelect;
 export type FlowerOrder = typeof flowerOrders.$inferSelect;
+export type ContentSection = typeof contentSections.$inferSelect;

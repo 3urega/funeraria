@@ -73,6 +73,7 @@ export async function HomePageLayout({ data, obituaries }: Props) {
         phone={data.phone}
         email={data.email}
         address={data.address}
+        whatsapp={data.whatsapp}
         linkGroups={data.footer.linkGroups}
         legal={data.footer.legal}
         textureUrl={data.footer.textureUrl}

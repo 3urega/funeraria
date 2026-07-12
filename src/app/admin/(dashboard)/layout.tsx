@@ -49,6 +49,24 @@ export default async function AdminDashboardLayout({
             Flors
           </Link>
           <Link
+            href="/admin/poemas"
+            className="rounded px-2 py-1 hover:bg-zinc-800"
+          >
+            Poemas
+          </Link>
+          <Link
+            href="/admin/configuracion"
+            className="rounded px-2 py-1 hover:bg-zinc-800"
+          >
+            Configuració
+          </Link>
+          <Link
+            href="/admin/contenido/home"
+            className="rounded px-2 py-1 hover:bg-zinc-800"
+          >
+            Contingut home
+          </Link>
+          <Link
             href="/"
             className="mt-4 rounded px-2 py-1 text-zinc-400 hover:bg-zinc-800"
           >

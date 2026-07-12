@@ -1,7 +1,7 @@
 # Roadmap de entrega — 0 → 100%
 
 > **Audiencia:** Product Manager · **Última actualización:** julio 2026  
-> **Progreso global:** 69 / 88 tareas (**78%**)
+> **Progreso global:** 70 / 91 tareas (**77%**)
 
 Documento maestro sintético. El detalle técnico está en los enlaces de cada fase.  
 Los agentes deben **marcar `[x]`** al completar cada ítem — ver [`AGENTS.md`](../AGENTS.md).
@@ -22,7 +22,7 @@ Los agentes deben **marcar `[x]`** al completar cada ítem — ver [`AGENTS.md`]
 
 ## Fase 0 — Discovery y documentación
 
-📄 [DOCUMENTO_REQUISITOS.md](./DOCUMENTO_REQUISITOS.md) · [arquitectura.md](./arquitectura.md) · [ESTRATEGIA_DESARROLLO_LOCAL.md](./ESTRATEGIA_DESARROLLO_LOCAL.md)
+📄 [DOCUMENTO_REQUISITOS.md](./DOCUMENTO_REQUISITOS.md) · [legacy_project.md](./legacy_project.md) · [arquitectura.md](./arquitectura.md) · [ESTRATEGIA_DESARROLLO_LOCAL.md](./ESTRATEGIA_DESARROLLO_LOCAL.md)
 
 - [x] **RD-001** — Reverse-engineering del legacy Angular + DRS ampliado
 - [x] **RD-002** — Arquitectura objetivo (Next.js monolito + Supabase prod)
@@ -36,6 +36,7 @@ Los agentes deben **marcar `[x]`** al completar cada ítem — ver [`AGENTS.md`]
 - [x] **RD-010** — Formulario admin esquela + preview especificado
 - [x] **RD-011** — Este roadmap maestro (`ROADMAP_ENTREGA.md`)
 - [x] **RD-012** — Catálogo de lugares: iglesias, cementerios, salas de vetlla ([`requisits-lugares.md`](./legacy/requisits-lugares.md))
+- [x] **RD-013** — Inventario proyecto legacy ([`legacy_project.md`](./legacy_project.md)) — gap analysis vs roadmap
 
 ---
 
@@ -83,14 +84,14 @@ Los agentes deben **marcar `[x]`** al completar cada ítem — ver [`AGENTS.md`]
 
 📄 [requisits-esquela-publica.md](./legacy/requisits-esquela-publica.md) · [requisits-home-plantilla.md](./legacy/requisits-home-plantilla.md) · [requisits-home-cms.md](./legacy/requisits-home-cms.md)
 
-- [ ] **RD-050** — Home pública (`/`) segons mockup [`home-referencia-mockup.png`](./legacy/home-referencia-mockup.png) — 7 seccions + capçalera, identitat des de `site_config` *(esquelet actual no compta)*
+- [ ] **RD-050** — Home pública (`/`) segons mockup [`home-referencia-mockup.png`](./legacy/home-referencia-mockup.png) — **codi implementat** (`HomePageLayout`, 7 seccions); pendent **validació visual PM** i sign-off *(no marcar fins acord amb client)*
 - [x] **RD-051** — Listado esquelas (`/esquelas`) con diseño de producto *(PublicSiteShell, cards unificadas, textura Pujols — #5)*
 - [x] **RD-052** — Página pública del difunto (`/esquelas/[slug]`) completa según requisitos *(plantilla + obituario + mapas + missatges + flors — #6–8)*
 - [x] **RD-053** — Obituario poètic en secció separada (si existeix)
 - [x] **RD-054** — Secció llocs: església + cementiri amb enllaços Google Maps *(EsquelaPlacesSection — #6)*
 - [x] **RD-055** — Formulari missatge conmemoratiu (text + nom → sala de vetlla) *(#7)*
 - [x] **RD-056** — Catàleg flors + checkout des de l'esquela *(#8)*
-- [ ] **RD-057** — Home corporativa amb seccions editables (hero, serveis, why_us, CTA…) — veure [`requisits-home-cms.md`](./legacy/requisits-home-cms.md)
+- [ ] **RD-057** — Home corporativa amb seccions editables des de CMS *(paritat funcional pública un cop **RD-094** actiu; veure [`requisits-home-cms.md`](./legacy/requisits-home-cms.md))*
 - [x] **RD-058** — Integració assets `public/rescate/` + identitat visual legacy *(home, listado esquelas, sales de vetlla — #5)*
 - [x] **RD-059** — Pàgina pública sales de vetlla (`/sales-de-vetlla`) — nom, foto, text + identitat Pujols *(#5)*
 
@@ -138,6 +139,7 @@ L'empleat ha de poder **assignar** església, cementiri i sala de vetlla des de 
 - [x] **RD-077** — Generar `visitCode` i `slug` automàtics
 - [x] **RD-078** — Pestanya comandes flors per difunt *(#8)*
 - [x] **RD-079** — Pestanya missatges conmemoratius per difunt *(#7)*
+- [ ] **RD-088** — Missatges: flag `reviewed` + filtre admin (legacy `Condolence.checked`) — veure [`legacy_project.md`](./legacy_project.md) §7
 
 ---
 
@@ -149,16 +151,17 @@ L'empleat ha de poder **assignar** església, cementiri i sala de vetlla des de 
 - [x] **RD-081** — Upload imatge producte *(#8)*
 - [x] **RD-082** — Catàleg públic a l'esquela (només productes actius) *(#8)*
 - [x] **RD-083** — Checkout amb dedicatòria obligatòria + dades comprador *(#8)*
-- [x] **RD-084** — Integració pasarel·la de pagament (stub dev → `paid`) *(#8; Stripe/Redsys pendent prod)*
+- [x] **RD-084** — Pasarela stub dev (comanda → `paid` automàtic; només entorn local) *(#8)*
 - [x] **RD-085** — Llistat comandes admin (global + per difunt) *(#8)*
 - [x] **RD-086** — Estats comanda (`paid` → `in_preparation` → `delivered`) *(#8)*
+- [ ] **RD-087** — Stripe real en producció (Checkout, webhook `pending_payment` → `paid`) — veure [`legacy_project.md`](./legacy_project.md) §10
 
 ---
 
 ## Fase 8 — Admin complementari
 
 - [ ] **RD-092** — CRUD poemes obituari (`poem_templates`)
-- [ ] **RD-093** — Configuració funerària (`site_config`) — contacte, marca, casa mortuòria
+- [ ] **RD-093** — Configuració funerària (`site_config`) — contacte, marca, casa mortuòria, WhatsApp
 - [ ] **RD-094** — CMS seccions home (`content_sections`) — veure [`requisits-home-cms.md`](./legacy/requisits-home-cms.md)
 
 > Iglesias, cementerios y salas de vetlla → **Fase 5b** (RD-067–069).
@@ -171,10 +174,10 @@ L'empleat ha de poder **assignar** església, cementiri i sala de vetlla des de 
 
 - [ ] **RD-100** — Migració schema SQLite → Supabase PostgreSQL
 - [ ] **RD-101** — Storage local → Supabase Storage (paths compatibles)
-- [ ] **RD-102** — Auth admin → Supabase Auth
+- [ ] **RD-102** — Auth admin → Supabase Auth (email + Google OAuth, com legacy Firebase)
 - [ ] **RD-103** — Deploy Vercel (preview PR + producció)
 - [ ] **RD-104** — Variables entorn prod + secrets
-- [ ] **RD-105** — i18n next-intl (CA principal + ES; admin i18n pendent)
+- [ ] **RD-105** — i18n next-intl (CA + ES ja implementats; EN legacy opcional post-MVP; admin i18n pendent)
 - [ ] **RD-106** — Theming per client (colors, logo des de `site_config`)
 
 ---
@@ -195,6 +198,7 @@ L'empleat ha de poder **assignar** església, cementiri i sala de vetlla des de 
 | Tema | Documento |
 |------|-----------|
 | Requisitos completos | [DOCUMENTO_REQUISITOS.md](./DOCUMENTO_REQUISITOS.md) |
+| Proyecto legacy (inventario) | [legacy_project.md](./legacy_project.md) |
 | Arquitectura | [arquitectura.md](./arquitectura.md) |
 | Dev local | [ESTRATEGIA_DESARROLLO_LOCAL.md](./ESTRATEGIA_DESARROLLO_LOCAL.md) |
 | Esquela vs obituario | [legacy/requisits-obituary.md](./legacy/requisits-obituary.md) |
@@ -219,15 +223,15 @@ L'empleat ha de poder **assignar** església, cementiri i sala de vetlla des de 
 | Documentación | 100% | Roadmap vivo | Mantener al día |
 | Infra + scaffold | 100% | — | — |
 | Esquela plantilla web | 100% | — | — |
-| Zona familiar | 85% | Notificaciones (RD-066); UI sin pulir | Baixa |
-| Web pública | 75% | Home validación (RD-050) | Mitjana |
-| Backoffice esquelas | 100% | — | — |
+| Zona familiar | 85% | Notificaciones (RD-066); UI sin pulir | Baja |
+| Web pública | 80% | Validación visual home (RD-050); CMS (RD-094) | Media |
+| Backoffice esquelas | 95% | Flag `reviewed` missatges (RD-088) | Media |
 | Catálogo lugares | 100% | — | — |
-| E-commerce flors | 100% | Pasarela real prod (Stripe/Redsys) | Baixa |
-| Admin complementario | 0% | Poemas, CMS, config | **Alta** |
+| E-commerce flors | 85% | Stripe prod (RD-087); stub dev hecho (RD-084) | Media (pre-prod) |
+| Admin complementario | 0% | Poemas, CMS, config (RD-092–094) | **Alta** |
 | Producción | 0% | Supabase + Vercel + i18n | Final |
 
-**Siguiente hito recomendado:** RD-092 (admin complementario) — issue #9.
+**Siguiente hito recomendado:** RD-050 (validación home con cliente) → RD-092 (admin complementario) — issue #9.
 
 ---
 
@@ -248,7 +252,7 @@ Batch: [`manifest.roadmap-pendiente-v1.json`](./issues/manifest.roadmap-pendient
 | 9 | RD-092–094 | [Admin complementario](https://github.com/3urega/funeraria/issues/9) | [rd-092-094-admin-complement.md](./issues/rd-092-094-admin-complement.md) |
 | 10 | RD-100–104 | [Producción](https://github.com/3urega/funeraria/issues/10) | [rd-100-104-produccion.md](./issues/rd-100-104-produccion.md) |
 
-Ítems pendientes sin issue dedicada aún: RD-050/057 (home validación/CMS), RD-066 (notif.), RD-105 (i18n admin), RD-110–115 (calidad).
+Ítems pendientes sin issue dedicada aún: RD-050/057 (home validación/CMS), RD-066 (notif.), RD-087 (Stripe prod), RD-088 (missatges reviewed), RD-105 (i18n admin), RD-110–115 (calidad).
 
 ---
 
@@ -256,6 +260,7 @@ Batch: [`manifest.roadmap-pendiente-v1.json`](./issues/manifest.roadmap-pendient
 
 | Fecha | Tareas | % | Notas |
 |-------|--------|---|-------|
+| 2026-07-12 | 70/91 | 77% | Gap analysis legacy (`legacy_project.md`, RD-013); nous RD-087 (Stripe prod), RD-088 (missatges reviewed); notes RD-050/057/084/105. |
 | 2026-07-08 | 69/88 | 78% | E-commerce flors — schema, admin catàleg/comandes, checkout públic stub (#8, RD-037, RD-052, RD-056, RD-078, RD-080–086). |
 | 2026-07-06 | 58/88 | 66% | Missatges conmemoratius — schema, formulari públic, pestanya admin (#7, RD-036, RD-055, RD-079). |
 | 2026-07-06 | 55/88 | 63% | Esquela pública sección lugares + Google Maps — EsquelaPlacesSection (#6, RD-054). |

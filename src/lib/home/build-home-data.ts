@@ -261,6 +261,7 @@ export function buildHomePageData({
     email,
     address,
     website: contact?.website,
+    whatsapp: contact?.whatsapp,
     theme,
     assets: PUJOLS_ASSETS,
     logoUrl,
