@@ -1,12 +1,18 @@
 import Link from "next/link";
-import { getAllObituaries } from "@/lib/db/queries";
+import {
+  getAllObituaries,
+  getUnreviewedMessageCountsByObituary,
+} from "@/lib/db/queries";
 
 export const metadata = {
   title: "Admin — Esquelas",
 };
 
 export default async function AdminEsquelasPage() {
-  const obituaries = await getAllObituaries();
+  const [obituaries, unreviewedCounts] = await Promise.all([
+    getAllObituaries(),
+    getUnreviewedMessageCountsByObituary(),
+  ]);
 
   return (
     <div>
@@ -29,47 +35,61 @@ export default async function AdminEsquelasPage() {
               <th className="px-4 py-3 font-medium">Visible</th>
               <th className="px-4 py-3 font-medium">Lista</th>
               <th className="px-4 py-3 font-medium">Foto familiar</th>
+              <th className="px-4 py-3 font-medium">Missatges</th>
               <th className="px-4 py-3 font-medium">Accions</th>
             </tr>
           </thead>
           <tbody>
-            {obituaries.map((o) => (
-              <tr key={o.id} className="border-t">
-                <td className="px-4 py-3">
-                  <Link
-                    href={`/admin/esquelas/${o.id}`}
-                    className="font-medium text-zinc-900 hover:underline"
-                  >
-                    {o.name}
-                  </Link>
-                </td>
-                <td className="px-4 py-3 font-mono text-xs">{o.visitCode}</td>
-                <td className="px-4 py-3">{o.isActive ? "Sí" : "No"}</td>
-                <td className="px-4 py-3">{o.isVisible ? "Sí" : "No"}</td>
-                <td className="px-4 py-3">{o.isReady ? "Sí" : "No"}</td>
-                <td className="px-4 py-3">
-                  {o.familyImageStatus === "pending" ? (
-                    <span className="rounded bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800">
-                      Pendent retocar
-                    </span>
-                  ) : o.familyImageStatus === "rejected" ? (
-                    <span className="rounded bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">
-                      No utilitzable
-                    </span>
-                  ) : (
-                    "—"
-                  )}
-                </td>
-                <td className="px-4 py-3">
-                  <Link
-                    href={`/admin/esquelas/${o.id}`}
-                    className="text-sm text-zinc-600 hover:text-zinc-900 hover:underline"
-                  >
-                    Editar
-                  </Link>
-                </td>
-              </tr>
-            ))}
+            {obituaries.map((o) => {
+              const pendingMessages = unreviewedCounts[o.id] ?? 0;
+              return (
+                <tr key={o.id} className="border-t">
+                  <td className="px-4 py-3">
+                    <Link
+                      href={`/admin/esquelas/${o.id}`}
+                      className="font-medium text-zinc-900 hover:underline"
+                    >
+                      {o.name}
+                    </Link>
+                  </td>
+                  <td className="px-4 py-3 font-mono text-xs">{o.visitCode}</td>
+                  <td className="px-4 py-3">{o.isActive ? "Sí" : "No"}</td>
+                  <td className="px-4 py-3">{o.isVisible ? "Sí" : "No"}</td>
+                  <td className="px-4 py-3">{o.isReady ? "Sí" : "No"}</td>
+                  <td className="px-4 py-3">
+                    {o.familyImageStatus === "pending" ? (
+                      <span className="rounded bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800">
+                        Pendent retocar
+                      </span>
+                    ) : o.familyImageStatus === "rejected" ? (
+                      <span className="rounded bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">
+                        No utilitzable
+                      </span>
+                    ) : (
+                      "—"
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
+                    {pendingMessages > 0 ? (
+                      <span className="rounded bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800">
+                        {pendingMessages} pendent
+                        {pendingMessages === 1 ? "" : "s"}
+                      </span>
+                    ) : (
+                      "—"
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
+                    <Link
+                      href={`/admin/esquelas/${o.id}`}
+                      className="text-sm text-zinc-600 hover:text-zinc-900 hover:underline"
+                    >
+                      Editar
+                    </Link>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

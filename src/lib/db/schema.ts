@@ -135,6 +135,7 @@ export const commemorativeMessages = sqliteTable("commemorative_messages", {
     .references(() => obituaries.id),
   senderName: text("sender_name").notNull(),
   messageText: text("message_text").notNull(),
+  reviewed: integer("reviewed", { mode: "boolean" }).notNull().default(false),
   createdAt: text("created_at").notNull(),
 });
 

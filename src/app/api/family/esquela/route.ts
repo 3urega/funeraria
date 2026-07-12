@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 import { getFamilySessionFromCookies } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
 import { obituaries } from "@/lib/db/schema";
+import { notifyPendingFamilyPhoto } from "@/lib/notifications/pending-photo";
 import { getStorage } from "@/lib/storage";
 
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
@@ -64,6 +65,12 @@ export async function POST(req: NextRequest) {
     })
     .where(eq(obituaries.id, session.obituaryId))
     .run();
+
+  await notifyPendingFamilyPhoto({
+    obituaryId: existing.id,
+    obituaryName: existing.name,
+    visitCode: existing.visitCode,
+  });
 
   return NextResponse.json({ ok: true, status: "pending" as const });
 }

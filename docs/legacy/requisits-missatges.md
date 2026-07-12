@@ -31,6 +31,7 @@ Backoffice: l'empleat ve el missatge i el lliura als familiars a la vetlla
 | `id`, `obituaryId` | Vinculat al difunt |
 | `senderName` | Nom de qui envia el missatge |
 | `messageText` | Text conmemoratiu |
+| `reviewed` | L'empleat marca el missatge com a revisat (legacy `checked`) |
 | `createdAt` | Data d'enviament |
 
 ## Diferència amb la dedicatòria de flors

@@ -9,3 +9,11 @@ export const createCommemorativeMessageSchema = z.object({
 export type CreateCommemorativeMessageInput = z.infer<
   typeof createCommemorativeMessageSchema
 >;
+
+export const updateCommemorativeMessageReviewedSchema = z.object({
+  reviewed: z.boolean(),
+});
+
+export type UpdateCommemorativeMessageReviewedInput = z.infer<
+  typeof updateCommemorativeMessageReviewedSchema
+>;

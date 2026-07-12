@@ -66,6 +66,7 @@ export default async function AdminEditarEsquelaPage({ params }: Props) {
 
       <EsquelaAdminTabs
         messageCount={messages.length}
+        unreviewedMessageCount={messages.filter((m) => !m.reviewed).length}
         flowerOrderCount={flowerOrders.length}
         esquelaPanel={
           <EsquelaAdminForm

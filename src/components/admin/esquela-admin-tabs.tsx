@@ -6,6 +6,7 @@ type Tab = "esquela" | "messages" | "flowers";
 
 type Props = {
   messageCount: number;
+  unreviewedMessageCount: number;
   flowerOrderCount: number;
   esquelaPanel: React.ReactNode;
   messagesPanel: React.ReactNode;
@@ -14,6 +15,7 @@ type Props = {
 
 export function EsquelaAdminTabs({
   messageCount,
+  unreviewedMessageCount,
   flowerOrderCount,
   esquelaPanel,
   messagesPanel,
@@ -42,7 +44,11 @@ export function EsquelaAdminTabs({
           onClick={() => setTab("messages")}
         >
           Missatges
-          {messageCount > 0 ? (
+          {unreviewedMessageCount > 0 ? (
+            <span className="ml-1.5 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800">
+              {unreviewedMessageCount}
+            </span>
+          ) : messageCount > 0 ? (
             <span className="ml-1.5 rounded-full bg-zinc-200 px-2 py-0.5 text-xs font-medium">
               {messageCount}
             </span>

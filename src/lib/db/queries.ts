@@ -1,4 +1,4 @@
-import { and, desc, eq } from "drizzle-orm";
+import { and, count, desc, eq } from "drizzle-orm";
 import { getDb } from "@/lib/db";
 import { getFuneralHomeId } from "@/lib/site/tenant-id";
 import {
@@ -474,6 +474,108 @@ export async function insertCommemorativeMessage(
     .run();
 
   return { ok: true as const, id };
+}
+
+export async function getCommemorativeMessageByIdForTenant(id: string) {
+  const db = getDb();
+  const row = db
+    .select({
+      message: commemorativeMessages,
+      funeralHomeId: obituaries.funeralHomeId,
+    })
+    .from(commemorativeMessages)
+    .innerJoin(obituaries, eq(commemorativeMessages.obituaryId, obituaries.id))
+    .where(eq(commemorativeMessages.id, id))
+    .get();
+
+  if (!row || row.funeralHomeId !== getFuneralHomeId()) return null;
+  return row.message;
+}
+
+export async function updateCommemorativeMessageReviewed(
+  id: string,
+  reviewed: boolean,
+) {
+  const message = await getCommemorativeMessageByIdForTenant(id);
+  if (!message) {
+    return { ok: false as const, error: "NOT_FOUND" as const };
+  }
+
+  getDb()
+    .update(commemorativeMessages)
+    .set({ reviewed })
+    .where(eq(commemorativeMessages.id, id))
+    .run();
+
+  return { ok: true as const };
+}
+
+export async function countUnreviewedCommemorativeMessages() {
+  const db = getDb();
+  const rows = db
+    .select({ id: commemorativeMessages.id })
+    .from(commemorativeMessages)
+    .innerJoin(obituaries, eq(commemorativeMessages.obituaryId, obituaries.id))
+    .where(
+      and(
+        eq(obituaries.funeralHomeId, getFuneralHomeId()),
+        eq(commemorativeMessages.reviewed, false),
+      ),
+    )
+    .all();
+  return rows.length;
+}
+
+export async function getAdminPendingStats() {
+  const db = getDb();
+  const fhId = getFuneralHomeId();
+  const [photoRows, messageRows] = await Promise.all([
+    db
+      .select({ id: obituaries.id })
+      .from(obituaries)
+      .where(
+        and(
+          eq(obituaries.funeralHomeId, fhId),
+          eq(obituaries.familyImageStatus, "pending"),
+        ),
+      )
+      .all(),
+    db
+      .select({ id: commemorativeMessages.id })
+      .from(commemorativeMessages)
+      .innerJoin(obituaries, eq(commemorativeMessages.obituaryId, obituaries.id))
+      .where(
+        and(
+          eq(obituaries.funeralHomeId, fhId),
+          eq(commemorativeMessages.reviewed, false),
+        ),
+      )
+      .all(),
+  ]);
+  return {
+    pendingFamilyPhotos: photoRows.length,
+    unreviewedMessages: messageRows.length,
+  };
+}
+
+export async function getUnreviewedMessageCountsByObituary() {
+  const db = getDb();
+  const rows = db
+    .select({
+      obituaryId: commemorativeMessages.obituaryId,
+      count: count(),
+    })
+    .from(commemorativeMessages)
+    .innerJoin(obituaries, eq(commemorativeMessages.obituaryId, obituaries.id))
+    .where(
+      and(
+        eq(obituaries.funeralHomeId, getFuneralHomeId()),
+        eq(commemorativeMessages.reviewed, false),
+      ),
+    )
+    .groupBy(commemorativeMessages.obituaryId)
+    .all();
+  return Object.fromEntries(rows.map((r) => [r.obituaryId, r.count]));
 }
 
 export async function getActiveFlowerProducts() {

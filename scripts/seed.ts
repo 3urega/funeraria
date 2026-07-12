@@ -213,14 +213,25 @@ async function seed() {
     .run();
 
   db.insert(commemorativeMessages)
-    .values({
-      id: "msg-demo-001",
-      obituaryId: obituaryPublicId,
-      senderName: "Maria Puig",
-      messageText:
-        "Ramón, sempre et recordarem amb afecte. Una abraçada a tota la família.",
-      createdAt: NOW,
-    })
+    .values([
+      {
+        id: "msg-demo-001",
+        obituaryId: obituaryPublicId,
+        senderName: "Maria Puig",
+        messageText:
+          "Ramón, sempre et recordarem amb afecte. Una abraçada a tota la família.",
+        reviewed: false,
+        createdAt: NOW,
+      },
+      {
+        id: "msg-demo-002",
+        obituaryId: obituaryPublicId,
+        senderName: "Joan Martí",
+        messageText: "Un record ple de gratitud per tot el que ens vas donar.",
+        reviewed: true,
+        createdAt: NOW,
+      },
+    ])
     .run();
 
   db.insert(contentSections)
