@@ -1,7 +1,7 @@
 # Roadmap de entrega — 0 → 100%
 
 > **Audiencia:** Product Manager · **Última actualización:** julio 2026  
-> **Progreso global:** 85 / 97 tareas (**88%**)
+> **Progreso global:** 87 / 97 tareas (**90%**)
 
 Documento maestro sintético. El detalle técnico está en los enlaces de cada fase.  
 Los agentes deben **marcar `[x]`** al completar cada ítem — ver [`AGENTS.md`](../AGENTS.md).
@@ -201,8 +201,8 @@ L'empleat ha de poder **assignar** església, cementiri i sala de vetlla des de 
 - [x] **RD-117** — Lista **Esquelas**: filtros (activa, visible, foto/missatges pendents, cerca), toggles inline, PATCH flags *(#13, jul 2026)*
 - [x] **RD-118** — Listas **Lugares** (iglesias, cementerios, sales): búsqueda, paginación, toggle activo sala, eliminar *(#14, jul 2026)*
 - [x] **RD-119** — Catálogo **Flores**: filtros activo, paginación, toggle inline *(#15, jul 2026)*
-- [ ] **RD-120** — **Comandas** flores: filtros UI por estado, paginación, enlace sidebar
-- [ ] **RD-121** — **Dashboard** enlaces a filtros + missatges esquela (bulk revisat, paginación)
+- [x] **RD-120** — **Comandas** flores: filtros UI por estado, paginación, enlace sidebar *(#16, jul 2026)*
+- [x] **RD-121** — **Dashboard** enlaces a filtros + missatges esquela (bulk revisat, paginación) *(#17, jul 2026)*
 
 ---
 
@@ -241,10 +241,10 @@ L'empleat ha de poder **assignar** església, cementiri i sala de vetlla des de 
 | Backoffice esquelas | 100% | — | — |
 | Catálogo lugares | 100% | — | — |
 | E-commerce flors | 85% | Stripe prod (RD-087); stub dev hecho (RD-084) | Media (pre-prod) |
-| Admin complementario | 100% | Listas UX RD-120–121 (#16–#17) | Alta |
+| Admin complementario | 100% | — | — |
 | Producción | 85% | Staging listo (RD-100–104); dominio prod + RD-105/106 | Media |
 
-**Siguiente hito recomendado:** **RD-120** — comandas flores con filtros y paginación ([#16](https://github.com/3urega/funeraria/issues/16)).
+**Siguiente hito recomendado:** **RD-050** (validación visual home) o **RD-087** (Stripe prod) — ver resumen ejecutivo.
 
 ---
 
@@ -286,8 +286,8 @@ Issues publicadas: [ver en GitHub](https://github.com/3urega/funeraria/issues).
 | 13 | RD-117 | [Admin esquelas list](https://github.com/3urega/funeraria/issues/13) | Implementado (#13, jul 2026) |
 | 14 | RD-118 | [Admin lugares lists](https://github.com/3urega/funeraria/issues/14) | Implementado (#14, jul 2026) |
 | 15 | RD-119 | [Admin flores catálogo](https://github.com/3urega/funeraria/issues/15) | Implementado (#15, jul 2026) |
-| 16 | RD-120 | [Admin comandas flores](https://github.com/3urega/funeraria/issues/16) | Pendiente |
-| 17 | RD-121 | [Dashboard + sub-listas esquela](https://github.com/3urega/funeraria/issues/17) | Pendiente |
+| 16 | RD-120 | [Admin comandas flores](https://github.com/3urega/funeraria/issues/16) | Implementado (#16, jul 2026) |
+| 17 | RD-121 | [Dashboard + sub-listas esquela](https://github.com/3urega/funeraria/issues/17) | Implementado (#17, jul 2026) |
 
 Ítems pendientes sin issue dedicada aún: RD-050 (home validación), RD-087 (Stripe prod), RD-105 (i18n admin), RD-110–115 (calidad).
 
@@ -297,6 +297,8 @@ Issues publicadas: [ver en GitHub](https://github.com/3urega/funeraria/issues).
 
 | Fecha | Tareas | % | Notas |
 |-------|--------|---|-------|
+| 2026-07-30 | 87/97 | 90% | Dashboard + missatges bulk — KPIs enlazados, Marcar tots revisats, paginación (#17, RD-121). Batch admin-listas-v1 completo. |
+| 2026-07-30 | 86/97 | 89% | Admin comandas flores — filtros estado URL, paginación, enlace esquela Flors, sidebar (#16, RD-120). |
 | 2026-07-30 | 85/97 | 88% | Admin flores catálogo — filtro Actius/Inactius, paginación, toggle inline (#15, RD-119). |
 | 2026-07-30 | 84/97 | 87% | Admin lugares lists — iglesias/cementerios/sales: búsqueda, paginación, eliminar, toggle Activa (#14, RD-118). |
 | 2026-07-30 | 83/97 | 86% | Admin esquelas list — filtros URL combinables, paginación, toggles PATCH, copiar codi (#13, RD-117). |

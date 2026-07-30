@@ -793,6 +793,46 @@ export async function updateCommemorativeMessageReviewed(
   return { ok: true as const };
 }
 
+export async function markAllCommemorativeMessagesReviewedForObituary(
+  obituaryId: string,
+) {
+  const obituary = await getObituaryByIdForTenant(obituaryId);
+  if (!obituary) {
+    return { ok: false as const, error: "NOT_FOUND" as const };
+  }
+
+  const db = getDb();
+  const pending = await allRows(
+    db
+      .select({ id: commemorativeMessages.id })
+      .from(commemorativeMessages)
+      .where(
+        and(
+          eq(commemorativeMessages.obituaryId, obituaryId),
+          eq(commemorativeMessages.reviewed, false),
+        ),
+      ),
+  );
+
+  if (pending.length === 0) {
+    return { ok: true as const, updated: 0 };
+  }
+
+  await runSql(
+    db
+      .update(commemorativeMessages)
+      .set({ reviewed: true })
+      .where(
+        and(
+          eq(commemorativeMessages.obituaryId, obituaryId),
+          eq(commemorativeMessages.reviewed, false),
+        ),
+      ),
+  );
+
+  return { ok: true as const, updated: pending.length };
+}
+
 export async function countUnreviewedCommemorativeMessages() {
   const db = getDb();
   const rows = await allRows(

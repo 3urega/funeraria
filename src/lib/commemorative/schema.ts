@@ -17,3 +17,11 @@ export const updateCommemorativeMessageReviewedSchema = z.object({
 export type UpdateCommemorativeMessageReviewedInput = z.infer<
   typeof updateCommemorativeMessageReviewedSchema
 >;
+
+export const markObituaryMessagesReviewedSchema = z.object({
+  obituaryId: z.string().min(1),
+});
+
+export type MarkObituaryMessagesReviewedInput = z.infer<
+  typeof markObituaryMessagesReviewedSchema
+>;

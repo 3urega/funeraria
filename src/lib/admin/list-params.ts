@@ -1,3 +1,13 @@
+/**
+ * Paràmetres URL per a llistes admin (RD-116+).
+ *
+ * Convenció de filtres booleans: `1` o `true` = actiu; omitir = sense filtre.
+ * Esqueles: `active`, `visible`, `ready`, `photoPending`, `messagesPending`, `q`.
+ * Poemas / flors catàleg: `active` (tri-estat: `1` actius, `0` inactius).
+ * Lugares wake rooms: `active` + `q` (nom/adreça).
+ * Comandes flors: `status` (enum: paid, in_preparation, delivered, cancelled…).
+ * Paginació: `page` (≥1), `pageSize` (10 per defecte, max 100).
+ */
 import {
   clampPage,
   DEFAULT_PAGE_SIZE,

@@ -102,7 +102,9 @@ export default async function AdminEditarEsquelaPage({
             funeralHomeName={funeralHome?.name ?? "Funerària"}
           />
         }
-        messagesPanel={<EsquelaMessagesPanel messages={messages} />}
+        messagesPanel={
+          <EsquelaMessagesPanel obituaryId={id} messages={messages} />
+        }
         flowersPanel={<EsquelaFlowerOrdersPanel orders={flowerOrders} />}
       />
     </div>
