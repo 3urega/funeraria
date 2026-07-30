@@ -12,6 +12,7 @@ import {
   LocalizedField,
   localizedFromDb,
 } from "./localized-field";
+import { ImagePicker } from "@/components/ui/image-picker";
 
 const SECTION_LABELS: Record<HomeSectionKey, string> = {
   top_bar: "Barra superior",
@@ -319,28 +320,19 @@ export function HomeCmsEditor({ sections, whyUsImageUrl }: Props) {
               value={localizedFromDb(c.heading)}
               onChange={(v) => updateContent({ heading: v })}
             />
-            <div>
-              <label className="mb-1 block text-sm font-medium">Imatge</label>
-              {whyUsPreview && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={whyUsPreview}
-                  alt="Why us"
-                  className="mb-2 h-40 w-full max-w-sm rounded border object-cover"
-                />
-              )}
-              <input
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-                onChange={(e) => {
-                  const f = e.target.files?.[0];
-                  if (f) {
-                    setWhyUsFile(f);
-                    setWhyUsPreview(URL.createObjectURL(f));
-                  }
-                }}
-              />
-            </div>
+            <ImagePicker
+              id="why-us-image"
+              label="Imatge"
+              variant="banner"
+              previewUrl={whyUsPreview}
+              previewAlt="Per què escollir-nos"
+              pendingFileName={whyUsFile?.name}
+              hint="JPEG, PNG o WebP. Màxim 5 MB."
+              onFileSelect={(f) => {
+                setWhyUsFile(f);
+                setWhyUsPreview(URL.createObjectURL(f));
+              }}
+            />
             {(
               (c.features as Array<Record<string, unknown>> | undefined) ?? []
             ).map((feat, index) => (

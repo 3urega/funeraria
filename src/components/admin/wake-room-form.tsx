@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import type { WakeRoom } from "@/lib/db/schema";
+import { ImagePicker } from "@/components/ui/image-picker";
 import { PlaceAddressField } from "./place-address-field";
 import {
   emptyPlaceLocation,
@@ -123,33 +124,20 @@ export function WakeRoomForm({ room, imageUrl }: Props) {
 
       <PlaceAddressField value={location} onChange={setLocation} />
 
-      <div>
-        <label htmlFor="photo" className="mb-1 block text-sm font-medium">
-          Foto
-        </label>
-        {displayImage && (
-          <div className="mb-3">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={displayImage}
-              alt={name || "Sala"}
-              className="max-h-48 rounded-lg border object-cover"
-            />
-          </div>
-        )}
-        <input
-          id="photo"
-          type="file"
-          accept="image/jpeg,image/png,image/webp"
-          onChange={(e) => {
-            const selected = e.target.files?.[0] ?? null;
-            setFile(selected);
-            if (preview) URL.revokeObjectURL(preview);
-            setPreview(selected ? URL.createObjectURL(selected) : null);
-          }}
-          className="block w-full text-sm"
-        />
-      </div>
+      <ImagePicker
+        id="wake-room-photo"
+        label="Foto"
+        variant="photo"
+        previewUrl={displayImage ?? null}
+        previewAlt={name || "Sala"}
+        pendingFileName={file?.name}
+        hint="JPEG, PNG o WebP. Màxim 5 MB."
+        onFileSelect={(selected) => {
+          setFile(selected);
+          if (preview) URL.revokeObjectURL(preview);
+          setPreview(URL.createObjectURL(selected));
+        }}
+      />
 
       <label className="flex items-center gap-2 text-sm">
         <input

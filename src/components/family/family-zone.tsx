@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { FormEvent, useState } from "react";
+import { ImagePicker } from "@/components/ui/image-picker";
 import type { Cemetery, Church, Obituary, PoemTemplate, WakeRoom } from "@/lib/db/schema";
 import { EsquelaView } from "./esquela-view";
 import type { EsquelaPrintData } from "@/lib/esquela/types";
@@ -138,30 +139,30 @@ function EsquelaPhotoForm({
         </div>
       )}
 
-      {(preview || (isPending && pendingImageUrl)) && (
+      {isPending && pendingImageUrl && !preview && (
         <div className="mb-4">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={preview ?? pendingImageUrl!}
+            src={pendingImageUrl}
             alt={t("photoSentAlt")}
             className="max-h-48 rounded-lg border object-contain"
           />
-          {isPending && !preview && (
-            <p className="mt-2 text-xs text-zinc-500">{t("photoSentOriginal")}</p>
-          )}
+          <p className="mt-2 text-xs text-zinc-500">{t("photoSentOriginal")}</p>
         </div>
       )}
 
-      <input
-        type="file"
-        accept="image/jpeg,image/png,image/webp"
-        onChange={(e) => {
-          const selected = e.target.files?.[0] ?? null;
+      <ImagePicker
+        id="family-photo"
+        variant="photo"
+        previewUrl={preview}
+        previewAlt={t("photoSentAlt")}
+        showPendingHint={false}
+        hint="JPEG, PNG o WebP. Màxim 5 MB."
+        onFileSelect={(selected) => {
           setFile(selected);
           if (preview) URL.revokeObjectURL(preview);
-          setPreview(selected ? URL.createObjectURL(selected) : null);
+          setPreview(URL.createObjectURL(selected));
         }}
-        className="mb-4 block w-full text-sm"
       />
 
       {error && <p className="mb-2 text-sm text-red-600">{error}</p>}

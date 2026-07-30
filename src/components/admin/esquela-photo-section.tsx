@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { ImagePicker } from "@/components/ui/image-picker";
 import type { Obituary } from "@/lib/db/schema";
 
 type Props = {
@@ -29,7 +30,7 @@ export function EsquelaPhotoSection({
 
   const isPending = familyImageStatus === "pending";
   const isRejected = familyImageStatus === "rejected";
-  const displayPublished = preview ?? imageUrl;
+  const pickerPreview = preview ?? imageUrl;
 
   async function onUpload(e: FormEvent) {
     e.preventDefault();
@@ -106,39 +107,21 @@ export function EsquelaPhotoSection({
 
   return (
     <div className="space-y-4">
-      {displayPublished && (
-        <div>
-          <p className="mb-2 text-sm font-medium text-zinc-700">Foto publicada</p>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={displayPublished}
-            alt="Foto publicada"
-            className="max-h-48 rounded-lg border object-cover"
-          />
-        </div>
-      )}
-
       <form onSubmit={onUpload} className="space-y-3">
-        <div>
-          <label htmlFor="esquela-photo" className="mb-1 block text-sm font-medium">
-            Pujar / escanejar foto retocada
-          </label>
-          <input
-            id="esquela-photo"
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-            onChange={(e) => {
-              const selected = e.target.files?.[0] ?? null;
-              setFile(selected);
-              if (preview) URL.revokeObjectURL(preview);
-              setPreview(selected ? URL.createObjectURL(selected) : null);
-            }}
-            className="block w-full text-sm"
-          />
-          <p className="mt-1 text-xs text-zinc-500">
-            Escaneig o versió retocada externament. Es publica a l&apos;esquela.
-          </p>
-        </div>
+        <ImagePicker
+          id="esquela-photo"
+          label="Pujar / escanejar foto retocada"
+          variant="photo"
+          previewUrl={pickerPreview}
+          previewAlt="Foto de l'esquela"
+          showPendingHint={false}
+          hint="Escaneig o versió retocada externament. Es publica a l'esquela."
+          onFileSelect={(selected) => {
+            setFile(selected);
+            if (preview) URL.revokeObjectURL(preview);
+            setPreview(URL.createObjectURL(selected));
+          }}
+        />
         <button
           type="submit"
           disabled={!file || uploadLoading}

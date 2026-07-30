@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { ImagePicker } from "@/components/ui/image-picker";
 import type { siteConfig as siteConfigTable } from "@/lib/db/schema";
 import { PUJOLS_THEME } from "@/lib/home/defaults";
 
@@ -250,54 +251,36 @@ export function SiteConfigForm({ config, logoUrl, heroImageUrl }: Props) {
         </div>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-6">
         <h2 className="text-lg font-semibold">Imatges</h2>
-        <div>
-          <label className="mb-1 block text-sm font-medium">Logo</label>
-          {logoPreview && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={logoPreview}
-              alt="Logo"
-              className="mb-2 h-14 w-auto rounded border bg-white p-2"
-            />
-          )}
-          <input
-            type="file"
-            accept="image/jpeg,image/png,image/webp,image/svg+xml"
-            onChange={(e) => {
-              const f = e.target.files?.[0];
-              if (f) {
-                setLogoFile(f);
-                setLogoPreview(URL.createObjectURL(f));
-              }
-            }}
-          />
-        </div>
-        <div>
-          <label className="mb-1 block text-sm font-medium">
-            Imatge hero (fons home)
-          </label>
-          {heroPreview && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={heroPreview}
-              alt="Hero"
-              className="mb-2 h-32 w-full max-w-md rounded border object-cover"
-            />
-          )}
-          <input
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-            onChange={(e) => {
-              const f = e.target.files?.[0];
-              if (f) {
-                setHeroFile(f);
-                setHeroPreview(URL.createObjectURL(f));
-              }
-            }}
-          />
-        </div>
+        <ImagePicker
+          id="site-logo"
+          label="Logo"
+          variant="logo"
+          previewUrl={logoPreview}
+          previewAlt="Logo"
+          pendingFileName={logoFile?.name}
+          accept="image/jpeg,image/png,image/webp,image/svg+xml"
+          hint="PNG o SVG recomanat, fons transparent si cal. Màxim 5 MB."
+          onFileSelect={(f) => {
+            setLogoFile(f);
+            setLogoPreview(URL.createObjectURL(f));
+          }}
+        />
+        <ImagePicker
+          id="site-hero"
+          label="Imatge hero (fons de la pàgina d'inici)"
+          variant="banner"
+          previewUrl={heroPreview}
+          previewAlt="Imatge hero"
+          pendingFileName={heroFile?.name}
+          accept="image/jpeg,image/png,image/webp"
+          hint="Format panoràmic (16:9). Es mostra a la capçalera de la home."
+          onFileSelect={(f) => {
+            setHeroFile(f);
+            setHeroPreview(URL.createObjectURL(f));
+          }}
+        />
       </section>
 
       <button
