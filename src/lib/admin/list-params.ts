@@ -221,3 +221,39 @@ export function buildEsquelaListHref(
   }
   return `${basePath}${buildListQueryString(query)}`;
 }
+
+export type PlaceListParams = {
+  page: number;
+  pageSize: number;
+  q?: string;
+  active?: ActiveFilter;
+};
+
+/** Params de llistes `/admin/lugares/*` des de searchParams. */
+export function parsePlaceListParams(searchParams: {
+  page?: string;
+  pageSize?: string;
+  q?: string;
+  active?: string;
+}): PlaceListParams {
+  const pageSize = parsePageSizeSearchParam(searchParams.pageSize);
+  const page = parsePageSearchParam(searchParams.page);
+  const q = searchParams.q?.trim();
+  return {
+    page,
+    pageSize,
+    q: q && q.length >= 1 ? q : undefined,
+    active: parseActiveFilter(searchParams.active),
+  };
+}
+
+/** Serialitza filtres de lloc per a paginació (sense `page`). */
+export function placeFiltersToQuery(
+  params: PlaceListParams,
+): Record<string, string | number | undefined | null> {
+  return {
+    q: params.q,
+    active: activeFilterToParam(params.active),
+    pageSize: params.pageSize === 10 ? undefined : params.pageSize,
+  };
+}

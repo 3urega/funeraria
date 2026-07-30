@@ -2,6 +2,7 @@ type Props = {
   /** Ruta del formulari GET (ex. `/admin/esquelas`). */
   basePath: string;
   q?: string;
+  placeholder?: string;
   /** Params a preservar com a hidden inputs (filtres actius). */
   hiddenParams?: Record<string, string | undefined>;
 };
@@ -12,6 +13,7 @@ type Props = {
 export function AdminListSearch({
   basePath,
   q,
+  placeholder = "Cercar per nom o codi…",
   hiddenParams = {},
 }: Props) {
   return (
@@ -25,7 +27,7 @@ export function AdminListSearch({
         type="search"
         name="q"
         defaultValue={q ?? ""}
-        placeholder="Cercar per nom o codi…"
+        placeholder={placeholder}
         className="min-w-[12rem] flex-1 rounded-md border border-zinc-300 px-3 py-1.5 text-sm"
       />
       <button

@@ -1,11 +1,26 @@
 import Link from "next/link";
-import { AdminTableHeader } from "@/components/admin/list/admin-table-header";
-import { getAllChurches } from "@/lib/db/queries";
+import { PlaceListFilters } from "@/components/admin/places/place-list-filters";
+import { PlaceListTable } from "@/components/admin/places/place-list-table";
+import { AdminPagination } from "@/components/admin/list/admin-pagination";
+import {
+  parsePlaceListParams,
+  placeFiltersToQuery,
+} from "@/lib/admin/list-params";
+import { listChurchesPaginated } from "@/lib/db/queries";
 
 export const metadata = { title: "Admin — Esglésies" };
 
-export default async function AdminChurchesPage() {
-  const churches = await getAllChurches();
+type Props = {
+  searchParams: Promise<{ page?: string; pageSize?: string; q?: string }>;
+};
+
+const BASE_PATH = "/admin/lugares/iglesias";
+
+export default async function AdminChurchesPage({ searchParams }: Props) {
+  const raw = await searchParams;
+  const params = parsePlaceListParams(raw);
+  const result = await listChurchesPaginated(params);
+  const queryBase = placeFiltersToQuery(params);
 
   return (
     <div>
@@ -24,51 +39,18 @@ export default async function AdminChurchesPage() {
         </Link>
       </div>
 
-      <div className="overflow-hidden rounded-lg border">
-        <table className="w-full text-left text-sm">
-          <thead className="bg-zinc-50">
-            <tr>
-              <AdminTableHeader hint="Nom oficial de l'església tal com apareix a l'esquela.">
-                Nom
-              </AdminTableHeader>
-              <AdminTableHeader hint="Població on es troba l'església.">
-                Ciutat
-              </AdminTableHeader>
-              <AdminTableHeader hint="Si té coordenades GPS, es mostrarà un mapa a la pàgina pública de l'esquela.">
-                Geoloc.
-              </AdminTableHeader>
-              <AdminTableHeader hint="Si té foto, es mostra a la secció de llocs de l'esquela.">
-                Foto
-              </AdminTableHeader>
-              <AdminTableHeader hint="Obrir el formulari d'edició de l'església." />
-            </tr>
-          </thead>
-          <tbody>
-            {churches.map((church) => (
-              <tr key={church.id} className="border-t">
-                <td className="px-4 py-3">{church.name}</td>
-                <td className="px-4 py-3">{church.city ?? "—"}</td>
-                <td className="px-4 py-3">
-                  {church.latitude != null ? "Sí" : "—"}
-                </td>
-                <td className="px-4 py-3">{church.imagePath ? "Sí" : "—"}</td>
-                <td className="px-4 py-3 text-right">
-                  <Link
-                    href={`/admin/lugares/iglesias/${church.id}`}
-                    className="text-blue-600 hover:underline"
-                  >
-                    Editar
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <PlaceListFilters basePath={BASE_PATH} params={params} />
 
-      {churches.length === 0 && (
-        <p className="mt-4 text-zinc-500">Encara no hi ha esglésies.</p>
-      )}
+      <PlaceListTable kind="church" items={result.items} />
+
+      <AdminPagination
+        basePath={BASE_PATH}
+        page={result.page}
+        pageSize={result.pageSize}
+        total={result.total}
+        totalPages={result.totalPages}
+        query={queryBase}
+      />
     </div>
   );
 }

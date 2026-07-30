@@ -1,11 +1,26 @@
 import Link from "next/link";
-import { AdminTableHeader } from "@/components/admin/list/admin-table-header";
-import { getAllCemeteries } from "@/lib/db/queries";
+import { PlaceListFilters } from "@/components/admin/places/place-list-filters";
+import { PlaceListTable } from "@/components/admin/places/place-list-table";
+import { AdminPagination } from "@/components/admin/list/admin-pagination";
+import {
+  parsePlaceListParams,
+  placeFiltersToQuery,
+} from "@/lib/admin/list-params";
+import { listCemeteriesPaginated } from "@/lib/db/queries";
 
 export const metadata = { title: "Admin — Cementiris" };
 
-export default async function AdminCemeteriesPage() {
-  const cemeteries = await getAllCemeteries();
+type Props = {
+  searchParams: Promise<{ page?: string; pageSize?: string; q?: string }>;
+};
+
+const BASE_PATH = "/admin/lugares/cementerios";
+
+export default async function AdminCemeteriesPage({ searchParams }: Props) {
+  const raw = await searchParams;
+  const params = parsePlaceListParams(raw);
+  const result = await listCemeteriesPaginated(params);
+  const queryBase = placeFiltersToQuery(params);
 
   return (
     <div>
@@ -24,51 +39,18 @@ export default async function AdminCemeteriesPage() {
         </Link>
       </div>
 
-      <div className="overflow-hidden rounded-lg border">
-        <table className="w-full text-left text-sm">
-          <thead className="bg-zinc-50">
-            <tr>
-              <AdminTableHeader hint="Nom oficial del cementiri tal com apareix a l'esquela.">
-                Nom
-              </AdminTableHeader>
-              <AdminTableHeader hint="Població on es troba el cementiri.">
-                Ciutat
-              </AdminTableHeader>
-              <AdminTableHeader hint="Si té coordenades GPS, es mostrarà un mapa a la pàgina pública de l'esquela.">
-                Geoloc.
-              </AdminTableHeader>
-              <AdminTableHeader hint="Si té foto, es mostra a la secció de llocs de l'esquela.">
-                Foto
-              </AdminTableHeader>
-              <AdminTableHeader hint="Obrir el formulari d'edició del cementiri." />
-            </tr>
-          </thead>
-          <tbody>
-            {cemeteries.map((cemetery) => (
-              <tr key={cemetery.id} className="border-t">
-                <td className="px-4 py-3">{cemetery.name}</td>
-                <td className="px-4 py-3">{cemetery.city ?? "—"}</td>
-                <td className="px-4 py-3">
-                  {cemetery.latitude != null ? "Sí" : "—"}
-                </td>
-                <td className="px-4 py-3">{cemetery.imagePath ? "Sí" : "—"}</td>
-                <td className="px-4 py-3 text-right">
-                  <Link
-                    href={`/admin/lugares/cementerios/${cemetery.id}`}
-                    className="text-blue-600 hover:underline"
-                  >
-                    Editar
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <PlaceListFilters basePath={BASE_PATH} params={params} />
 
-      {cemeteries.length === 0 && (
-        <p className="mt-4 text-zinc-500">Encara no hi ha cementiris.</p>
-      )}
+      <PlaceListTable kind="cemetery" items={result.items} />
+
+      <AdminPagination
+        basePath={BASE_PATH}
+        page={result.page}
+        pageSize={result.pageSize}
+        total={result.total}
+        totalPages={result.totalPages}
+        query={queryBase}
+      />
     </div>
   );
 }

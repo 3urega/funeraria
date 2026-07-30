@@ -4,11 +4,6 @@
   "batchName": "admin-listas-v1",
   "issues": [
     {
-      "title": "RD-118: Admin lugares lists (iglesias, cementerios, sales de vetlla)",
-      "bodyFile": "docs/issues/rd-118-admin-lugares-list.md",
-      "roadmapId": "RD-118"
-    },
-    {
       "title": "RD-119: Admin flores catalogo (filtros, paginacion, toggle activo)",
       "bodyFile": "docs/issues/rd-119-admin-flores-poemas-list.md",
       "roadmapId": "RD-119"

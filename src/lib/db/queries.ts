@@ -533,6 +533,150 @@ export async function getCemeteryById(id: string) {
     ));
 }
 
+export type PlaceListFilters = {
+  page: number;
+  pageSize: number;
+  q?: string;
+  active?: ActiveFilter;
+};
+
+function churchListConditions(q?: string) {
+  const conditions = [eq(churches.funeralHomeId, getFuneralHomeId())];
+  const term = q?.trim();
+  if (term && term.length >= 1) {
+    const pattern = `%${term}%`;
+    conditions.push(
+      or(like(churches.name, pattern), like(churches.city, pattern))!,
+    );
+  }
+  return and(...conditions);
+}
+
+function cemeteryListConditions(q?: string) {
+  const conditions = [eq(cemeteries.funeralHomeId, getFuneralHomeId())];
+  const term = q?.trim();
+  if (term && term.length >= 1) {
+    const pattern = `%${term}%`;
+    conditions.push(
+      or(like(cemeteries.name, pattern), like(cemeteries.city, pattern))!,
+    );
+  }
+  return and(...conditions);
+}
+
+function wakeRoomListConditions(filters: Omit<PlaceListFilters, "page" | "pageSize">) {
+  const conditions = [eq(wakeRooms.funeralHomeId, getFuneralHomeId())];
+  if (filters.active === true) {
+    conditions.push(eq(wakeRooms.isActive, true));
+  } else if (filters.active === false) {
+    conditions.push(eq(wakeRooms.isActive, false));
+  }
+  const term = filters.q?.trim();
+  if (term && term.length >= 1) {
+    const pattern = `%${term}%`;
+    conditions.push(
+      or(like(wakeRooms.name, pattern), like(wakeRooms.address, pattern))!,
+    );
+  }
+  return and(...conditions);
+}
+
+export async function listChurchesPaginated(
+  filters: PlaceListFilters,
+): Promise<PaginatedResult<(typeof churches.$inferSelect)>> {
+  const db = getDb();
+  const where = churchListConditions(filters.q);
+
+  const countRow = await oneRow(
+    db.select({ total: count() }).from(churches).where(where),
+  );
+  const total = countRow?.total ?? 0;
+  const page = clampPage(filters.page, total, filters.pageSize);
+  const { limit, offset } = toLimitOffset(page, filters.pageSize);
+
+  const items = await allRows(
+    db
+      .select()
+      .from(churches)
+      .where(where)
+      .orderBy(asc(churches.name))
+      .limit(limit)
+      .offset(offset),
+  );
+
+  return {
+    items,
+    total,
+    page,
+    pageSize: filters.pageSize,
+    totalPages: totalPages(total, filters.pageSize),
+  };
+}
+
+export async function listCemeteriesPaginated(
+  filters: PlaceListFilters,
+): Promise<PaginatedResult<(typeof cemeteries.$inferSelect)>> {
+  const db = getDb();
+  const where = cemeteryListConditions(filters.q);
+
+  const countRow = await oneRow(
+    db.select({ total: count() }).from(cemeteries).where(where),
+  );
+  const total = countRow?.total ?? 0;
+  const page = clampPage(filters.page, total, filters.pageSize);
+  const { limit, offset } = toLimitOffset(page, filters.pageSize);
+
+  const items = await allRows(
+    db
+      .select()
+      .from(cemeteries)
+      .where(where)
+      .orderBy(asc(cemeteries.name))
+      .limit(limit)
+      .offset(offset),
+  );
+
+  return {
+    items,
+    total,
+    page,
+    pageSize: filters.pageSize,
+    totalPages: totalPages(total, filters.pageSize),
+  };
+}
+
+export async function listWakeRoomsPaginated(
+  filters: PlaceListFilters,
+): Promise<PaginatedResult<(typeof wakeRooms.$inferSelect)>> {
+  const db = getDb();
+  const where = wakeRoomListConditions(filters);
+
+  const countRow = await oneRow(
+    db.select({ total: count() }).from(wakeRooms).where(where),
+  );
+  const total = countRow?.total ?? 0;
+  const page = clampPage(filters.page, total, filters.pageSize);
+  const { limit, offset } = toLimitOffset(page, filters.pageSize);
+
+  const items = await allRows(
+    db
+      .select()
+      .from(wakeRooms)
+      .where(where)
+      .orderBy(asc(wakeRooms.name))
+      .limit(limit)
+      .offset(offset),
+  );
+
+  return {
+    items,
+    total,
+    page,
+    pageSize: filters.pageSize,
+    totalPages: totalPages(total, filters.pageSize),
+  };
+}
+
 export async function slugExists(
   slug: string,
   excludeId?: string,
