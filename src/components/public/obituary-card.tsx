@@ -1,13 +1,14 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getStorage } from "@/lib/storage";
+import { mediaPublicUrl } from "@/lib/storage/public-url";
 import type { Obituary } from "@/lib/db/schema";
 
 export async function ObituaryCard({ obituary }: { obituary: Obituary }) {
   const t = await getTranslations("common");
   const storage = getStorage();
   const imageUrl = obituary.imagePath
-    ? storage.getPublicUrl(obituary.imagePath)
+    ? mediaPublicUrl(storage, obituary.imagePath, obituary.updatedAt)
     : null;
 
   return (

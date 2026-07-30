@@ -15,7 +15,7 @@ import {
 } from "@/lib/auth/require-admin";
 import { updateEsquelaSchema } from "@/lib/esquela/admin-schema";
 import { patchObituaryFlagsSchema } from "@/lib/esquela/patch-flags-schema";
-import { slugifyName } from "@/lib/esquela/generate-slug";
+import { generateUniqueSlug } from "@/lib/esquela/generate-slug";
 
 type RouteContext = { params: Promise<{ id: string }> };
 
@@ -71,10 +71,7 @@ export async function PUT(req: NextRequest, { params }: RouteContext) {
     return NextResponse.json({ error: "INVALID_PLACES" }, { status: 400 });
   }
 
-  const slug = slugifyName(data.slug) || slugifyName(data.name);
-  if (!slug || (await slugExists(slug, id))) {
-    return NextResponse.json({ error: "CONFLICT" }, { status: 409 });
-  }
+  const slug = await generateUniqueSlug(data.name, (s) => slugExists(s, id));
 
   const visitCode = data.visitCode.toUpperCase();
   if (await visitCodeExists(visitCode, id)) {

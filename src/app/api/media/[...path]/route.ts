@@ -28,10 +28,14 @@ export async function GET(
   try {
     const buffer = await fs.readFile(filePath);
     const mime = lookup(filePath) || "application/octet-stream";
+    const cacheControl =
+      process.env.NODE_ENV === "development"
+        ? "no-store"
+        : "public, max-age=31536000, immutable";
     return new NextResponse(buffer, {
       headers: {
         "Content-Type": mime,
-        "Cache-Control": "public, max-age=31536000, immutable",
+        "Cache-Control": cacheControl,
       },
     });
   } catch {

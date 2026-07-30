@@ -8,6 +8,7 @@ import {
   getSiteConfig,
 } from "@/lib/db/queries";
 import { getStorage } from "@/lib/storage";
+import { mediaPublicUrl } from "@/lib/storage/public-url";
 import { EsquelaView } from "@/components/family/esquela-view";
 import { EsquelaPlacesSection } from "@/components/public/esquela-places-section";
 import { FlowerCatalogSection } from "@/components/public/flower-catalog-section";
@@ -47,7 +48,7 @@ export default async function EsquelaDetailPage({ params }: Props) {
 
   const storage = getStorage();
   const officialImageUrl = data.obituary.imagePath
-    ? storage.getPublicUrl(data.obituary.imagePath)
+    ? mediaPublicUrl(storage, data.obituary.imagePath, data.obituary.updatedAt)
     : null;
 
   return (

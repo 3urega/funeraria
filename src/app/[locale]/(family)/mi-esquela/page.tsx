@@ -7,6 +7,7 @@ import {
   getSiteConfig,
 } from "@/lib/db/queries";
 import { getStorage } from "@/lib/storage";
+import { mediaPublicUrl } from "@/lib/storage/public-url";
 import { FamilyLogoutButton } from "@/components/family/logout-button";
 import { FamilyZone } from "@/components/family/family-zone";
 
@@ -30,12 +31,16 @@ export default async function MiEsquelaPage() {
 
   const storage = getStorage();
   const officialImageUrl = data.obituary.imagePath
-    ? storage.getPublicUrl(data.obituary.imagePath)
+    ? mediaPublicUrl(storage, data.obituary.imagePath, data.obituary.updatedAt)
     : null;
   const pendingImageUrl =
     data.obituary.familyImageStatus === "pending" &&
     data.obituary.customImagePath
-      ? storage.getPublicUrl(data.obituary.customImagePath)
+      ? mediaPublicUrl(
+          storage,
+          data.obituary.customImagePath,
+          data.obituary.updatedAt,
+        )
       : null;
 
   return (

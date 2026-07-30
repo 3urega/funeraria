@@ -110,8 +110,6 @@ export function EsquelaAdminForm({
   const [visitCode, setVisitCode] = useState(
     obituary?.visitCode ?? generateVisitCodeCandidate(),
   );
-  const [slug, setSlug] = useState(obituary?.slug ?? "");
-  const [slugManual, setSlugManual] = useState(isEdit);
   const [expedientCode, setExpedientCode] = useState(
     obituary?.expedientCode ?? "",
   );
@@ -130,7 +128,7 @@ export function EsquelaAdminForm({
     return {
       id: "preview",
       funeralHomeId: "",
-      slug: slug || "preview",
+      slug: slugifyName(name) || "preview",
       name: name || " ",
       visitCode,
       expedientCode: expedientCode || null,
@@ -172,7 +170,6 @@ export function EsquelaAdminForm({
     mortuaryAddress,
     showEpd,
     visitCode,
-    slug,
     expedientCode,
     isActive,
     isVisible,
@@ -184,9 +181,6 @@ export function EsquelaAdminForm({
 
   function handleNameChange(value: string) {
     setName(value);
-    if (!slugManual) {
-      setSlug(slugifyName(value));
-    }
   }
 
   async function onSubmit(e: FormEvent) {
@@ -209,7 +203,6 @@ export function EsquelaAdminForm({
       mortuaryAddress: mortuaryAddress || undefined,
       showEpd,
       visitCode,
-      slug: slug || slugifyName(name),
       expedientCode: expedientCode || undefined,
       isActive,
       isVisible,
@@ -232,7 +225,7 @@ export function EsquelaAdminForm({
       if (data?.error === "INVALID_PLACES") {
         setError("Els llocs seleccionats no són vàlids.");
       } else if (data?.error === "CONFLICT") {
-        setError("Slug o codi duplicat. Torna-ho a provar.");
+        setError("Codi duplicat. Genera'n un de nou o revisa el codi d'accés.");
       } else {
         setError("Error en desar l'esquela. Revisa els camps.");
       }
@@ -469,22 +462,6 @@ export function EsquelaAdminForm({
                   Generar
                 </button>
               </div>
-            </div>
-            <div>
-              <label htmlFor="slug" className="mb-1 block text-sm font-medium">
-                Slug URL *
-              </label>
-              <input
-                id="slug"
-                required
-                value={slug}
-                onChange={(e) => {
-                  setSlugManual(true);
-                  setSlug(e.target.value);
-                }}
-                className="w-full rounded-md border border-zinc-300 px-3 py-2 font-mono text-sm"
-                placeholder="ramon-sant-torner"
-              />
             </div>
             <div>
               <label htmlFor="expedientCode" className="mb-1 block text-sm font-medium">

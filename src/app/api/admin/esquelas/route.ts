@@ -13,7 +13,7 @@ import {
 } from "@/lib/auth/require-admin";
 import { getFuneralHomeId } from "@/lib/site/tenant";
 import { createEsquelaSchema } from "@/lib/esquela/admin-schema";
-import { generateUniqueSlug, slugifyName } from "@/lib/esquela/generate-slug";
+import { generateUniqueSlug } from "@/lib/esquela/generate-slug";
 import { generateUniqueVisitCode } from "@/lib/esquela/generate-visit-code";
 
 export async function POST(req: NextRequest) {
@@ -36,10 +36,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "INVALID_PLACES" }, { status: 400 });
   }
 
-  let slug = slugifyName(data.slug) || slugifyName(data.name);
-  if (!slug || (await slugExists(slug))) {
-    slug = await generateUniqueSlug(data.name, slugExists);
-  }
+  const slug = await generateUniqueSlug(data.name, slugExists);
 
   let visitCode = data.visitCode.toUpperCase();
   if (await visitCodeExists(visitCode)) {

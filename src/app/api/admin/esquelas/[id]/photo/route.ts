@@ -5,6 +5,7 @@ import { runSql } from "@/lib/db/exec";
 import { obituaries } from "@/lib/db/schema";
 import { getObituaryByIdForTenant } from "@/lib/db/queries";
 import { getStorage } from "@/lib/storage";
+import { mediaPublicUrl } from "@/lib/storage/public-url";
 import { parseImageFile } from "@/lib/admin/image-upload";
 import {
   requireAdminSession,
@@ -40,19 +41,20 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
   );
 
   const clearPending = existing.familyImageStatus === "pending";
+  const updatedAt = new Date().toISOString();
 
   await runSql(getDb()
     .update(obituaries)
     .set({
       imagePath,
       familyImageStatus: clearPending ? null : existing.familyImageStatus,
-      updatedAt: new Date().toISOString(),
+      updatedAt,
     })
     .where(eq(obituaries.id, id)));
 
   return NextResponse.json({
     ok: true,
     imagePath,
-    imageUrl: storage.getPublicUrl(imagePath),
+    imageUrl: mediaPublicUrl(storage, imagePath, updatedAt),
   });
 }

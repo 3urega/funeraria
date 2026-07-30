@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { ImagePicker } from "@/components/ui/image-picker";
 import type { Obituary } from "@/lib/db/schema";
 
@@ -21,7 +21,6 @@ export function EsquelaPhotoSection({
   onImagePublished,
 }: Props) {
   const router = useRouter();
-  const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [uploadLoading, setUploadLoading] = useState(false);
   const [rejectLoading, setRejectLoading] = useState(false);
@@ -32,16 +31,16 @@ export function EsquelaPhotoSection({
   const isRejected = familyImageStatus === "rejected";
   const pickerPreview = preview ?? imageUrl;
 
-  async function onUpload(e: FormEvent) {
-    e.preventDefault();
-    if (!file) return;
-
+  async function onFileSelect(selected: File) {
+    if (preview) URL.revokeObjectURL(preview);
+    const localPreview = URL.createObjectURL(selected);
+    setPreview(localPreview);
     setUploadLoading(true);
     setError(null);
     setSuccess(null);
 
     const formData = new FormData();
-    formData.set("image", file);
+    formData.set("image", selected);
 
     const res = await fetch(`/api/admin/esquelas/${obituaryId}/photo`, {
       method: "POST",
@@ -59,6 +58,8 @@ export function EsquelaPhotoSection({
       } else {
         setError("Error en pujar la foto.");
       }
+      URL.revokeObjectURL(localPreview);
+      setPreview(null);
       setUploadLoading(false);
       return;
     }
@@ -68,9 +69,8 @@ export function EsquelaPhotoSection({
       onImagePublished?.(data.imageUrl);
     }
 
-    setSuccess("Foto retocada publicada correctament.");
-    setFile(null);
-    if (preview) URL.revokeObjectURL(preview);
+    setSuccess("Imatge actualitzada correctament.");
+    URL.revokeObjectURL(localPreview);
     setPreview(null);
     setUploadLoading(false);
     router.refresh();
@@ -107,29 +107,21 @@ export function EsquelaPhotoSection({
 
   return (
     <div className="space-y-4">
-      <form onSubmit={onUpload} className="space-y-3">
-        <ImagePicker
-          id="esquela-photo"
-          label="Pujar / escanejar foto retocada"
-          variant="photo"
-          previewUrl={pickerPreview}
-          previewAlt="Foto de l'esquela"
-          showPendingHint={false}
-          hint="Escaneig o versió retocada externament. Es publica a l'esquela."
-          onFileSelect={(selected) => {
-            setFile(selected);
-            if (preview) URL.revokeObjectURL(preview);
-            setPreview(URL.createObjectURL(selected));
-          }}
-        />
-        <button
-          type="submit"
-          disabled={!file || uploadLoading}
-          className="rounded-md bg-zinc-900 px-4 py-2 text-sm text-white hover:bg-zinc-800 disabled:opacity-50"
-        >
-          {uploadLoading ? "Pujant…" : "Pujar foto retocada"}
-        </button>
-      </form>
+      <ImagePicker
+        id="esquela-photo"
+        label="Foto de l'esquela"
+        variant="photo"
+        previewUrl={pickerPreview}
+        previewAlt="Foto de l'esquela"
+        showPendingHint={false}
+        disabled={uploadLoading}
+        hint="Escaneig o versió retocada externament. En triar fitxer es publica a l'esquela."
+        onFileSelect={(selected) => void onFileSelect(selected)}
+      />
+
+      {uploadLoading && (
+        <p className="text-sm text-zinc-600">Pujant imatge…</p>
+      )}
 
       {isPending && pendingImageUrl && (
         <div className="rounded-md border border-amber-200 bg-amber-50 p-4">
@@ -174,7 +166,9 @@ export function EsquelaPhotoSection({
       )}
 
       {error && <p className="text-sm text-red-600">{error}</p>}
-      {success && <p className="text-sm text-green-700">{success}</p>}
+      {success && !uploadLoading && (
+        <p className="text-sm text-green-700">{success}</p>
+      )}
     </div>
   );
 }

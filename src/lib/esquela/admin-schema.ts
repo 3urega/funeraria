@@ -13,7 +13,6 @@ export const createEsquelaSchema = z.object({
   mortuaryAddress: z.string().optional(),
   showEpd: z.boolean().optional().default(true),
   visitCode: z.string().min(4),
-  slug: z.string().min(1),
   expedientCode: z.string().optional(),
   isActive: z.boolean(),
   isVisible: z.boolean(),

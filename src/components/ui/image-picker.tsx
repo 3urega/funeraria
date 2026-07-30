@@ -16,6 +16,7 @@ export type ImagePickerProps = {
   showPendingHint?: boolean;
   showDragHint?: boolean;
   variant?: ImagePickerVariant;
+  disabled?: boolean;
   onFileSelect: (file: File) => void;
 };
 
@@ -43,6 +44,7 @@ export function ImagePicker({
   showPendingHint = true,
   showDragHint = true,
   variant = "banner",
+  disabled = false,
   onFileSelect,
 }: ImagePickerProps) {
   const autoId = useId();
@@ -51,7 +53,7 @@ export function ImagePicker({
   const isLogo = variant === "logo";
 
   function pickFile(file: File | undefined) {
-    if (!file) return;
+    if (!file || disabled) return;
     onFileSelect(file);
   }
 
@@ -69,7 +71,8 @@ export function ImagePicker({
       <div
         className={[
           "relative overflow-hidden rounded-lg border-2 border-dashed transition-colors",
-          dragOver
+          disabled ? "opacity-60" : "",
+          dragOver && !disabled
             ? "border-zinc-500 bg-zinc-50"
             : "border-zinc-200 bg-zinc-50/50 hover:border-zinc-300",
           isLogo ? "p-4" : "p-4 sm:p-5",
@@ -120,7 +123,13 @@ export function ImagePicker({
           <div className="flex min-w-0 flex-1 flex-col justify-center gap-2">
             <label
               htmlFor={inputId}
-              className="inline-flex w-fit cursor-pointer items-center justify-center rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-zinc-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-900"
+              aria-disabled={disabled}
+              className={[
+                "inline-flex w-fit items-center justify-center rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white shadow-sm transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-900",
+                disabled
+                  ? "cursor-not-allowed"
+                  : "cursor-pointer hover:bg-zinc-800",
+              ].join(" ")}
             >
               {previewUrl ? "Canviar imatge" : "Escollir imatge"}
             </label>
@@ -148,6 +157,7 @@ export function ImagePicker({
           id={inputId}
           type="file"
           accept={accept}
+          disabled={disabled}
           className="sr-only"
           onChange={(e) => pickFile(e.target.files?.[0])}
         />

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 type Props = {
-  children: ReactNode;
+  children?: ReactNode;
   /** Text explicatiu al passar el cursor per sobre la capçalera. */
   hint?: string;
   className?: string;

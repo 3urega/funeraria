@@ -16,6 +16,7 @@ import {
 } from "@/lib/db/queries";
 import { getFuneralHomeId } from "@/lib/site/tenant";
 import { getStorage } from "@/lib/storage";
+import { mediaPublicUrl } from "@/lib/storage/public-url";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -45,11 +46,12 @@ export default async function AdminEditarEsquelaPage({ params }: Props) {
       getFlowerOrdersByObituaryId(id),
     ]);
 
+  const storage = getStorage();
   const imageUrl = obituary.imagePath
-    ? getStorage().getPublicUrl(obituary.imagePath)
+    ? mediaPublicUrl(storage, obituary.imagePath, obituary.updatedAt)
     : null;
   const pendingImageUrl = obituary.customImagePath
-    ? getStorage().getPublicUrl(obituary.customImagePath)
+    ? mediaPublicUrl(storage, obituary.customImagePath, obituary.updatedAt)
     : null;
 
   return (
