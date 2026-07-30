@@ -1,4 +1,11 @@
-import { and, count, desc, eq } from "drizzle-orm";
+import { and, asc, count, desc, eq } from "drizzle-orm";
+import type { PaginatedResult } from "@/lib/admin/pagination";
+import {
+  clampPage,
+  toLimitOffset,
+  totalPages,
+} from "@/lib/admin/pagination";
+import type { ActiveFilter } from "@/lib/admin/list-params";
 import { getDb } from "@/lib/db";
 import { allRows, oneRow, runSql } from "@/lib/db/exec";
 import { getFuneralHomeId } from "@/lib/site/tenant-id";
@@ -124,6 +131,54 @@ export async function getAllPoemTemplates() {
     .select()
     .from(poemTemplates)
     .where(eq(poemTemplates.funeralHomeId, getFuneralHomeId())));
+}
+
+export type PoemTemplateListFilters = {
+  page: number;
+  pageSize: number;
+  active?: ActiveFilter;
+};
+
+function poemTemplateListConditions(active?: ActiveFilter) {
+  const conditions = [eq(poemTemplates.funeralHomeId, getFuneralHomeId())];
+  if (active === true) {
+    conditions.push(eq(poemTemplates.isActive, true));
+  } else if (active === false) {
+    conditions.push(eq(poemTemplates.isActive, false));
+  }
+  return and(...conditions);
+}
+
+export async function listPoemTemplatesPaginated(
+  filters: PoemTemplateListFilters,
+): Promise<PaginatedResult<(typeof poemTemplates.$inferSelect)>> {
+  const db = getDb();
+  const where = poemTemplateListConditions(filters.active);
+
+  const countRow = await oneRow(
+    db.select({ total: count() }).from(poemTemplates).where(where),
+  );
+  const total = countRow?.total ?? 0;
+  const page = clampPage(filters.page, total, filters.pageSize);
+  const { limit, offset } = toLimitOffset(page, filters.pageSize);
+
+  const items = await allRows(
+    db
+      .select()
+      .from(poemTemplates)
+      .where(where)
+      .orderBy(asc(poemTemplates.title))
+      .limit(limit)
+      .offset(offset),
+  );
+
+  return {
+    items,
+    total,
+    page,
+    pageSize: filters.pageSize,
+    totalPages: totalPages(total, filters.pageSize),
+  };
 }
 
 export async function getPoemTemplateById(id: string) {

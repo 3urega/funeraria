@@ -1,7 +1,7 @@
 # Roadmap de entrega — 0 → 100%
 
 > **Audiencia:** Product Manager · **Última actualización:** julio 2026  
-> **Progreso global:** 81 / 97 tareas (**84%**)
+> **Progreso global:** 82 / 97 tareas (**85%**)
 
 Documento maestro sintético. El detalle técnico está en los enlaces de cada fase.  
 Los agentes deben **marcar `[x]`** al completar cada ítem — ver [`AGENTS.md`](../AGENTS.md).
@@ -197,7 +197,7 @@ L'empleat ha de poder **assignar** església, cementiri i sala de vetlla des de 
 
 📄 Batch issues: [`manifest.admin-listas-v1.json`](./issues/manifest.admin-listas-v1.json)
 
-- [ ] **RD-116** — Infra listas admin (URL params, paginación 10, componentes compartidos) + piloto **Poemas**
+- [x] **RD-116** — Infra listas admin (URL params, paginación 10, componentes compartidos) + piloto **Poemas** *(#12, jul 2026)*
 - [ ] **RD-117** — Lista **Esquelas**: filtros (activa, visible, foto/missatges pendents, cerca), toggles inline, PATCH flags
 - [ ] **RD-118** — Listas **Lugares** (iglesias, cementerios, sales): búsqueda, paginación, toggle activo sala, eliminar
 - [ ] **RD-119** — Catálogo **Flores**: filtros activo, paginación, toggle inline
@@ -241,10 +241,10 @@ L'empleat ha de poder **assignar** església, cementiri i sala de vetlla des de 
 | Backoffice esquelas | 100% | — | — |
 | Catálogo lugares | 100% | — | — |
 | E-commerce flors | 85% | Stripe prod (RD-087); stub dev hecho (RD-084) | Media (pre-prod) |
-| Admin complementario | 100% | Listas UX RD-116–121 | Alta |
+| Admin complementario | 100% | Listas UX RD-117–121 (#13–#17) | Alta |
 | Producción | 85% | Staging listo (RD-100–104); dominio prod + RD-105/106 | Media |
 
-**Siguiente hito recomendado:** Implementar batch admin listas (**RD-116** → **RD-121**, issues #12–#17) para facilitar el trabajo diario del empleado.
+**Siguiente hito recomendado:** **RD-117** — lista esquelas con filtros y toggles ([#13](https://github.com/3urega/funeraria/issues/13)).
 
 ---
 
@@ -282,7 +282,7 @@ Issues publicadas: [ver en GitHub](https://github.com/3urega/funeraria/issues).
 | 9 | RD-092–094, RD-057 | [Admin complementario](https://github.com/3urega/funeraria/issues/9) | Implementado (#9, jul 2026) |
 | 10 | RD-100–104 | [Producción](https://github.com/3urega/funeraria/issues/10) | Implementado (#10, jul 2026) |
 | 11 | RD-088, RD-066 | [Paridad legacy (missatges + foto)](https://github.com/3urega/funeraria/issues/11) | Implementado (#11, jul 2026) |
-| 12 | RD-116 | [Admin list foundation](https://github.com/3urega/funeraria/issues/12) | Pendiente |
+| 12 | RD-116 | [Admin list foundation](https://github.com/3urega/funeraria/issues/12) | Implementado (#12, jul 2026) |
 | 13 | RD-117 | [Admin esquelas list](https://github.com/3urega/funeraria/issues/13) | Pendiente |
 | 14 | RD-118 | [Admin lugares lists](https://github.com/3urega/funeraria/issues/14) | Pendiente |
 | 15 | RD-119 | [Admin flores catálogo](https://github.com/3urega/funeraria/issues/15) | Pendiente |
@@ -297,6 +297,7 @@ Issues publicadas: [ver en GitHub](https://github.com/3urega/funeraria/issues).
 
 | Fecha | Tareas | % | Notas |
 |-------|--------|---|-------|
+| 2026-07-30 | 82/97 | 85% | Admin list foundation — paginación URL, componentes list, piloto Poemas (#12, RD-116). |
 | 2026-07-30 | 81/97 | 84% | Batch admin listas — issues #12–#17 (RD-116–121): filtros, paginación, acciones inline. |
 | 2026-07-30 | 81/91 | 89% | Producción staging — dual DB Postgres/SQLite, Supabase Storage/Auth, deploy Vercel doc (#10, RD-100–104). |
 | 2026-07-12 | 76/91 | 84% | Paridad legacy — missatges `reviewed`, dashboard pendents, stub notif. foto (#11, RD-066, RD-088). |

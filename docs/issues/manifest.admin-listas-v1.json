@@ -4,11 +4,6 @@
   "batchName": "admin-listas-v1",
   "issues": [
     {
-      "title": "RD-116: Admin list foundation (paginacion, filtros URL, piloto poemas)",
-      "bodyFile": "docs/issues/rd-116-admin-list-foundation.md",
-      "roadmapId": "RD-116"
-    },
-    {
       "title": "RD-117: Admin esquelas list (filtros, paginacion, toggles inline)",
       "bodyFile": "docs/issues/rd-117-admin-esquelas-list.md",
       "roadmapId": "RD-117"

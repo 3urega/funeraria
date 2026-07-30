@@ -1,10 +1,47 @@
 import Link from "next/link";
-import { getAllPoemTemplates } from "@/lib/db/queries";
+import { PoemasTable } from "@/components/admin/poemas-table";
+import { AdminListToolbar } from "@/components/admin/list/admin-list-toolbar";
+import { AdminPagination } from "@/components/admin/list/admin-pagination";
+import {
+  activeFilterToParam,
+  buildListQueryString,
+  parsePoemListParams,
+} from "@/lib/admin/list-params";
+import { listPoemTemplatesPaginated } from "@/lib/db/queries";
 
 export const metadata = { title: "Admin — Poemas" };
 
-export default async function AdminPoemasPage() {
-  const poems = await getAllPoemTemplates();
+type Props = {
+  searchParams: Promise<{ page?: string; pageSize?: string; active?: string }>;
+};
+
+export default async function AdminPoemasPage({ searchParams }: Props) {
+  const raw = await searchParams;
+  const params = parsePoemListParams(raw);
+  const result = await listPoemTemplatesPaginated(params);
+
+  const queryBase = {
+    active: activeFilterToParam(params.active),
+    pageSize: params.pageSize === 10 ? undefined : params.pageSize,
+  };
+
+  const toolbarItems = [
+    {
+      label: "Tots",
+      href: `/admin/poemas${buildListQueryString({ ...queryBase, active: undefined, page: undefined })}`,
+      active: params.active === undefined,
+    },
+    {
+      label: "Actius",
+      href: `/admin/poemas${buildListQueryString({ ...queryBase, active: "1", page: undefined })}`,
+      active: params.active === true,
+    },
+    {
+      label: "Inactius",
+      href: `/admin/poemas${buildListQueryString({ ...queryBase, active: "0", page: undefined })}`,
+      active: params.active === false,
+    },
+  ];
 
   return (
     <div>
@@ -23,41 +60,18 @@ export default async function AdminPoemasPage() {
         </Link>
       </div>
 
-      <div className="overflow-hidden rounded-lg border">
-        <table className="w-full text-left text-sm">
-          <thead className="bg-zinc-50">
-            <tr>
-              <th className="px-4 py-3 font-medium">Títol</th>
-              <th className="px-4 py-3 font-medium">Actiu</th>
-              <th className="px-4 py-3 font-medium">Extracte</th>
-              <th className="px-4 py-3 font-medium"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {poems.map((poem) => (
-              <tr key={poem.id} className="border-t">
-                <td className="px-4 py-3 font-medium">{poem.title}</td>
-                <td className="px-4 py-3">{poem.isActive ? "Sí" : "No"}</td>
-                <td className="max-w-md truncate px-4 py-3 text-zinc-600">
-                  {poem.text.split("\n")[0]}
-                </td>
-                <td className="px-4 py-3 text-right">
-                  <Link
-                    href={`/admin/poemas/${poem.id}`}
-                    className="text-blue-600 hover:underline"
-                  >
-                    Editar
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <AdminListToolbar items={toolbarItems} ariaLabel="Filtrar poemes" />
 
-      {poems.length === 0 && (
-        <p className="mt-4 text-zinc-500">Encara no hi ha poemas.</p>
-      )}
+      <PoemasTable poems={result.items} />
+
+      <AdminPagination
+        basePath="/admin/poemas"
+        page={result.page}
+        pageSize={result.pageSize}
+        total={result.total}
+        totalPages={result.totalPages}
+        query={{ active: activeFilterToParam(params.active) }}
+      />
     </div>
   );
 }
