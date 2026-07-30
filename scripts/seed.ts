@@ -2,6 +2,8 @@ import fs from "fs/promises";
 import path from "path";
 import { getDb } from "../src/lib/db";
 import { runSql } from "@/lib/db/exec";
+import { getStorage } from "@/lib/storage";
+import type { StorageBucket } from "@/lib/storage/types";
 import {
   adminUsers,
   cemeteries,
@@ -27,11 +29,25 @@ const PLACEHOLDER_PNG = Buffer.from(
   "base64",
 );
 
-async function writePlaceholder(relativePath: string) {
+async function writePlaceholder(fullPath: string) {
+  const [bucket, ...rest] = fullPath.split("/");
+  const relativePath = rest.join("/");
+
+  if (process.env.STORAGE_DRIVER === "supabase") {
+    const storage = getStorage();
+    await storage.upload(
+      bucket as StorageBucket,
+      relativePath,
+      PLACEHOLDER_PNG,
+      "image/png",
+    );
+    return;
+  }
+
   const root = path.resolve(process.cwd(), "storage");
-  const full = path.join(root, relativePath);
-  await fs.mkdir(path.dirname(full), { recursive: true });
-  await fs.writeFile(full, PLACEHOLDER_PNG);
+  const file = path.join(root, fullPath);
+  await fs.mkdir(path.dirname(file), { recursive: true });
+  await fs.writeFile(file, PLACEHOLDER_PNG);
 }
 
 async function seed() {
@@ -336,7 +352,7 @@ async function seed() {
   await runSql(db.insert(adminUsers)
     .values({
       id: "au-001",
-      authUserId: "dev-admin-001",
+      authUserId: process.env.SEED_ADMIN_AUTH_USER_ID ?? "dev-admin-001",
       funeralHomeId: FUNERAL_HOME_ID,
       role: "admin",
     }));

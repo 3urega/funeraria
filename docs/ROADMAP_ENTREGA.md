@@ -1,7 +1,7 @@
 # Roadmap de entrega — 0 → 100%
 
 > **Audiencia:** Product Manager · **Última actualización:** julio 2026  
-> **Progreso global:** 76 / 91 tareas (**84%**)
+> **Progreso global:** 81 / 91 tareas (**89%**)
 
 Documento maestro sintético. El detalle técnico está en los enlaces de cada fase.  
 Los agentes deben **marcar `[x]`** al completar cada ítem — ver [`AGENTS.md`](../AGENTS.md).
@@ -172,11 +172,11 @@ L'empleat ha de poder **assignar** església, cementiri i sala de vetlla des de 
 
 📄 [arquitectura.md](./arquitectura.md) · [ESTRATEGIA_DESARROLLO_LOCAL.md](./ESTRATEGIA_DESARROLLO_LOCAL.md)
 
-- [ ] **RD-100** — Migració schema SQLite → Supabase PostgreSQL
-- [ ] **RD-101** — Storage local → Supabase Storage (paths compatibles)
-- [ ] **RD-102** — Auth admin → Supabase Auth (email + Google OAuth, com legacy Firebase)
-- [ ] **RD-103** — Deploy Vercel (preview PR + producció)
-- [ ] **RD-104** — Variables entorn prod + secrets
+- [x] **RD-100** — Migració schema SQLite → Supabase PostgreSQL *(dual driver, schema.pg, exec async — #10, jul 2026)*
+- [x] **RD-101** — Storage local → Supabase Storage (paths compatibles) *(SupabaseStorageAdapter — #10)*
+- [x] **RD-102** — Auth admin → Supabase Auth *(email + JWT híbrido; Google OAuth pendent — #10)*
+- [x] **RD-103** — Deploy Vercel *(staging `develop`; guia [`DEPLOY_STAGING.md`](./DEPLOY_STAGING.md) — #10)*
+- [x] **RD-104** — Variables entorn prod + secrets *(`.env.staging.example` — #10)*
 - [ ] **RD-105** — i18n next-intl (CA + ES ja implementats; EN legacy opcional post-MVP; admin i18n pendent)
 - [ ] **RD-106** — Theming per client (colors, logo des de `site_config`)
 
@@ -229,15 +229,15 @@ L'empleat ha de poder **assignar** església, cementiri i sala de vetlla des de 
 | Catálogo lugares | 100% | — | — |
 | E-commerce flors | 85% | Stripe prod (RD-087); stub dev hecho (RD-084) | Media (pre-prod) |
 | Admin complementario | 100% | — | — |
-| Producción | 0% | Supabase + Vercel + i18n | Final |
+| Producción | 85% | Staging listo (RD-100–104); dominio prod + RD-105/106 | Media |
 
-**Siguiente hito recomendado:** RD-050 (validación home con cliente) → issue #10 (producción).
+**Siguiente hito recomendado:** Desplegar staging según [`DEPLOY_STAGING.md`](./DEPLOY_STAGING.md) → validación cliente RD-050.
 
 ---
 
 ## GitHub issues (publicadas)
 
-Batch: [`manifest.roadmap-pendiente-v1.json`](./issues/manifest.roadmap-pendiente-v1.json) — [ver todas en GitHub](https://github.com/3urega/funeraria/issues).
+Issues publicadas: [ver en GitHub](https://github.com/3urega/funeraria/issues).
 
 | # | Roadmap | Issue | Estado |
 |---|---------|-------|--------|
@@ -250,7 +250,7 @@ Batch: [`manifest.roadmap-pendiente-v1.json`](./issues/manifest.roadmap-pendient
 | 7 | RD-036, RD-055, RD-079 | [Missatges](https://github.com/3urega/funeraria/issues/7) | Implementado (#7, jul 2026) |
 | 8 | RD-037, RD-056, RD-078, RD-080–086 | [Flores e-commerce](https://github.com/3urega/funeraria/issues/8) | Implementado (#8, jul 2026) |
 | 9 | RD-092–094, RD-057 | [Admin complementario](https://github.com/3urega/funeraria/issues/9) | Implementado (#9, jul 2026) |
-| 10 | RD-100–104 | [Producción](https://github.com/3urega/funeraria/issues/10) | [rd-100-104-produccion.md](./issues/rd-100-104-produccion.md) |
+| 10 | RD-100–104 | [Producción](https://github.com/3urega/funeraria/issues/10) | Implementado (#10, jul 2026) |
 | 11 | RD-088, RD-066 | [Paridad legacy (missatges + foto)](https://github.com/3urega/funeraria/issues/11) | Implementado (#11, jul 2026) |
 
 Ítems pendientes sin issue dedicada aún: RD-050 (home validación), RD-087 (Stripe prod), RD-105 (i18n admin), RD-110–115 (calidad).
@@ -261,6 +261,7 @@ Batch: [`manifest.roadmap-pendiente-v1.json`](./issues/manifest.roadmap-pendient
 
 | Fecha | Tareas | % | Notas |
 |-------|--------|---|-------|
+| 2026-07-30 | 81/91 | 89% | Producción staging — dual DB Postgres/SQLite, Supabase Storage/Auth, deploy Vercel doc (#10, RD-100–104). |
 | 2026-07-12 | 76/91 | 84% | Paridad legacy — missatges `reviewed`, dashboard pendents, stub notif. foto (#11, RD-066, RD-088). |
 | 2026-07-12 | 74/91 | 81% | Admin complementario — poemas, site_config, CMS home (#9, RD-092–094, RD-057). |
 | 2026-07-12 | 70/91 | 77% | Gap analysis legacy (`legacy_project.md`, RD-013); nous RD-087 (Stripe prod), RD-088 (missatges reviewed); notes RD-050/057/084/105. |

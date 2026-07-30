@@ -3,6 +3,7 @@ import { getDb } from "@/lib/db";
 import { allRows, oneRow, runSql } from "@/lib/db/exec";
 import { getFuneralHomeId } from "@/lib/site/tenant-id";
 import {
+  adminUsers,
   cemeteries,
   churches,
   commemorativeMessages,
@@ -445,19 +446,21 @@ export async function insertCommemorativeMessage(
       createdAt,
     }));
 
-  return oneRow({ ok: true as const, id };
+  return { ok: true as const, id };
 }
 
 export async function getCommemorativeMessageByIdForTenant(id: string) {
   const db = getDb();
-  const row = db
-    .select({
-      message: commemorativeMessages,
-      funeralHomeId: obituaries.funeralHomeId,
-    })
-    .from(commemorativeMessages)
-    .innerJoin(obituaries, eq(commemorativeMessages.obituaryId, obituaries.id))
-    .where(eq(commemorativeMessages.id, id)));
+  const row = await oneRow(
+    db
+      .select({
+        message: commemorativeMessages,
+        funeralHomeId: obituaries.funeralHomeId,
+      })
+      .from(commemorativeMessages)
+      .innerJoin(obituaries, eq(commemorativeMessages.obituaryId, obituaries.id))
+      .where(eq(commemorativeMessages.id, id)),
+  );
 
   if (!row || row.funeralHomeId !== getFuneralHomeId()) return null;
   return row.message;
@@ -477,21 +480,23 @@ export async function updateCommemorativeMessageReviewed(
     .set({ reviewed })
     .where(eq(commemorativeMessages.id, id)));
 
-  return allRows({ ok: true as const };
+  return { ok: true as const };
 }
 
 export async function countUnreviewedCommemorativeMessages() {
   const db = getDb();
-  const rows = db
-    .select({ id: commemorativeMessages.id })
-    .from(commemorativeMessages)
-    .innerJoin(obituaries, eq(commemorativeMessages.obituaryId, obituaries.id))
-    .where(
-      and(
-        eq(obituaries.funeralHomeId, getFuneralHomeId()),
-        eq(commemorativeMessages.reviewed, false),
+  const rows = await allRows(
+    db
+      .select({ id: commemorativeMessages.id })
+      .from(commemorativeMessages)
+      .innerJoin(obituaries, eq(commemorativeMessages.obituaryId, obituaries.id))
+      .where(
+        and(
+          eq(obituaries.funeralHomeId, getFuneralHomeId()),
+          eq(commemorativeMessages.reviewed, false),
+        ),
       ),
-    ));
+  );
   return rows.length;
 }
 
@@ -499,29 +504,31 @@ export async function getAdminPendingStats() {
   const db = getDb();
   const fhId = getFuneralHomeId();
   const [photoRows, messageRows] = await Promise.all([
-    await runSql(db
-      .select({ id: obituaries.id })
-      .from(obituaries)
-      .where(
-        and(
-          eq(obituaries.funeralHomeId, fhId),
-          eq(obituaries.familyImageStatus, "pending"),
+    allRows(
+      db
+        .select({ id: obituaries.id })
+        .from(obituaries)
+        .where(
+          and(
+            eq(obituaries.funeralHomeId, fhId),
+            eq(obituaries.familyImageStatus, "pending"),
+          ),
         ),
-      )
-      .all(),
-    db
-      .select({ id: commemorativeMessages.id })
-      .from(commemorativeMessages)
-      .innerJoin(obituaries, eq(commemorativeMessages.obituaryId, obituaries.id))
-      .where(
-        and(
-          eq(obituaries.funeralHomeId, fhId),
-          eq(commemorativeMessages.reviewed, false),
+    ),
+    allRows(
+      db
+        .select({ id: commemorativeMessages.id })
+        .from(commemorativeMessages)
+        .innerJoin(obituaries, eq(commemorativeMessages.obituaryId, obituaries.id))
+        .where(
+          and(
+            eq(obituaries.funeralHomeId, fhId),
+            eq(commemorativeMessages.reviewed, false),
+          ),
         ),
-      )
-      .all(),
+    ),
   ]);
-  return allRows({
+  return {
     pendingFamilyPhotos: photoRows.length,
     unreviewedMessages: messageRows.length,
   };
@@ -529,20 +536,22 @@ export async function getAdminPendingStats() {
 
 export async function getUnreviewedMessageCountsByObituary() {
   const db = getDb();
-  const rows = db
-    .select({
-      obituaryId: commemorativeMessages.obituaryId,
-      count: count(),
-    })
-    .from(commemorativeMessages)
-    .innerJoin(obituaries, eq(commemorativeMessages.obituaryId, obituaries.id))
-    .where(
-      and(
-        eq(obituaries.funeralHomeId, getFuneralHomeId()),
-        eq(commemorativeMessages.reviewed, false),
-      ),
-    )
-    .groupBy(commemorativeMessages.obituaryId));
+  const rows = await allRows(
+    db
+      .select({
+        obituaryId: commemorativeMessages.obituaryId,
+        count: count(),
+      })
+      .from(commemorativeMessages)
+      .innerJoin(obituaries, eq(commemorativeMessages.obituaryId, obituaries.id))
+      .where(
+        and(
+          eq(obituaries.funeralHomeId, getFuneralHomeId()),
+          eq(commemorativeMessages.reviewed, false),
+        ),
+      )
+      .groupBy(commemorativeMessages.obituaryId),
+  );
   return Object.fromEntries(rows.map((r) => [r.obituaryId, r.count]));
 }
 
@@ -663,24 +672,26 @@ export async function insertFlowerOrder(input: FlowerCheckoutInput) {
   const id = `flo-${Date.now()}`;
   const now = new Date().toISOString();
 
-  getDb()
-    .insert(flowerOrders)
-    .values({
-      id,
-      obituaryId: input.obituaryId,
-      funeralHomeId: getFuneralHomeId(),
-      productId: product.id,
-      quantity,
-      dedicationText: input.dedicationText,
-      buyerName: input.buyerName,
-      buyerEmail: input.buyerEmail,
-      buyerPhone: input.buyerPhone,
-      status: "paid",
-      paymentReference: `stub-dev-${id}`,
-      totalCents,
-      createdAt: now,
-      updatedAt: now,
-    }));
+  await runSql(
+    getDb()
+      .insert(flowerOrders)
+      .values({
+        id,
+        obituaryId: input.obituaryId,
+        funeralHomeId: getFuneralHomeId(),
+        productId: product.id,
+        quantity,
+        dedicationText: input.dedicationText,
+        buyerName: input.buyerName,
+        buyerEmail: input.buyerEmail,
+        buyerPhone: input.buyerPhone,
+        status: "paid",
+        paymentReference: `stub-dev-${id}`,
+        totalCents,
+        createdAt: now,
+        updatedAt: now,
+      }),
+  );
 
   return { ok: true as const, id };
 }
@@ -700,4 +711,19 @@ export async function updateFlowerOrderStatus(
     .where(eq(flowerOrders.id, id)));
 
   return { ok: true as const };
+}
+
+export async function getAdminUserByAuthId(authUserId: string) {
+  const db = getDb();
+  return oneRow(
+    db
+      .select()
+      .from(adminUsers)
+      .where(
+        and(
+          eq(adminUsers.authUserId, authUserId),
+          eq(adminUsers.funeralHomeId, getFuneralHomeId()),
+        ),
+      ),
+  );
 }

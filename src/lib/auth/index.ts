@@ -5,6 +5,7 @@ import {
   setAdminSessionCookie,
   signAdminSession,
 } from "./session";
+import { SupabaseAuthAdapter } from "./supabase.adapter";
 import type { AuthAdapter, Session } from "./types";
 
 export class LocalAuthAdapter implements AuthAdapter {
@@ -39,9 +40,7 @@ export function getAuth(): AuthAdapter {
   const { AUTH_DRIVER } = getEnv();
 
   if (AUTH_DRIVER === "supabase") {
-    throw new Error(
-      "Supabase Auth adapter not configured. Set AUTH_DRIVER=local for development.",
-    );
+    return new SupabaseAuthAdapter();
   }
 
   return new LocalAuthAdapter();
