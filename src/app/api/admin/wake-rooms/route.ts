@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { getDb } from "@/lib/db";
+import { runSql } from "@/lib/db/exec";
 import { wakeRooms } from "@/lib/db/schema";
 import { getAllWakeRooms } from "@/lib/db/queries";
 import {
@@ -35,7 +36,7 @@ export async function POST(req: NextRequest) {
   const id = `wake-${Date.now()}`;
   const geo = normalizeGeoFields(parsed.data);
 
-  getDb()
+  await runSql(getDb()
     .insert(wakeRooms)
     .values({
       id,
@@ -44,8 +45,7 @@ export async function POST(req: NextRequest) {
       description: parsed.data.description || null,
       isActive: parsed.data.isActive ?? true,
       ...geo,
-    })
-    .run();
+    }));
 
   return NextResponse.json({ id });
 }

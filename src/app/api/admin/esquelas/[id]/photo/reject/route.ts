@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { getDb } from "@/lib/db";
+import { runSql } from "@/lib/db/exec";
 import { obituaries } from "@/lib/db/schema";
 import { getObituaryByIdForTenant } from "@/lib/db/queries";
 import {
@@ -26,14 +27,13 @@ export async function POST(_req: Request, { params }: RouteContext) {
     return NextResponse.json({ error: "NO_PENDING_PHOTO" }, { status: 400 });
   }
 
-  getDb()
+  await runSql(getDb()
     .update(obituaries)
     .set({
       familyImageStatus: "rejected",
       updatedAt: new Date().toISOString(),
     })
-    .where(eq(obituaries.id, id))
-    .run();
+    .where(eq(obituaries.id, id)));
 
   return NextResponse.json({ ok: true, status: "rejected" as const });
 }

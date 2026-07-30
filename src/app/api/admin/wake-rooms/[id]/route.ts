@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { getDb } from "@/lib/db";
+import { runSql } from "@/lib/db/exec";
 import { wakeRooms } from "@/lib/db/schema";
 import { getWakeRoomById } from "@/lib/db/queries";
 import {
@@ -46,7 +47,7 @@ export async function PUT(req: NextRequest, { params }: RouteContext) {
   }
 
   const geo = normalizeGeoFields(parsed.data);
-  getDb()
+  await runSql(getDb()
     .update(wakeRooms)
     .set({
       name: parsed.data.name,
@@ -54,8 +55,7 @@ export async function PUT(req: NextRequest, { params }: RouteContext) {
       isActive: parsed.data.isActive,
       ...geo,
     })
-    .where(eq(wakeRooms.id, id))
-    .run();
+    .where(eq(wakeRooms.id, id)));
 
   return NextResponse.json({ ok: true });
 }
@@ -69,6 +69,6 @@ export async function DELETE(_req: NextRequest, { params }: RouteContext) {
     return NextResponse.json({ error: "NOT_FOUND" }, { status: 404 });
   }
 
-  getDb().delete(wakeRooms).where(eq(wakeRooms.id, id)).run();
+  await runSql(getDb().delete(wakeRooms).where(eq(wakeRooms.id, id)));
   return NextResponse.json({ ok: true });
 }

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { getDb } from "@/lib/db";
+import { runSql } from "@/lib/db/exec";
 import { churches } from "@/lib/db/schema";
 import { getChurchById } from "@/lib/db/queries";
 import { getStorage } from "@/lib/storage";
@@ -52,11 +53,10 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
     image.type,
   );
 
-  getDb()
+  await runSql(getDb()
     .update(churches)
     .set({ imagePath })
-    .where(eq(churches.id, id))
-    .run();
+    .where(eq(churches.id, id)));
 
   return NextResponse.json({ ok: true, imagePath });
 }

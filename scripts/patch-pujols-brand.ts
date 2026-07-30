@@ -1,5 +1,6 @@
 import { eq } from "drizzle-orm";
 import { getDb } from "../src/lib/db";
+import { oneRow, runSql } from "@/lib/db/exec";
 import {
   contentSections,
   funeralHomes,
@@ -12,12 +13,11 @@ const BRAND_NAME = "Funeraria Pujols";
 
 const db = getDb();
 
-db.update(funeralHomes)
+await runSql(db.update(funeralHomes)
   .set({ name: BRAND_NAME })
-  .where(eq(funeralHomes.id, "fh-001"))
-  .run();
+  .where(eq(funeralHomes.id, "fh-001")));
 
-db.update(siteConfig)
+await runSql(db.update(siteConfig)
   .set({
     brandName: BRAND_NAME,
     theme: {
@@ -29,13 +29,11 @@ db.update(siteConfig)
       publicLogoPath: "/funeraria pujols.png",
     },
   })
-  .where(eq(siteConfig.funeralHomeId, "fh-001"))
-  .run();
+  .where(eq(siteConfig.funeralHomeId, "fh-001")));
 
-db.update(wakeRooms)
+await runSql(db.update(wakeRooms)
   .set({ name: BRAND_NAME })
-  .where(eq(wakeRooms.id, "wake-001"))
-  .run();
+  .where(eq(wakeRooms.id, "wake-001")));
 
 const sections = [
   { id: "cs-top-bar", key: "top_bar", content: HOME_CONTENT_I18N.topBar, order: 0 },
@@ -58,19 +56,17 @@ const sections = [
 ];
 
 for (const s of sections) {
-  const existing = db
+  const existing = await oneRow(db
     .select()
     .from(contentSections)
-    .where(eq(contentSections.id, s.id))
-    .get();
+    .where(eq(contentSections.id, s.id)));
 
   if (existing) {
-    db.update(contentSections)
+    await runSql(db.update(contentSections)
       .set({ contentI18n: s.content, isPublished: true, sortOrder: s.order })
-      .where(eq(contentSections.id, s.id))
-      .run();
+      .where(eq(contentSections.id, s.id)));
   } else {
-    db.insert(contentSections)
+    await runSql(db.insert(contentSections)
       .values({
         id: s.id,
         funeralHomeId: "fh-001",
@@ -78,8 +74,7 @@ for (const s of sections) {
         contentI18n: s.content,
         isPublished: true,
         sortOrder: s.order,
-      })
-      .run();
+      }));
   }
 }
 

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
+import { runSql } from "@/lib/db/exec";
 import { poemTemplates } from "@/lib/db/schema";
 import { getAllPoemTemplates } from "@/lib/db/queries";
 import {
@@ -26,7 +27,7 @@ export async function POST(req: NextRequest) {
 
   const id = `poem-${Date.now()}`;
 
-  getDb()
+  await runSql(getDb()
     .insert(poemTemplates)
     .values({
       id,
@@ -34,8 +35,7 @@ export async function POST(req: NextRequest) {
       title: parsed.data.title,
       text: parsed.data.text,
       isActive: parsed.data.isActive,
-    })
-    .run();
+    }));
 
   return NextResponse.json({ id });
 }

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { getDb } from "@/lib/db";
+import { oneRow, runSql } from "@/lib/db/exec";
 import { cemeteries, obituaries } from "@/lib/db/schema";
 import { getCemeteryById } from "@/lib/db/queries";
 import {
@@ -44,14 +45,13 @@ export async function PUT(req: NextRequest, { params }: RouteContext) {
   }
 
   const geo = normalizeGeoFields(parsed.data);
-  getDb()
+  await runSql(getDb()
     .update(cemeteries)
     .set({
       name: parsed.data.name,
       ...geo,
     })
-    .where(eq(cemeteries.id, id))
-    .run();
+    .where(eq(cemeteries.id, id)));
 
   return NextResponse.json({ ok: true });
 }
@@ -65,16 +65,14 @@ export async function DELETE(_req: NextRequest, { params }: RouteContext) {
     return NextResponse.json({ error: "NOT_FOUND" }, { status: 404 });
   }
 
-  const linked = getDb()
-    .select({ id: obituaries.id })
-    .from(obituaries)
-    .where(eq(obituaries.cemeteryId, id))
-    .get();
+  const linked = await oneRow(
+    getDb().select({ id: obituaries.id }).from(obituaries).where(eq(obituaries.cemeteryId, id)),
+  );
 
   if (linked) {
     return NextResponse.json({ error: "HAS_LINKED_OBITUARIES" }, { status: 409 });
   }
 
-  getDb().delete(cemeteries).where(eq(cemeteries.id, id)).run();
+  await runSql(getDb().delete(cemeteries).where(eq(cemeteries.id, id)));
   return NextResponse.json({ ok: true });
 }

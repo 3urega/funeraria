@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { getDb } from "@/lib/db";
+import { runSql } from "@/lib/db/exec";
 import { poemTemplates } from "@/lib/db/schema";
 import { getPoemTemplateById } from "@/lib/db/queries";
 import {
@@ -37,11 +38,10 @@ export async function PATCH(req: NextRequest, { params }: RouteContext) {
     return NextResponse.json({ error: "INVALID_BODY" }, { status: 400 });
   }
 
-  getDb()
+  await runSql(getDb()
     .update(poemTemplates)
     .set(parsed.data)
-    .where(eq(poemTemplates.id, id))
-    .run();
+    .where(eq(poemTemplates.id, id)));
 
   return NextResponse.json({ ok: true });
 }

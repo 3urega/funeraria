@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { getDb } from "@/lib/db";
+import { runSql } from "@/lib/db/exec";
 import { obituaries } from "@/lib/db/schema";
 import { getObituaryByIdForTenant } from "@/lib/db/queries";
 import { getStorage } from "@/lib/storage";
@@ -40,15 +41,14 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
 
   const clearPending = existing.familyImageStatus === "pending";
 
-  getDb()
+  await runSql(getDb()
     .update(obituaries)
     .set({
       imagePath,
       familyImageStatus: clearPending ? null : existing.familyImageStatus,
       updatedAt: new Date().toISOString(),
     })
-    .where(eq(obituaries.id, id))
-    .run();
+    .where(eq(obituaries.id, id)));
 
   return NextResponse.json({
     ok: true,

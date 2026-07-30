@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { getFamilySessionFromCookies } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
+import { oneRow, runSql } from "@/lib/db/exec";
 import { obituaries } from "@/lib/db/schema";
 import { notifyPendingFamilyPhoto } from "@/lib/notifications/pending-photo";
 import { getStorage } from "@/lib/storage";
@@ -31,11 +32,10 @@ export async function POST(req: NextRequest) {
   }
 
   const db = getDb();
-  const existing = db
+  const existing = await oneRow(db
     .select()
     .from(obituaries)
-    .where(eq(obituaries.id, session.obituaryId))
-    .get();
+    .where(eq(obituaries.id, session.obituaryId)));
 
   if (!existing) {
     return NextResponse.json({ error: "NOT_FOUND" }, { status: 404 });
@@ -57,14 +57,13 @@ export async function POST(req: NextRequest) {
     customImage.type,
   );
 
-  db.update(obituaries)
+  await runSql(db.update(obituaries)
     .set({
       customImagePath,
       familyImageStatus: "pending",
       updatedAt: new Date().toISOString(),
     })
-    .where(eq(obituaries.id, session.obituaryId))
-    .run();
+    .where(eq(obituaries.id, session.obituaryId)));
 
   await notifyPendingFamilyPhoto({
     obituaryId: existing.id,

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
+import { runSql } from "@/lib/db/exec";
 import { obituaries } from "@/lib/db/schema";
 import {
   slugExists,
@@ -49,7 +50,7 @@ export async function POST(req: NextRequest) {
   const now = new Date().toISOString();
 
   try {
-    getDb()
+    await runSql(getDb()
       .insert(obituaries)
       .values({
         id,
@@ -73,8 +74,7 @@ export async function POST(req: NextRequest) {
         showEpd: data.showEpd ?? true,
         createdAt: now,
         updatedAt: now,
-      })
-      .run();
+      }));
   } catch {
     return NextResponse.json({ error: "CONFLICT" }, { status: 409 });
   }

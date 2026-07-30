@@ -1,5 +1,6 @@
 import { and, count, desc, eq } from "drizzle-orm";
 import { getDb } from "@/lib/db";
+import { allRows, oneRow, runSql } from "@/lib/db/exec";
 import { getFuneralHomeId } from "@/lib/site/tenant-id";
 import {
   cemeteries,
@@ -20,7 +21,7 @@ import type { FlowerOrderStatus } from "@/lib/flowers/types";
 
 export async function getVisibleObituaries() {
   const db = getDb();
-  return db
+  return allRows(db
     .select()
     .from(obituaries)
     .where(
@@ -28,27 +29,25 @@ export async function getVisibleObituaries() {
         eq(obituaries.funeralHomeId, getFuneralHomeId()),
         eq(obituaries.isVisible, true),
       ),
-    )
-    .all();
+    ));
 }
 
 export async function getObituaryBySlug(slug: string) {
   const db = getDb();
-  return db
+  return oneRow(db
     .select()
     .from(obituaries)
-    .where(eq(obituaries.slug, slug))
-    .get();
+    .where(eq(obituaries.slug, slug)));
 }
 
 export async function getObituaryById(id: string) {
   const db = getDb();
-  return db.select().from(obituaries).where(eq(obituaries.id, id)).get();
+  return oneRow(db.select().from(obituaries).where(eq(obituaries.id, id)));
 }
 
 export async function getObituaryByIdForTenant(id: string) {
   const db = getDb();
-  return db
+  return oneRow(db
     .select()
     .from(obituaries)
     .where(
@@ -56,13 +55,12 @@ export async function getObituaryByIdForTenant(id: string) {
         eq(obituaries.id, id),
         eq(obituaries.funeralHomeId, getFuneralHomeId()),
       ),
-    )
-    .get();
+    ));
 }
 
 export async function getObituaryByVisitCode(code: string) {
   const db = getDb();
-  return db
+  return oneRow(db
     .select()
     .from(obituaries)
     .where(
@@ -70,8 +68,7 @@ export async function getObituaryByVisitCode(code: string) {
         eq(obituaries.funeralHomeId, getFuneralHomeId()),
         eq(obituaries.visitCode, code.toUpperCase()),
       ),
-    )
-    .get();
+    ));
 }
 
 export async function getObituaryWithPlaces(id: string) {
@@ -80,32 +77,28 @@ export async function getObituaryWithPlaces(id: string) {
 
   const db = getDb();
   const church = obituary.churchId
-    ? db
+    ? await oneRow(db
         .select()
         .from(churches)
-        .where(eq(churches.id, obituary.churchId))
-        .get()
+        .where(eq(churches.id, obituary.churchId)))
     : null;
   const cemetery = obituary.cemeteryId
-    ? db
+    ? await oneRow(db
         .select()
         .from(cemeteries)
-        .where(eq(cemeteries.id, obituary.cemeteryId))
-        .get()
+        .where(eq(cemeteries.id, obituary.cemeteryId)))
     : null;
   const wakeRoom = obituary.wakeRoomId
-    ? db
+    ? await oneRow(db
         .select()
         .from(wakeRooms)
-        .where(eq(wakeRooms.id, obituary.wakeRoomId))
-        .get()
+        .where(eq(wakeRooms.id, obituary.wakeRoomId)))
     : null;
   const poemTemplate = obituary.obituarioPoemTemplateId
-    ? db
+    ? await oneRow(db
         .select()
         .from(poemTemplates)
-        .where(eq(poemTemplates.id, obituary.obituarioPoemTemplateId))
-        .get()
+        .where(eq(poemTemplates.id, obituary.obituarioPoemTemplateId)))
     : null;
 
   return { obituary, church, cemetery, wakeRoom, poemTemplate };
@@ -113,7 +106,7 @@ export async function getObituaryWithPlaces(id: string) {
 
 export async function getActivePoemTemplates() {
   const db = getDb();
-  return db
+  return allRows(db
     .select()
     .from(poemTemplates)
     .where(
@@ -121,22 +114,20 @@ export async function getActivePoemTemplates() {
         eq(poemTemplates.funeralHomeId, getFuneralHomeId()),
         eq(poemTemplates.isActive, true),
       ),
-    )
-    .all();
+    ));
 }
 
 export async function getAllPoemTemplates() {
   const db = getDb();
-  return db
+  return allRows(db
     .select()
     .from(poemTemplates)
-    .where(eq(poemTemplates.funeralHomeId, getFuneralHomeId()))
-    .all();
+    .where(eq(poemTemplates.funeralHomeId, getFuneralHomeId())));
 }
 
 export async function getPoemTemplateById(id: string) {
   const db = getDb();
-  return db
+  return oneRow(db
     .select()
     .from(poemTemplates)
     .where(
@@ -144,31 +135,28 @@ export async function getPoemTemplateById(id: string) {
         eq(poemTemplates.id, id),
         eq(poemTemplates.funeralHomeId, getFuneralHomeId()),
       ),
-    )
-    .get();
+    ));
 }
 
 export async function getAllObituaries() {
   const db = getDb();
-  return db
+  return allRows(db
     .select()
     .from(obituaries)
-    .where(eq(obituaries.funeralHomeId, getFuneralHomeId()))
-    .all();
+    .where(eq(obituaries.funeralHomeId, getFuneralHomeId())));
 }
 
 export async function getFuneralHomeById(id: string) {
   const db = getDb();
-  return db.select().from(funeralHomes).where(eq(funeralHomes.id, id)).get();
+  return oneRow(db.select().from(funeralHomes).where(eq(funeralHomes.id, id)));
 }
 
 export async function getSiteConfig() {
   const db = getDb();
-  return db
+  return oneRow(db
     .select()
     .from(siteConfig)
-    .where(eq(siteConfig.funeralHomeId, getFuneralHomeId()))
-    .get();
+    .where(eq(siteConfig.funeralHomeId, getFuneralHomeId())));
 }
 
 export async function updateSiteConfig(data: {
@@ -189,7 +177,7 @@ export async function updateSiteConfig(data: {
   const funeralHomeId = getFuneralHomeId();
 
   if (existing) {
-    db.update(siteConfig)
+    await runSql(db.update(siteConfig)
       .set({
         brandName: data.brandName,
         mortuaryDefault: data.mortuaryDefault ?? null,
@@ -203,13 +191,12 @@ export async function updateSiteConfig(data: {
         theme: data.theme,
         ...(data.logoPath !== undefined ? { logoPath: data.logoPath } : {}),
       })
-      .where(eq(siteConfig.id, existing.id))
-      .run();
+      .where(eq(siteConfig.id, existing.id)));
     return existing.id;
   }
 
   const id = `sc-${Date.now()}`;
-  db.insert(siteConfig)
+  await runSql(db.insert(siteConfig)
     .values({
       id,
       funeralHomeId,
@@ -224,14 +211,13 @@ export async function updateSiteConfig(data: {
       },
       theme: data.theme,
       logoPath: data.logoPath ?? null,
-    })
-    .run();
+    }));
   return id;
 }
 
 export async function getPublishedContentSections() {
   const db = getDb();
-  return db
+  return allRows(db
     .select()
     .from(contentSections)
     .where(
@@ -239,13 +225,12 @@ export async function getPublishedContentSections() {
         eq(contentSections.funeralHomeId, getFuneralHomeId()),
         eq(contentSections.isPublished, true),
       ),
-    )
-    .all();
+    ));
 }
 
 export async function getContentSectionByKey(sectionKey: string) {
   const db = getDb();
-  return db
+  return oneRow(db
     .select()
     .from(contentSections)
     .where(
@@ -253,17 +238,15 @@ export async function getContentSectionByKey(sectionKey: string) {
         eq(contentSections.funeralHomeId, getFuneralHomeId()),
         eq(contentSections.sectionKey, sectionKey),
       ),
-    )
-    .get();
+    ));
 }
 
 export async function getAllContentSectionsForAdmin() {
   const db = getDb();
-  return db
+  return allRows(db
     .select()
     .from(contentSections)
-    .where(eq(contentSections.funeralHomeId, getFuneralHomeId()))
-    .all();
+    .where(eq(contentSections.funeralHomeId, getFuneralHomeId())));
 }
 
 export async function upsertContentSection(
@@ -276,10 +259,9 @@ export async function upsertContentSection(
   const funeralHomeId = getFuneralHomeId();
 
   if (existing) {
-    db.update(contentSections)
+    await runSql(db.update(contentSections)
       .set({ contentI18n, isPublished })
-      .where(eq(contentSections.id, existing.id))
-      .run();
+      .where(eq(contentSections.id, existing.id)));
     return existing.id;
   }
 
@@ -294,7 +276,7 @@ export async function upsertContentSection(
   };
 
   const id = `cs-${sectionKey}`;
-  db.insert(contentSections)
+  await runSql(db.insert(contentSections)
     .values({
       id,
       funeralHomeId,
@@ -302,8 +284,7 @@ export async function upsertContentSection(
       contentI18n,
       isPublished,
       sortOrder: sortOrderMap[sectionKey] ?? 99,
-    })
-    .run();
+    }));
   return id;
 }
 
@@ -320,7 +301,7 @@ export async function getHomeContentSections() {
 
 export async function getActiveWakeRooms() {
   const db = getDb();
-  return db
+  return allRows(db
     .select()
     .from(wakeRooms)
     .where(
@@ -328,68 +309,61 @@ export async function getActiveWakeRooms() {
         eq(wakeRooms.funeralHomeId, getFuneralHomeId()),
         eq(wakeRooms.isActive, true),
       ),
-    )
-    .all();
+    ));
 }
 
 export async function getAllWakeRooms() {
   const db = getDb();
-  return db
+  return allRows(db
     .select()
     .from(wakeRooms)
-    .where(eq(wakeRooms.funeralHomeId, getFuneralHomeId()))
-    .all();
+    .where(eq(wakeRooms.funeralHomeId, getFuneralHomeId())));
 }
 
 export async function getWakeRoomById(id: string) {
   const db = getDb();
-  return db
+  return oneRow(db
     .select()
     .from(wakeRooms)
     .where(
       and(eq(wakeRooms.id, id), eq(wakeRooms.funeralHomeId, getFuneralHomeId())),
-    )
-    .get();
+    ));
 }
 
 export async function getAllChurches() {
   const db = getDb();
-  return db
+  return allRows(db
     .select()
     .from(churches)
-    .where(eq(churches.funeralHomeId, getFuneralHomeId()))
-    .all();
+    .where(eq(churches.funeralHomeId, getFuneralHomeId())));
 }
 
 export async function getChurchById(id: string) {
   const db = getDb();
-  return db
+  return oneRow(db
     .select()
     .from(churches)
     .where(
       and(eq(churches.id, id), eq(churches.funeralHomeId, getFuneralHomeId())),
-    )
-    .get();
+    ));
 }
 
 export async function getAllCemeteries() {
   const db = getDb();
-  return db
+  return allRows(db
     .select()
     .from(cemeteries)
-    .where(eq(cemeteries.funeralHomeId, getFuneralHomeId()))
-    .all();
+    .where(eq(cemeteries.funeralHomeId, getFuneralHomeId())));
 }
 
 export async function getCemeteryById(id: string) {
   const db = getDb();
-  return db
+  return oneRow(db
     .select()
     .from(cemeteries)
     .where(
       and(eq(cemeteries.id, id), eq(cemeteries.funeralHomeId, getFuneralHomeId())),
-    )
-    .get();
+    ));
 }
 
 export async function slugExists(
@@ -437,12 +411,11 @@ export async function getCommemorativeMessagesByObituaryId(obituaryId: string) {
   if (!obituary) return [];
 
   const db = getDb();
-  return db
+  return allRows(db
     .select()
     .from(commemorativeMessages)
     .where(eq(commemorativeMessages.obituaryId, obituaryId))
-    .orderBy(desc(commemorativeMessages.createdAt))
-    .all();
+    .orderBy(desc(commemorativeMessages.createdAt)));
 }
 
 export async function insertCommemorativeMessage(
@@ -462,7 +435,7 @@ export async function insertCommemorativeMessage(
   const id = `msg-${Date.now()}`;
   const createdAt = new Date().toISOString();
 
-  getDb()
+  await runSql(getDb()
     .insert(commemorativeMessages)
     .values({
       id,
@@ -470,10 +443,9 @@ export async function insertCommemorativeMessage(
       senderName: input.senderName,
       messageText: input.messageText,
       createdAt,
-    })
-    .run();
+    }));
 
-  return { ok: true as const, id };
+  return oneRow({ ok: true as const, id };
 }
 
 export async function getCommemorativeMessageByIdForTenant(id: string) {
@@ -485,8 +457,7 @@ export async function getCommemorativeMessageByIdForTenant(id: string) {
     })
     .from(commemorativeMessages)
     .innerJoin(obituaries, eq(commemorativeMessages.obituaryId, obituaries.id))
-    .where(eq(commemorativeMessages.id, id))
-    .get();
+    .where(eq(commemorativeMessages.id, id)));
 
   if (!row || row.funeralHomeId !== getFuneralHomeId()) return null;
   return row.message;
@@ -501,13 +472,12 @@ export async function updateCommemorativeMessageReviewed(
     return { ok: false as const, error: "NOT_FOUND" as const };
   }
 
-  getDb()
+  await runSql(getDb()
     .update(commemorativeMessages)
     .set({ reviewed })
-    .where(eq(commemorativeMessages.id, id))
-    .run();
+    .where(eq(commemorativeMessages.id, id)));
 
-  return { ok: true as const };
+  return allRows({ ok: true as const };
 }
 
 export async function countUnreviewedCommemorativeMessages() {
@@ -521,8 +491,7 @@ export async function countUnreviewedCommemorativeMessages() {
         eq(obituaries.funeralHomeId, getFuneralHomeId()),
         eq(commemorativeMessages.reviewed, false),
       ),
-    )
-    .all();
+    ));
   return rows.length;
 }
 
@@ -530,7 +499,7 @@ export async function getAdminPendingStats() {
   const db = getDb();
   const fhId = getFuneralHomeId();
   const [photoRows, messageRows] = await Promise.all([
-    db
+    await runSql(db
       .select({ id: obituaries.id })
       .from(obituaries)
       .where(
@@ -552,7 +521,7 @@ export async function getAdminPendingStats() {
       )
       .all(),
   ]);
-  return {
+  return allRows({
     pendingFamilyPhotos: photoRows.length,
     unreviewedMessages: messageRows.length,
   };
@@ -573,14 +542,13 @@ export async function getUnreviewedMessageCountsByObituary() {
         eq(commemorativeMessages.reviewed, false),
       ),
     )
-    .groupBy(commemorativeMessages.obituaryId)
-    .all();
+    .groupBy(commemorativeMessages.obituaryId));
   return Object.fromEntries(rows.map((r) => [r.obituaryId, r.count]));
 }
 
 export async function getActiveFlowerProducts() {
   const db = getDb();
-  return db
+  return allRows(db
     .select()
     .from(flowerProducts)
     .where(
@@ -589,23 +557,21 @@ export async function getActiveFlowerProducts() {
         eq(flowerProducts.isActive, true),
       ),
     )
-    .orderBy(flowerProducts.sortOrder, flowerProducts.name)
-    .all();
+    .orderBy(flowerProducts.sortOrder, flowerProducts.name));
 }
 
 export async function getAllFlowerProducts() {
   const db = getDb();
-  return db
+  return allRows(db
     .select()
     .from(flowerProducts)
     .where(eq(flowerProducts.funeralHomeId, getFuneralHomeId()))
-    .orderBy(flowerProducts.sortOrder, flowerProducts.name)
-    .all();
+    .orderBy(flowerProducts.sortOrder, flowerProducts.name));
 }
 
 export async function getFlowerProductById(id: string) {
   const db = getDb();
-  return db
+  return oneRow(db
     .select()
     .from(flowerProducts)
     .where(
@@ -613,8 +579,7 @@ export async function getFlowerProductById(id: string) {
         eq(flowerProducts.id, id),
         eq(flowerProducts.funeralHomeId, getFuneralHomeId()),
       ),
-    )
-    .get();
+    ));
 }
 
 export async function getActiveFlowerProductById(id: string) {
@@ -638,7 +603,7 @@ export async function getAllFlowerOrders(filters: FlowerOrderFilters = {}) {
     conditions.push(eq(flowerOrders.obituaryId, filters.obituaryId));
   }
 
-  return db
+  return allRows(db
     .select({
       order: flowerOrders,
       product: flowerProducts,
@@ -648,8 +613,7 @@ export async function getAllFlowerOrders(filters: FlowerOrderFilters = {}) {
     .innerJoin(flowerProducts, eq(flowerOrders.productId, flowerProducts.id))
     .innerJoin(obituaries, eq(flowerOrders.obituaryId, obituaries.id))
     .where(and(...conditions))
-    .orderBy(desc(flowerOrders.createdAt))
-    .all();
+    .orderBy(desc(flowerOrders.createdAt)));
 }
 
 export async function getFlowerOrdersByObituaryId(obituaryId: string) {
@@ -660,7 +624,7 @@ export async function getFlowerOrdersByObituaryId(obituaryId: string) {
 
 export async function getFlowerOrderById(id: string) {
   const db = getDb();
-  return db
+  return oneRow(db
     .select({
       order: flowerOrders,
       product: flowerProducts,
@@ -674,8 +638,7 @@ export async function getFlowerOrderById(id: string) {
         eq(flowerOrders.id, id),
         eq(flowerOrders.funeralHomeId, getFuneralHomeId()),
       ),
-    )
-    .get();
+    ));
 }
 
 export async function insertFlowerOrder(input: FlowerCheckoutInput) {
@@ -717,8 +680,7 @@ export async function insertFlowerOrder(input: FlowerCheckoutInput) {
       totalCents,
       createdAt: now,
       updatedAt: now,
-    })
-    .run();
+    }));
 
   return { ok: true as const, id };
 }
@@ -732,11 +694,10 @@ export async function updateFlowerOrderStatus(
     return { ok: false as const, error: "NOT_FOUND" as const };
   }
 
-  getDb()
+  await runSql(getDb()
     .update(flowerOrders)
     .set({ status, updatedAt: new Date().toISOString() })
-    .where(eq(flowerOrders.id, id))
-    .run();
+    .where(eq(flowerOrders.id, id)));
 
   return { ok: true as const };
 }

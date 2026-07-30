@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { getDb } from "@/lib/db";
+import { runSql } from "@/lib/db/exec";
 import { siteConfig } from "@/lib/db/schema";
 import { getSiteConfig } from "@/lib/db/queries";
 import { getStorage } from "@/lib/storage";
@@ -49,11 +50,10 @@ export async function POST(req: NextRequest) {
 
   const theme = { ...(existing.theme ?? {}), publicLogoPath: publicUrl };
 
-  getDb()
+  await runSql(getDb()
     .update(siteConfig)
     .set({ logoPath: imagePath, theme })
-    .where(eq(siteConfig.id, existing.id))
-    .run();
+    .where(eq(siteConfig.id, existing.id)));
 
   return NextResponse.json({ ok: true, logoPath: imagePath, publicUrl });
 }

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { getDb } from "@/lib/db";
+import { runSql } from "@/lib/db/exec";
 import { obituaries } from "@/lib/db/schema";
 import {
   getObituaryByIdForTenant,
@@ -54,7 +55,7 @@ export async function PUT(req: NextRequest, { params }: RouteContext) {
   }
 
   try {
-    getDb()
+    await runSql(getDb()
       .update(obituaries)
       .set({
         slug,
@@ -76,8 +77,7 @@ export async function PUT(req: NextRequest, { params }: RouteContext) {
         showEpd: data.showEpd ?? true,
         updatedAt: new Date().toISOString(),
       })
-      .where(eq(obituaries.id, id))
-      .run();
+      .where(eq(obituaries.id, id)));
   } catch {
     return NextResponse.json({ error: "CONFLICT" }, { status: 409 });
   }

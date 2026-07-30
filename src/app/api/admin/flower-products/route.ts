@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
+import { runSql } from "@/lib/db/exec";
 import { flowerProducts } from "@/lib/db/schema";
 import { getAllFlowerProducts } from "@/lib/db/queries";
 import {
@@ -27,7 +28,7 @@ export async function POST(req: NextRequest) {
   const id = `flw-${Date.now()}`;
   const now = new Date().toISOString();
 
-  getDb()
+  await runSql(getDb()
     .insert(flowerProducts)
     .values({
       id,
@@ -40,8 +41,7 @@ export async function POST(req: NextRequest) {
       sortOrder: parsed.data.sortOrder,
       createdAt: now,
       updatedAt: now,
-    })
-    .run();
+    }));
 
   return NextResponse.json({ id });
 }

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { getFamilySessionFromCookies } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
+import { oneRow, runSql } from "@/lib/db/exec";
 import { obituaries, poemTemplates } from "@/lib/db/schema";
 
 /** Familiar personalitza l'obituari (poema + text) */
@@ -21,22 +22,20 @@ export async function POST(req: NextRequest) {
     typeof textRaw === "string" ? textRaw.trim() : undefined;
 
   const db = getDb();
-  const existing = db
+  const existing = await oneRow(db
     .select()
     .from(obituaries)
-    .where(eq(obituaries.id, session.obituaryId))
-    .get();
+    .where(eq(obituaries.id, session.obituaryId)));
 
   if (!existing) {
     return NextResponse.json({ error: "NOT_FOUND" }, { status: 404 });
   }
 
   if (obituarioPoemTemplateId) {
-    const template = db
+    const template = await oneRow(db
       .select()
       .from(poemTemplates)
-      .where(eq(poemTemplates.id, obituarioPoemTemplateId))
-      .get();
+      .where(eq(poemTemplates.id, obituarioPoemTemplateId)));
     if (!template?.isActive) {
       return NextResponse.json({ error: "INVALID_POEM" }, { status: 400 });
     }
@@ -51,10 +50,9 @@ export async function POST(req: NextRequest) {
     updates.obituarioText = obituarioText.length > 0 ? obituarioText : null;
   }
 
-  db.update(obituaries)
+  await runSql(db.update(obituaries)
     .set(updates)
-    .where(eq(obituaries.id, session.obituaryId))
-    .run();
+    .where(eq(obituaries.id, session.obituaryId)));
 
   return NextResponse.json({ ok: true });
 }

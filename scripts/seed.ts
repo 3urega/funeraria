@@ -1,6 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
 import { getDb } from "../src/lib/db";
+import { runSql } from "@/lib/db/exec";
 import {
   adminUsers,
   cemeteries,
@@ -36,16 +37,15 @@ async function writePlaceholder(relativePath: string) {
 async function seed() {
   const db = getDb();
 
-  db.insert(funeralHomes)
+  await runSql(db.insert(funeralHomes)
     .values({
       id: FUNERAL_HOME_ID,
       name: BRAND_NAME,
       slug: "pujols",
       createdAt: NOW,
-    })
-    .run();
+    }));
 
-  db.insert(siteConfig)
+  await runSql(db.insert(siteConfig)
     .values({
       id: "sc-001",
       funeralHomeId: FUNERAL_HOME_ID,
@@ -66,14 +66,13 @@ async function seed() {
         publicLogoPath: "/funeraria pujols.png",
       },
       logoPath: "site/logo.png",
-    })
-    .run();
+    }));
 
   const churchId = "church-001";
   const cemeteryId = "cemetery-001";
   const wakeRoomId = "wake-001";
 
-  db.insert(churches)
+  await runSql(db.insert(churches)
     .values({
       id: churchId,
       funeralHomeId: FUNERAL_HOME_ID,
@@ -86,10 +85,9 @@ async function seed() {
       googleMapsUrl:
         "https://www.google.com/maps/search/?api=1&query=42.0492,1.8834",
       imagePath: "places/churches/church-001/photo.png",
-    })
-    .run();
+    }));
 
-  db.insert(cemeteries)
+  await runSql(db.insert(cemeteries)
     .values({
       id: cemeteryId,
       funeralHomeId: FUNERAL_HOME_ID,
@@ -102,10 +100,9 @@ async function seed() {
       googleMapsUrl:
         "https://www.google.com/maps/search/?api=1&query=42.0515,1.8798",
       imagePath: "places/cemeteries/cemetery-001/photo.png",
-    })
-    .run();
+    }));
 
-  db.insert(wakeRooms)
+  await runSql(db.insert(wakeRooms)
     .values({
       id: wakeRoomId,
       funeralHomeId: FUNERAL_HOME_ID,
@@ -120,14 +117,13 @@ async function seed() {
         "https://www.google.com/maps/search/?api=1&query=42.0486,1.8841",
       imagePath: "places/wake-rooms/wake-001/photo.png",
       isActive: true,
-    })
-    .run();
+    }));
 
   const obituaryPublicId = "obi-001";
   const obituaryPrivateId = "obi-002";
   const obituaryDraftId = "obi-003";
 
-  db.insert(poemTemplates)
+  await runSql(db.insert(poemTemplates)
     .values([
       {
         id: "poem-001",
@@ -150,10 +146,9 @@ async function seed() {
         text: "Allà on hi ha un record,\nallà hi ha amor.\nI on hi ha amor, no hi ha mort.",
         isActive: true,
       },
-    ])
-    .run();
+    ]));
 
-  db.insert(obituaries)
+  await runSql(db.insert(obituaries)
     .values([
       {
         id: obituaryPublicId,
@@ -209,10 +204,9 @@ async function seed() {
         createdAt: NOW,
         updatedAt: NOW,
       },
-    ])
-    .run();
+    ]));
 
-  db.insert(commemorativeMessages)
+  await runSql(db.insert(commemorativeMessages)
     .values([
       {
         id: "msg-demo-001",
@@ -231,10 +225,9 @@ async function seed() {
         reviewed: true,
         createdAt: NOW,
       },
-    ])
-    .run();
+    ]));
 
-  db.insert(contentSections)
+  await runSql(db.insert(contentSections)
     .values([
       {
         id: "cs-top-bar",
@@ -295,10 +288,9 @@ async function seed() {
         isPublished: true,
         sortOrder: 6,
       },
-    ])
-    .run();
+    ]));
 
-  db.insert(flowerProducts)
+  await runSql(db.insert(flowerProducts)
     .values([
       {
         id: "flw-001",
@@ -339,17 +331,15 @@ async function seed() {
         createdAt: NOW,
         updatedAt: NOW,
       },
-    ])
-    .run();
+    ]));
 
-  db.insert(adminUsers)
+  await runSql(db.insert(adminUsers)
     .values({
       id: "au-001",
       authUserId: "dev-admin-001",
       funeralHomeId: FUNERAL_HOME_ID,
       role: "admin",
-    })
-    .run();
+    }));
 
   await writePlaceholder("site/logo.png");
   await writePlaceholder("places/churches/church-001/photo.png");
