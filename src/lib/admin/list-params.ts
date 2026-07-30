@@ -4,6 +4,10 @@ import {
   MAX_PAGE_SIZE,
   MIN_PAGE_SIZE,
 } from "@/lib/admin/pagination";
+import {
+  FLOWER_ORDER_STATUSES,
+  type FlowerOrderStatus,
+} from "@/lib/flowers/types";
 
 export type ActiveFilter = true | false | undefined;
 
@@ -254,6 +258,39 @@ export function placeFiltersToQuery(
   return {
     q: params.q,
     active: activeFilterToParam(params.active),
+    pageSize: params.pageSize === 10 ? undefined : params.pageSize,
+  };
+}
+
+export type FlowerOrderListParams = {
+  page: number;
+  pageSize: number;
+  status?: FlowerOrderStatus;
+};
+
+/** Params de `/admin/flores/comandas` des de searchParams. */
+export function parseFlowerOrderListParams(searchParams: {
+  page?: string;
+  pageSize?: string;
+  status?: string;
+}): FlowerOrderListParams {
+  const pageSize = parsePageSizeSearchParam(searchParams.pageSize);
+  const page = parsePageSearchParam(searchParams.page);
+  const statusParam = searchParams.status?.trim();
+  const status =
+    statusParam &&
+    FLOWER_ORDER_STATUSES.includes(statusParam as FlowerOrderStatus)
+      ? (statusParam as FlowerOrderStatus)
+      : undefined;
+  return { page, pageSize, status };
+}
+
+/** Serialitza filtres de comandes per a paginació (sense `page`). */
+export function flowerOrderFiltersToQuery(
+  params: FlowerOrderListParams,
+): Record<string, string | number | undefined | null> {
+  return {
+    status: params.status,
     pageSize: params.pageSize === 10 ? undefined : params.pageSize,
   };
 }

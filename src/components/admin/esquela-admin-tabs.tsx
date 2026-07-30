@@ -5,6 +5,7 @@ import { useState } from "react";
 type Tab = "esquela" | "messages" | "flowers";
 
 type Props = {
+  initialTab?: Tab;
   messageCount: number;
   unreviewedMessageCount: number;
   flowerOrderCount: number;
@@ -13,7 +14,13 @@ type Props = {
   flowersPanel: React.ReactNode;
 };
 
+function parseInitialTab(value: string | undefined): Tab {
+  if (value === "messages" || value === "flowers") return value;
+  return "esquela";
+}
+
 export function EsquelaAdminTabs({
+  initialTab,
   messageCount,
   unreviewedMessageCount,
   flowerOrderCount,
@@ -21,7 +28,7 @@ export function EsquelaAdminTabs({
   messagesPanel,
   flowersPanel,
 }: Props) {
-  const [tab, setTab] = useState<Tab>("esquela");
+  const [tab, setTab] = useState<Tab>(parseInitialTab(initialTab));
 
   const tabClass = (active: boolean) =>
     active

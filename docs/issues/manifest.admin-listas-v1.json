@@ -4,11 +4,6 @@
   "batchName": "admin-listas-v1",
   "issues": [
     {
-      "title": "RD-119: Admin flores catalogo (filtros, paginacion, toggle activo)",
-      "bodyFile": "docs/issues/rd-119-admin-flores-poemas-list.md",
-      "roadmapId": "RD-119"
-    },
-    {
       "title": "RD-120: Admin comandas flores (filtros UI, paginacion, nav)",
       "bodyFile": "docs/issues/rd-120-admin-comandas-flores.md",
       "roadmapId": "RD-120"

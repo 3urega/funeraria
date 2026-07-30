@@ -1,14 +1,59 @@
 import Link from "next/link";
-import { AdminTableHeader } from "@/components/admin/list/admin-table-header";
-import { getAllFlowerProducts } from "@/lib/db/queries";
+import { FlowerProductsTable } from "@/components/admin/flower-products-table";
+import { AdminListToolbar } from "@/components/admin/list/admin-list-toolbar";
+import { AdminPagination } from "@/components/admin/list/admin-pagination";
+import {
+  activeFilterToParam,
+  buildListQueryString,
+  parsePoemListParams,
+} from "@/lib/admin/list-params";
+import { listFlowerProductsPaginated } from "@/lib/db/queries";
 import { getStorage } from "@/lib/storage";
-import { formatPriceCents } from "@/lib/flowers/types";
+import { mediaPublicUrl } from "@/lib/storage/public-url";
 
 export const metadata = { title: "Admin — Flors" };
 
-export default async function AdminFloresPage() {
-  const products = await getAllFlowerProducts();
+type Props = {
+  searchParams: Promise<{ page?: string; pageSize?: string; active?: string }>;
+};
+
+export default async function AdminFloresPage({ searchParams }: Props) {
+  const raw = await searchParams;
+  const params = parsePoemListParams(raw);
+  const result = await listFlowerProductsPaginated(params);
   const storage = getStorage();
+
+  const imageUrls = Object.fromEntries(
+    result.items.map((product) => [
+      product.id,
+      product.imagePath
+        ? mediaPublicUrl(storage, product.imagePath, product.updatedAt)
+        : null,
+    ]),
+  );
+
+  const queryBase = {
+    active: activeFilterToParam(params.active),
+    pageSize: params.pageSize === 10 ? undefined : params.pageSize,
+  };
+
+  const toolbarItems = [
+    {
+      label: "Tots",
+      href: `/admin/flores${buildListQueryString({ ...queryBase, active: undefined, page: undefined })}`,
+      active: params.active === undefined,
+    },
+    {
+      label: "Actius",
+      href: `/admin/flores${buildListQueryString({ ...queryBase, active: "1", page: undefined })}`,
+      active: params.active === true,
+    },
+    {
+      label: "Inactius",
+      href: `/admin/flores${buildListQueryString({ ...queryBase, active: "0", page: undefined })}`,
+      active: params.active === false,
+    },
+  ];
 
   return (
     <div>
@@ -35,66 +80,18 @@ export default async function AdminFloresPage() {
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-lg border">
-        <table className="w-full text-left text-sm">
-          <thead className="bg-zinc-50">
-            <tr>
-              <AdminTableHeader hint="Imatge del producte al catàleg de flors.">
-                Foto
-              </AdminTableHeader>
-              <AdminTableHeader hint="Nom del ram o producte visible per als visitants a l'esquela.">
-                Nom
-              </AdminTableHeader>
-              <AdminTableHeader hint="Preu de venda en la moneda configurada.">
-                Preu
-              </AdminTableHeader>
-              <AdminTableHeader hint="Només els productes actius es mostren al checkout de flors de l'esquela.">
-                Actiu
-              </AdminTableHeader>
-              <AdminTableHeader hint="Ordre de visualització al catàleg (menor número = més amunt).">
-                Ordre
-              </AdminTableHeader>
-              <AdminTableHeader hint="Obrir el formulari d'edició del producte." />
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((product) => (
-              <tr key={product.id} className="border-t">
-                <td className="px-4 py-3">
-                  {product.imagePath ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={storage.getPublicUrl(product.imagePath)}
-                      alt={product.name}
-                      className="h-12 w-12 rounded object-cover"
-                    />
-                  ) : (
-                    "—"
-                  )}
-                </td>
-                <td className="px-4 py-3">{product.name}</td>
-                <td className="px-4 py-3">
-                  {formatPriceCents(product.priceCents, product.currency)}
-                </td>
-                <td className="px-4 py-3">{product.isActive ? "Sí" : "No"}</td>
-                <td className="px-4 py-3">{product.sortOrder}</td>
-                <td className="px-4 py-3 text-right">
-                  <Link
-                    href={`/admin/flores/${product.id}`}
-                    className="text-blue-600 hover:underline"
-                  >
-                    Editar
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <AdminListToolbar items={toolbarItems} ariaLabel="Filtrar productes" />
 
-      {products.length === 0 && (
-        <p className="mt-4 text-zinc-500">Encara no hi ha productes.</p>
-      )}
+      <FlowerProductsTable products={result.items} imageUrls={imageUrls} />
+
+      <AdminPagination
+        basePath="/admin/flores"
+        page={result.page}
+        pageSize={result.pageSize}
+        total={result.total}
+        totalPages={result.totalPages}
+        query={{ active: activeFilterToParam(params.active) }}
+      />
     </div>
   );
 }

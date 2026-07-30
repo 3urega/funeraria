@@ -18,7 +18,10 @@ import { getFuneralHomeId } from "@/lib/site/tenant";
 import { getStorage } from "@/lib/storage";
 import { mediaPublicUrl } from "@/lib/storage/public-url";
 
-type Props = { params: Promise<{ id: string }> };
+type Props = {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ tab?: string }>;
+};
 
 export async function generateMetadata({ params }: Props) {
   const { id } = await params;
@@ -30,8 +33,14 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
-export default async function AdminEditarEsquelaPage({ params }: Props) {
+export default async function AdminEditarEsquelaPage({
+  params,
+  searchParams,
+}: Props) {
   const { id } = await params;
+  const { tab: tabParam } = await searchParams;
+  const initialTab =
+    tabParam === "flowers" || tabParam === "messages" ? tabParam : undefined;
   const obituary = await getObituaryByIdForTenant(id);
   if (!obituary) notFound();
 
@@ -67,6 +76,7 @@ export default async function AdminEditarEsquelaPage({ params }: Props) {
       </div>
 
       <EsquelaAdminTabs
+        initialTab={initialTab}
         messageCount={messages.length}
         unreviewedMessageCount={messages.filter((m) => !m.reviewed).length}
         flowerOrderCount={flowerOrders.length}

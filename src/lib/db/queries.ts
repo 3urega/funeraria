@@ -879,6 +879,54 @@ export async function getActiveFlowerProducts() {
     .orderBy(flowerProducts.sortOrder, flowerProducts.name));
 }
 
+export type FlowerProductListFilters = {
+  page: number;
+  pageSize: number;
+  active?: ActiveFilter;
+};
+
+function flowerProductListConditions(active?: ActiveFilter) {
+  const conditions = [eq(flowerProducts.funeralHomeId, getFuneralHomeId())];
+  if (active === true) {
+    conditions.push(eq(flowerProducts.isActive, true));
+  } else if (active === false) {
+    conditions.push(eq(flowerProducts.isActive, false));
+  }
+  return and(...conditions);
+}
+
+export async function listFlowerProductsPaginated(
+  filters: FlowerProductListFilters,
+): Promise<PaginatedResult<(typeof flowerProducts.$inferSelect)>> {
+  const db = getDb();
+  const where = flowerProductListConditions(filters.active);
+
+  const countRow = await oneRow(
+    db.select({ total: count() }).from(flowerProducts).where(where),
+  );
+  const total = countRow?.total ?? 0;
+  const page = clampPage(filters.page, total, filters.pageSize);
+  const { limit, offset } = toLimitOffset(page, filters.pageSize);
+
+  const items = await allRows(
+    db
+      .select()
+      .from(flowerProducts)
+      .where(where)
+      .orderBy(asc(flowerProducts.sortOrder), asc(flowerProducts.name))
+      .limit(limit)
+      .offset(offset),
+  );
+
+  return {
+    items,
+    total,
+    page,
+    pageSize: filters.pageSize,
+    totalPages: totalPages(total, filters.pageSize),
+  };
+}
+
 export async function getAllFlowerProducts() {
   const db = getDb();
   return allRows(db
@@ -912,8 +960,7 @@ export type FlowerOrderFilters = {
   obituaryId?: string;
 };
 
-export async function getAllFlowerOrders(filters: FlowerOrderFilters = {}) {
-  const db = getDb();
+function flowerOrderListConditions(filters: FlowerOrderFilters = {}) {
   const conditions = [eq(flowerOrders.funeralHomeId, getFuneralHomeId())];
   if (filters.status) {
     conditions.push(eq(flowerOrders.status, filters.status));
@@ -921,6 +968,62 @@ export async function getAllFlowerOrders(filters: FlowerOrderFilters = {}) {
   if (filters.obituaryId) {
     conditions.push(eq(flowerOrders.obituaryId, filters.obituaryId));
   }
+  return and(...conditions);
+}
+
+export type FlowerOrderListFilters = {
+  page: number;
+  pageSize: number;
+  status?: FlowerOrderStatus;
+};
+
+export type FlowerOrderRow = {
+  order: typeof flowerOrders.$inferSelect;
+  product: typeof flowerProducts.$inferSelect;
+  obituary: typeof obituaries.$inferSelect;
+};
+
+export async function listFlowerOrdersPaginated(
+  filters: FlowerOrderListFilters,
+): Promise<PaginatedResult<FlowerOrderRow>> {
+  const db = getDb();
+  const where = flowerOrderListConditions({ status: filters.status });
+
+  const countRow = await oneRow(
+    db.select({ total: count() }).from(flowerOrders).where(where),
+  );
+  const total = countRow?.total ?? 0;
+  const page = clampPage(filters.page, total, filters.pageSize);
+  const { limit, offset } = toLimitOffset(page, filters.pageSize);
+
+  const items = await allRows(
+    db
+      .select({
+        order: flowerOrders,
+        product: flowerProducts,
+        obituary: obituaries,
+      })
+      .from(flowerOrders)
+      .innerJoin(flowerProducts, eq(flowerOrders.productId, flowerProducts.id))
+      .innerJoin(obituaries, eq(flowerOrders.obituaryId, obituaries.id))
+      .where(where)
+      .orderBy(desc(flowerOrders.createdAt))
+      .limit(limit)
+      .offset(offset),
+  );
+
+  return {
+    items,
+    total,
+    page,
+    pageSize: filters.pageSize,
+    totalPages: totalPages(total, filters.pageSize),
+  };
+}
+
+export async function getAllFlowerOrders(filters: FlowerOrderFilters = {}) {
+  const db = getDb();
+  const where = flowerOrderListConditions(filters);
 
   return allRows(db
     .select({
@@ -931,7 +1034,7 @@ export async function getAllFlowerOrders(filters: FlowerOrderFilters = {}) {
     .from(flowerOrders)
     .innerJoin(flowerProducts, eq(flowerOrders.productId, flowerProducts.id))
     .innerJoin(obituaries, eq(flowerOrders.obituaryId, obituaries.id))
-    .where(and(...conditions))
+    .where(where)
     .orderBy(desc(flowerOrders.createdAt)));
 }
 
