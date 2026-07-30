@@ -14,9 +14,36 @@ import {
   unauthorizedAdminResponse,
 } from "@/lib/auth/require-admin";
 import { updateEsquelaSchema } from "@/lib/esquela/admin-schema";
+import { patchObituaryFlagsSchema } from "@/lib/esquela/patch-flags-schema";
 import { slugifyName } from "@/lib/esquela/generate-slug";
 
 type RouteContext = { params: Promise<{ id: string }> };
+
+export async function PATCH(req: NextRequest, { params }: RouteContext) {
+  if (!(await requireAdminSession())) return unauthorizedAdminResponse();
+
+  const { id } = await params;
+  const existing = await getObituaryByIdForTenant(id);
+  if (!existing) {
+    return NextResponse.json({ error: "NOT_FOUND" }, { status: 404 });
+  }
+
+  const json = await req.json().catch(() => null);
+  const parsed = patchObituaryFlagsSchema.safeParse(json);
+  if (!parsed.success) {
+    return NextResponse.json({ error: "INVALID_BODY" }, { status: 400 });
+  }
+
+  await runSql(getDb()
+    .update(obituaries)
+    .set({
+      ...parsed.data,
+      updatedAt: new Date().toISOString(),
+    })
+    .where(eq(obituaries.id, id)));
+
+  return NextResponse.json({ ok: true, id });
+}
 
 export async function PUT(req: NextRequest, { params }: RouteContext) {
   if (!(await requireAdminSession())) return unauthorizedAdminResponse();

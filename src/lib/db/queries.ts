@@ -1,4 +1,4 @@
-import { and, asc, count, desc, eq } from "drizzle-orm";
+import { and, asc, count, desc, eq, exists, inArray, like, or } from "drizzle-orm";
 import type { PaginatedResult } from "@/lib/admin/pagination";
 import {
   clampPage,
@@ -200,6 +200,121 @@ export async function getAllObituaries() {
     .select()
     .from(obituaries)
     .where(eq(obituaries.funeralHomeId, getFuneralHomeId())));
+}
+
+export type ObituaryListFilters = {
+  page: number;
+  pageSize: number;
+  active?: true;
+  visible?: true;
+  ready?: true;
+  photoPending?: true;
+  messagesPending?: true;
+  q?: string;
+};
+
+function obituaryListConditions(filters: Omit<ObituaryListFilters, "page" | "pageSize">) {
+  const db = getDb();
+  const conditions = [eq(obituaries.funeralHomeId, getFuneralHomeId())];
+
+  if (filters.active === true) {
+    conditions.push(eq(obituaries.isActive, true));
+  }
+  if (filters.visible === true) {
+    conditions.push(eq(obituaries.isVisible, true));
+  }
+  if (filters.ready === true) {
+    conditions.push(eq(obituaries.isReady, true));
+  }
+  if (filters.photoPending === true) {
+    conditions.push(eq(obituaries.familyImageStatus, "pending"));
+  }
+  if (filters.messagesPending === true) {
+    conditions.push(
+      exists(
+        db
+          .select({ one: commemorativeMessages.id })
+          .from(commemorativeMessages)
+          .where(
+            and(
+              eq(commemorativeMessages.obituaryId, obituaries.id),
+              eq(commemorativeMessages.reviewed, false),
+            ),
+          ),
+      ),
+    );
+  }
+
+  const q = filters.q?.trim();
+  if (q && q.length >= 1) {
+    const pattern = `%${q}%`;
+    conditions.push(
+      or(
+        like(obituaries.name, pattern),
+        like(obituaries.visitCode, pattern),
+        like(obituaries.expedientCode, pattern),
+      )!,
+    );
+  }
+
+  return and(...conditions);
+}
+
+export async function listObituariesPaginated(
+  filters: ObituaryListFilters,
+): Promise<PaginatedResult<(typeof obituaries.$inferSelect)>> {
+  const db = getDb();
+  const where = obituaryListConditions(filters);
+
+  const countRow = await oneRow(
+    db.select({ total: count() }).from(obituaries).where(where),
+  );
+  const total = countRow?.total ?? 0;
+  const page = clampPage(filters.page, total, filters.pageSize);
+  const { limit, offset } = toLimitOffset(page, filters.pageSize);
+
+  const items = await allRows(
+    db
+      .select()
+      .from(obituaries)
+      .where(where)
+      .orderBy(desc(obituaries.updatedAt))
+      .limit(limit)
+      .offset(offset),
+  );
+
+  return {
+    items,
+    total,
+    page,
+    pageSize: filters.pageSize,
+    totalPages: totalPages(total, filters.pageSize),
+  };
+}
+
+export async function getUnreviewedCountsForObituaryIds(
+  ids: string[],
+): Promise<Record<string, number>> {
+  if (ids.length === 0) return {};
+
+  const db = getDb();
+  const rows = await allRows(
+    db
+      .select({
+        obituaryId: commemorativeMessages.obituaryId,
+        count: count(),
+      })
+      .from(commemorativeMessages)
+      .where(
+        and(
+          eq(commemorativeMessages.reviewed, false),
+          inArray(commemorativeMessages.obituaryId, ids),
+        ),
+      )
+      .groupBy(commemorativeMessages.obituaryId),
+  );
+
+  return Object.fromEntries(rows.map((r) => [r.obituaryId, r.count]));
 }
 
 export async function getFuneralHomeById(id: string) {

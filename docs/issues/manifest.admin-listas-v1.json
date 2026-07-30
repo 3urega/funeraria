@@ -4,11 +4,6 @@
   "batchName": "admin-listas-v1",
   "issues": [
     {
-      "title": "RD-117: Admin esquelas list (filtros, paginacion, toggles inline)",
-      "bodyFile": "docs/issues/rd-117-admin-esquelas-list.md",
-      "roadmapId": "RD-117"
-    },
-    {
       "title": "RD-118: Admin lugares lists (iglesias, cementerios, sales de vetlla)",
       "bodyFile": "docs/issues/rd-118-admin-lugares-list.md",
       "roadmapId": "RD-118"

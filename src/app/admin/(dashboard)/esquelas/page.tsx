@@ -1,23 +1,109 @@
 import Link from "next/link";
+import { EsquelasTable } from "@/components/admin/esquelas-table";
+import { AdminListSearch } from "@/components/admin/list/admin-list-search";
+import { AdminListToolbar } from "@/components/admin/list/admin-list-toolbar";
+import { AdminPagination } from "@/components/admin/list/admin-pagination";
 import {
-  getAllObituaries,
-  getUnreviewedMessageCountsByObituary,
+  booleanOnToParam,
+  buildListQueryString,
+  esquelaFiltersToQuery,
+  esquelaToggleFilterHref,
+  parseEsquelaListParams,
+} from "@/lib/admin/list-params";
+import {
+  getUnreviewedCountsForObituaryIds,
+  listObituariesPaginated,
 } from "@/lib/db/queries";
 
 export const metadata = {
   title: "Admin — Esquelas",
 };
 
-export default async function AdminEsquelasPage() {
-  const [obituaries, unreviewedCounts] = await Promise.all([
-    getAllObituaries(),
-    getUnreviewedMessageCountsByObituary(),
-  ]);
+type Props = {
+  searchParams: Promise<{
+    page?: string;
+    pageSize?: string;
+    active?: string;
+    visible?: string;
+    ready?: string;
+    photoPending?: string;
+    messagesPending?: string;
+    q?: string;
+  }>;
+};
+
+const BASE_PATH = "/admin/esquelas";
+
+export default async function AdminEsquelasPage({ searchParams }: Props) {
+  const raw = await searchParams;
+  const params = parseEsquelaListParams(raw);
+  const result = await listObituariesPaginated(params);
+  const unreviewedCounts = await getUnreviewedCountsForObituaryIds(
+    result.items.map((o) => o.id),
+  );
+
+  const queryBase = esquelaFiltersToQuery(params);
+  const hasBooleanFilters =
+    params.active === true ||
+    params.visible === true ||
+    params.ready === true ||
+    params.photoPending === true ||
+    params.messagesPending === true;
+
+  const toolbarItems = [
+    {
+      label: "Actives",
+      href: esquelaToggleFilterHref(BASE_PATH, params, "active"),
+      active: params.active === true,
+    },
+    {
+      label: "Visibles",
+      href: esquelaToggleFilterHref(BASE_PATH, params, "visible"),
+      active: params.visible === true,
+    },
+    {
+      label: "Llistes",
+      href: esquelaToggleFilterHref(BASE_PATH, params, "ready"),
+      active: params.ready === true,
+    },
+    {
+      label: "Foto pendent",
+      href: esquelaToggleFilterHref(BASE_PATH, params, "photoPending"),
+      active: params.photoPending === true,
+    },
+    {
+      label: "Missatges pendents",
+      href: esquelaToggleFilterHref(BASE_PATH, params, "messagesPending"),
+      active: params.messagesPending === true,
+    },
+    ...(hasBooleanFilters
+      ? [
+          {
+            label: "Netejar filtres",
+            href: `${BASE_PATH}${buildListQueryString({ q: params.q })}`,
+            active: false,
+          },
+        ]
+      : []),
+  ];
+
+  const searchHiddenParams: Record<string, string | undefined> = {
+    active: booleanOnToParam(params.active),
+    visible: booleanOnToParam(params.visible),
+    ready: booleanOnToParam(params.ready),
+    photoPending: booleanOnToParam(params.photoPending),
+    messagesPending: booleanOnToParam(params.messagesPending),
+  };
 
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Esquelas</h1>
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold">Esquelas</h1>
+          <p className="mt-1 text-sm text-zinc-500">
+            Gestió d&apos;esqueles, codis de visita i estat de publicació.
+          </p>
+        </div>
         <Link
           href="/admin/esquelas/nueva"
           className="rounded-md bg-zinc-900 px-4 py-2 text-sm text-white hover:bg-zinc-800"
@@ -25,83 +111,28 @@ export default async function AdminEsquelasPage() {
           Nova esquela
         </Link>
       </div>
-      <div className="overflow-hidden rounded-lg border">
-        <table className="w-full text-left text-sm">
-          <thead className="bg-zinc-50">
-            <tr>
-              <th className="px-4 py-3 font-medium">Nombre</th>
-              <th className="px-4 py-3 font-medium">Código</th>
-              <th className="px-4 py-3 font-medium">Activa</th>
-              <th className="px-4 py-3 font-medium">Visible</th>
-              <th className="px-4 py-3 font-medium">Lista</th>
-              <th className="px-4 py-3 font-medium">Foto familiar</th>
-              <th className="px-4 py-3 font-medium">Missatges</th>
-              <th className="px-4 py-3 font-medium">Accions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {obituaries.map((o) => {
-              const pendingMessages = unreviewedCounts[o.id] ?? 0;
-              return (
-                <tr key={o.id} className="border-t">
-                  <td className="px-4 py-3">
-                    <Link
-                      href={`/admin/esquelas/${o.id}`}
-                      className="font-medium text-zinc-900 hover:underline"
-                    >
-                      {o.name}
-                    </Link>
-                  </td>
-                  <td className="px-4 py-3 font-mono text-xs">{o.visitCode}</td>
-                  <td className="px-4 py-3">{o.isActive ? "Sí" : "No"}</td>
-                  <td className="px-4 py-3">{o.isVisible ? "Sí" : "No"}</td>
-                  <td className="px-4 py-3">{o.isReady ? "Sí" : "No"}</td>
-                  <td className="px-4 py-3">
-                    {o.familyImageStatus === "pending" ? (
-                      <span className="rounded bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800">
-                        Pendent retocar
-                      </span>
-                    ) : o.familyImageStatus === "rejected" ? (
-                      <span className="rounded bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">
-                        No utilitzable
-                      </span>
-                    ) : (
-                      "—"
-                    )}
-                  </td>
-                  <td className="px-4 py-3">
-                    {pendingMessages > 0 ? (
-                      <span className="rounded bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800">
-                        {pendingMessages} pendent
-                        {pendingMessages === 1 ? "" : "s"}
-                      </span>
-                    ) : (
-                      "—"
-                    )}
-                  </td>
-                  <td className="px-4 py-3">
-                    <Link
-                      href={`/admin/esquelas/${o.id}`}
-                      className="text-sm text-zinc-600 hover:text-zinc-900 hover:underline"
-                    >
-                      Editar
-                    </Link>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-      {obituaries.length === 0 && (
-        <p className="mt-4 text-zinc-500">
-          Sense esquelas.{" "}
-          <Link href="/admin/esquelas/nueva" className="underline">
-            Crear la primera
-          </Link>{" "}
-          o executa <code className="text-xs">npm run db:seed</code>.
-        </p>
-      )}
+
+      <AdminListSearch
+        basePath={BASE_PATH}
+        q={params.q}
+        hiddenParams={searchHiddenParams}
+      />
+
+      <AdminListToolbar items={toolbarItems} ariaLabel="Filtrar esqueles" />
+
+      <EsquelasTable
+        obituaries={result.items}
+        unreviewedCounts={unreviewedCounts}
+      />
+
+      <AdminPagination
+        basePath={BASE_PATH}
+        page={result.page}
+        pageSize={result.pageSize}
+        total={result.total}
+        totalPages={result.totalPages}
+        query={queryBase}
+      />
     </div>
   );
 }
