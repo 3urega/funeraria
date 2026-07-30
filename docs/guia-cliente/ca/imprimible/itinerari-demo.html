@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Itinerari de demo — Guia funerària (imprimible)</title>
+  <link rel="stylesheet" href="_estils-impressio.css">
+</head>
+<body class="pagina-guia" data-slug="itinerari-demo">
+  <p class="no-print enllac-index"><a href="index.html">← Tornar a l'índex</a></p>
+  <header class="capcalera-doc">
+    <p class="meta">Guia d'ús — Funerària · Versió imprimible · Català</p>
+    <h1 class="titol-portada">Itinerari de demo</h1>
+  </header>
+  <main class="contingut">
+<p>Guia per fer una <strong>demostració en viu</strong> de la web juntament amb el client (empleats de la funerària). Durada orientativa: <strong>45–60 minuts</strong>.</p>
+<hr class="separador">
+<h2>Objectiu de la sessió</h2>
+<p>En acabar, el client ha de haver vist <strong>de punta a punta</strong>:</p>
+<ol>
+<li>Com entra un empleat al panell.</li>
+<li>Com es crea (o revisa) un lloc i una esquela.</li>
+<li>Com es publica a la web pública.</li>
+<li>Com accedeix un familiar amb codi.</li>
+<li>Què ve un visitant (mapes, flors, missatge).</li>
+</ol>
+<p>No cal ensenyar <strong>tot</strong> l'admin en una sola sessió; el secundari (CMS home, poemes, catàleg flors) es pot mencionar o deixar per a una segona reunió.</p>
+<hr class="separador">
+<h2>Abans de la reunió (facilitador)</h2>
+<h3>Checklist tècnic</h3>
+<ul>
+<li>[ ] Web accessible (local, staging o producció).</li>
+<li>[ ] Credencials <strong>admin</strong> preparades (no les de demo pública si és entorn real).</li>
+<li>[ ] Una <strong>foto de prova</strong> a l'ordinador (JPG/PNG, < 5 MB) per pujar a l'esquela.</li>
+<li>[ ] Navegador en pantalla gran o projector; tancar pestanyes irrellevants.</li>
+<li>[ ] Provar un cop el flux complet <strong>la vigília</strong> (login → crear esquela → veure a web).</li>
+</ul>
+<h3>URLs i credencials (entorn local d'exemple)</h3>
+<table>
+<thead><tr>
+<th>Què</th>
+<th>Valor</th>
+</tr></thead><tbody>
+<tr>
+<td>Web pública</td>
+<td><code>http://localhost:3000</code></td>
+</tr>
+<tr>
+<td>Admin</td>
+<td><code>http://localhost:3000/admin</code></td>
+</tr>
+<tr>
+<td>Admin email</td>
+<td><code>admin@local.dev</code></td>
+</tr>
+<tr>
+<td>Admin contrasenya</td>
+<td><code>admin123</code></td>
+</tr>
+<tr>
+<td>Esquela demo existent</td>
+<td><code>/esquelas/ramon-sant-torner</code></td>
+</tr>
+<tr>
+<td>Codi familiar demo</td>
+<td><code>DEMO1234</code></td>
+</tr>
+</tbody></table>
+<p>En <strong>staging/producció</strong>, substituir per l'URL i credencials reals (DEPLOY_STAGING.md).</p>
+<h3>Persona fictícia per a la demo en viu</h3>
+<p>Crearem una esquela nova per no barrejar amb la demo Ramon:</p>
+<table>
+<thead><tr>
+<th>Camp</th>
+<th>Valor suggerit</th>
+</tr></thead><tbody>
+<tr>
+<td>Nom</td>
+<td><code>MARIA GARCIA SOLER</code></td>
+</tr>
+<tr>
+<td>Lloc defunció</td>
+<td><code>Gironella</code></td>
+</tr>
+<tr>
+<td>Dia</td>
+<td><code>15</code></td>
+</tr>
+<tr>
+<td>Edat</td>
+<td><code>82</code></td>
+</tr>
+<tr>
+<td>Funeral</td>
+<td><code>dijous dia 18 a les 12:00</code></td>
+</tr>
+<tr>
+<td>Horari vetlla</td>
+<td><code>Dimecres de 16:00 a 20:00</code></td>
+</tr>
+<tr>
+<td>Codi familiar</td>
+<td><code>DEMOMAR1</code> (o prémer <strong>Generar</strong>)</td>
+</tr>
+<tr>
+<td>Slug</td>
+<td><code>maria-garcia-soler</code> (s'autogenera)</td>
+</tr>
+</tbody></table>
+<hr class="separador">
+<h2>Guió per al facilitador (què dir)</h2>
+<p>Fes frases curtes. Para després de cada bloc per preguntar: *«Us encaixa així?»* / *«Ho veieu clar?»*</p>
+<hr class="separador">
+<h3>Bloc 0 — Benvinguda (3 min)</h3>
+<p><strong>Dir:</strong>  </p>
+<p>«Avui recorrerem la web com la veurien tres persones diferents: el visitant del carrer, l'empleat de la funerària i la família del difunt. Al final haurem creat una esquela de prova i la veurem publicada.»</p>
+<p><strong>Mostrar:</strong> home pública (<code>/</code>).</p>
+<p><strong>Assenyalar:</strong> logo, telèfon, bloc d'esqueles recents, menú (Esqueles, Sales de vetlla, Accés familiars).</p>
+<p><strong>Opcional:</strong> canviar idioma Català / Castellà.</p>
+<p>→ Guia: Web pública</p>
+<hr class="separador">
+<h3>Bloc 1 — Visitant: esquela ja publicada (5 min)</h3>
+<p><strong>Dir:</strong>  </p>
+<p>«Aquesta esquela ja és al sistema de demo. Així la veu qualsevol persona sense contrasenya.»</p>
+<ol>
+<li>Menú → <strong>Esqueles</strong>.</li>
+<li>Obrir <strong>Ramon Sant Torner</strong> (o la que existeixi).</li>
+<li>Baixar a poc a poc: esquela impresa → mapes → flors → missatge conmemoratiu.</li>
+</ol>
+<p><strong>Explicar:</strong></p>
+<ul>
+<li>L'esquela formal la prepareu vosaltres; l'obituari poètic el pot escriure la família.</li>
+<li>Els missatges <strong>no es publiquen</strong> a internet; arriben a l'empleat per a la família.</li>
+<li>Les flors es demanen des d'aquí (catàleg ja carregat a la demo).</li>
+</ul>
+<p><strong>No fer</strong> compra real ni enviar missatge si no voleu dades brossa a la BD (o fer-ho com a demo i esborrar-ho després).</p>
+<p>→ Guies: Web pública · Flors</p>
+<hr class="separador">
+<h3>Bloc 2 — Entrar a l'admin (3 min)</h3>
+<p><strong>Dir:</strong>  </p>
+<p>«Ara canviem de rol: entrem al panell privat, només per a empleats.»</p>
+<ol>
+<li>Obrir <strong><code>/admin</code></strong> a la mateixa finestra o pestanya nova.</li>
+<li>Email + contrasenya → <strong>Entrar</strong>.</li>
+<li>Mostrar <strong>Dashboard</strong>: total esqueles, actives, públiques; avisos grocs (fotos / missatges pendents).</li>
+</ol>
+<p><strong>Dir:</strong>  </p>
+<p>«Des d'aquí veieu d'un cop d'ull si hi ha fotos de familiars per retocar o missatges sense revisar.»</p>
+<p>→ Guia: Accés admin</p>
+<hr class="separador">
+<h3>Bloc 3 — Llocs: catàleg (5 min)</h3>
+<p><strong>Dir:</strong>  </p>
+<p>«Abans de crear una esquela, cal tenir esglésies, cementiris i sales de vetlla al catàleg. A la demo ja n'hi ha; en producció els donareu d'alta un cop.»</p>
+<ol>
+<li>Menú → <strong>Esglésies</strong> → mostrar llistat existent.</li>
+<li><strong>Opció A (ràpida):</strong> només ensenyar un registre ja creat.</li>
+<li><strong>Opció B (completa):</strong> <strong>Nova església</strong> → nom fictici <code>Església de Sant Pere (prova)</code> → ciutat + adreça → <strong>Desar</strong>.</li>
+</ol>
+<p>Repetir menció de <strong>Cementiris</strong> i <strong>Sales de vetlla</strong> (no cal crear els tres si vaeu de pressa).</p>
+<p><strong>Dir:</strong>  </p>
+<p>«Quan ompliu una esquela, només trieu de llistes; no escriviu l'adreça del cementiri cada vegada.»</p>
+<p>→ Guia: Llocs</p>
+<hr class="separador">
+<h3>Bloc 4 — Crear esquela nova (10 min)</h3>
+<p><strong>Dir:</strong>  </p>
+<p>«Aquest és el flux del dia a dia: una esquela nova per a la persona fictícia Maria Garcia.»</p>
+<ol>
+<li>Menú → <strong>Esquelas</strong> → <strong>Nova esquela</strong>.</li>
+<li>Omplir camps amb la taula de Persona fictícia (difunt, funeral, vetlla).</li>
+<li>Triar església, cementiri i sala dels desplegables.</li>
+<li>Secció <strong>Publicació</strong>: - Codi familiar: <code>DEMOMAR1</code> o <strong>Generar</strong>. - Marcar <strong>Activa</strong>, <strong>Visible al llistat públic</strong>, <strong>Esquela completa</strong>.</li>
+<li>Mostrar <strong>vista prèvia</strong> a la dreta mentre escriviu.</li>
+<li><strong>Desar esquela</strong> → torna al llistat.</li>
+</ol>
+<p><strong>Dir:</strong>  </p>
+<p>«La primera vegada no es pot pujar foto fins desar. Entrem un altre cop a editar.»</p>
+<ol>
+<li>Clic a <strong>MARIA GARCIA SOLER</strong> → secció <strong>§ Foto</strong>.</li>
+<li>Triar arxiu → <strong>Pujar foto retocada</strong>.</li>
+<li>Confirmar que la miniatura apareix i la preview s'actualitza.</li>
+</ol>
+<p>→ Guia: Esqueles</p>
+<hr class="separador">
+<h3>Bloc 5 — Comprovar publicació (5 min)</h3>
+<p><strong>Dir:</strong>  </p>
+<p>«Anem a la web pública com si fóssim un veí que busca l'esquela.»</p>
+<ol>
+<li>Menú admin → <strong>← Web pública</strong> (o obrir <code>/</code> en pestanya d'incògnit).</li>
+<li><strong>Esqueles</strong> → buscar targeta <strong>Maria Garcia Soler</strong>.</li>
+<li>Entrar → comprovar foto, textos, mapes.</li>
+</ol>
+<p><strong>Si no apareix:</strong> tornar a l'admin i revisar casella <strong>Visible</strong>.</p>
+<p><strong>Dir:</strong>  </p>
+<p>«Quan desmarqueu Visible, l'esquela deixa de sortir al llistat però l'enllaç directe pot seguir funcionant; en producció ho acordem amb vosaltres.»</p>
+<p>→ Guia: Web pública</p>
+<hr class="separador">
+<h3>Bloc 6 — Zona familiar (8 min)</h3>
+<p><strong>Dir:</strong>  </p>
+<p>«La família no entra a l'admin. Només té un codi que vosaltres li dieu.»</p>
+<ol>
+<li>Pestanya d'incògnit o un altre navegador (simula mòbil de familiar).</li>
+<li>Anar a <strong>Accés familiars</strong> (<code>/acceso</code>).</li>
+<li>Codi <code>DEMOMAR1</code> → Entrar.</li>
+<li>Mostrar <strong>La meva esquela</strong>: esquela + secció foto + obituari.</li>
+</ol>
+<p><strong>Demo opcional — foto familiar:</strong></p>
+<ol>
+<li>Pujar una foto de prova des de la zona familiar.</li>
+<li>Tornar a l'<strong>admin</strong> → editar esquela → requadre groc <strong>Foto pendent del familiar</strong>.</li>
+<li>Explicar flux: descarregar → retocar → <strong>Pujar foto retocada</strong> (no cal completar-ho a la reunió).</li>
+</ol>
+<p><strong>Demo opcional — obituari:</strong></p>
+<ol>
+<li>Triar un poema o escriure text → desar.</li>
+<li>Refrescar esquela pública i mostrar bloc obituari.</li>
+</ol>
+<p>→ Guia: Zona familiar · Poemes</p>
+<hr class="separador">
+<h3>Bloc 7 — Missatges i flors (5 min, opcional)</h3>
+<p><strong>Missatge (visitant):</strong></p>
+<ol>
+<li>A l'esquela pública de Maria, formulari <strong>Deixa un record</strong>.</li>
+<li>Enviar missatge de prova.</li>
+<li>Admin → esquela → pestanya <strong>Missatges</strong> → marcar <strong>Revisat</strong>.</li>
+</ol>
+<p><strong>Flors:</strong></p>
+<ol>
+<li>Mencionar catàleg al menú <strong>Flors</strong> (productes ja a la demo).</li>
+<li>Si hi ha temps: <strong>Comprar</strong> una flor a l'esquela (entorn demo = pagament simulat).</li>
+<li>Admin → pestanya <strong>Flors</strong> de l'esquela o <strong>Comandes</strong>.</li>
+</ol>
+<p>→ Guies: Flors · Esqueles</p>
+<hr class="separador">
+<h3>Bloc 8 — Configuració i home (5 min, opcional)</h3>
+<p><strong>Dir:</strong>  </p>
+<p>«Això no ho canvieu cada dia, però convé saber que existeix.»</p>
+<ol>
+<li><strong>Configuració</strong> → telèfon, email, logo (només mostrar, no canviar a la demo amb client).</li>
+<li><strong>Contingut home</strong> → una secció (Hero) → explicar textos CA/ES.</li>
+</ol>
+<p>→ Guies: Configuració · Contingut home</p>
+<hr class="separador">
+<h3>Bloc 9 — Tancament i feedback (5 min)</h3>
+<p><strong>Repassar amb el client:</strong></p>
+<table>
+<thead><tr>
+<th>Pregunta</th>
+<th>Anotar resposta</th>
+</tr></thead><tbody>
+<tr>
+<td>¿La home encaixa visualment amb el acordat? (RD-050)</td>
+<td></td>
+</tr>
+<tr>
+<td>¿El flux d'esquela és clar per al dia a dia?</td>
+<td></td>
+</tr>
+<tr>
+<td>¿Falta alguna dada o text a la plantilla?</td>
+<td></td>
+</tr>
+<tr>
+<td>¿Qui de l'equip usarà l'admin habitualment?</td>
+<td></td>
+</tr>
+<tr>
+<td>¿Quan voleu URL de staging per validar sols?</td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>Dir:</strong>  </p>
+<p>«Us deixem aquestes guies per escrit i, quan tingueu l'URL de prova a internet, repetiu el mateix recorregut al vostre ritme.»</p>
+<p><strong>Lliurar:</strong> enllaç a <code>docs/guia-cliente/</code> o PDF imprès si el prepareu.</p>
+<hr class="separador">
+<h2>Resum visual del recorregut</h2>
+<pre><code>
+[Visitant] Home → Esquela Ramon (demo existent) ↓
+[Empleat] Admin login → Dashboard ↓
+[Llocs] Esglésies (veure o crear) — mencionar cementiri + sala ↓
+[Esquela] Nova esquela (Maria) → Desar → Foto → Activa + Visible ↓
+[Visitant] Esqueles → Maria publicada ↓
+[Familiar] Accés + codi DEMOMAR1 → foto / obituari (opcional) ↓
+[Empleat] Missatges / Flors (opcional) ↓
+[Tancament] Feedback + propers passos (staging, domini, formació)
+</code></pre>
+<hr class="separador">
+<h2>Pla B — si alguna cosa falla a la reunió</h2>
+<table>
+<thead><tr>
+<th>Problema</th>
+<th>Què fer en viu</th>
+</tr></thead><tbody>
+<tr>
+<td>No carrega la web</td>
+<td>Mostrar captures o repetir en local; ajornar demo tècnica</td>
+</tr>
+<tr>
+<td>Error en crear esquela (llocs)</td>
+<td>Fer servir esquela Ramon ja existent pels blocs 5–6</td>
+</tr>
+<tr>
+<td>Foto no puja</td>
+<td>Continuar sense foto; explicar que en producció es revisa mida/format</td>
+</tr>
+<tr>
+<td>Client perdut</td>
+<td>Aturar i preguntar quina part els importa més (esquela vs familiar vs flors)</td>
+</tr>
+</tbody></table>
+<hr class="separador">
+<h2>Segona sessió (si cal)</h2>
+<p>Temes per a una altra cita de 30 min:</p>
+<ul>
+<li>Editar textos de la <strong>home</strong> (validació RD-050 amb mockup).</li>
+<li>Gestionar <strong>comandes de flors</strong> i estats.</li>
+<li><strong>Poemes</strong> i catàleg de flors propi del client.</li>
+<li>Esborrar esquela / lloc de prova creats a la demo.</li>
+</ul>
+<hr class="separador">
+<h2>Neteja post-demo (facilitador)</h2>
+<p>Si la demo va ser en entorn compartit:</p>
+<ul>
+<li>[ ] Esborrar esquela <strong>Maria Garcia Soler</strong> (o marcar no visible).</li>
+<li>[ ] Esborrar església de prova si es va crear.</li>
+<li>[ ] Eliminar missatges/comandes de prova.</li>
+</ul>
+<p>En local: <code>npm run db:reset</code> només si el client no necessita conservar dades.</p>
+  </main>
+  <footer class="peu-doc">
+    <p>Document intern d'ús · Funerària</p>
+  </footer>
+  <p class="no-print instruccions">Prem <kbd>Ctrl</kbd>+<kbd>P</kbd> (o <kbd>⌘</kbd>+<kbd>P</kbd>) per imprimir o desar com a PDF.</p>
+</body>
+</html>

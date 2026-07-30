@@ -1,0 +1,278 @@
+/* Estils per imprimir guies client — català */
+
+:root {
+  --text: #111;
+  --muted: #444;
+  --border: #333;
+  --accent: #1a4d3a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 11pt;
+}
+
+body {
+  margin: 0;
+  padding: 1.2rem 1.5rem 2rem;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  line-height: 1.45;
+  color: var(--text);
+  background: #fff;
+  max-width: 210mm;
+  margin-inline: auto;
+}
+
+h1, h2, h3 {
+  line-height: 1.25;
+  page-break-after: avoid;
+}
+
+h1 {
+  font-size: 1.6rem;
+  margin: 0 0 0.75rem;
+  color: var(--accent);
+}
+
+h2 {
+  font-size: 1.15rem;
+  margin: 1.25rem 0 0.5rem;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0.2rem;
+}
+
+h3 {
+  font-size: 1rem;
+  margin: 1rem 0 0.35rem;
+}
+
+p {
+  margin: 0.4rem 0;
+}
+
+ul, ol {
+  margin: 0.4rem 0 0.6rem;
+  padding-left: 1.4rem;
+}
+
+li {
+  margin: 0.2rem 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.6rem 0 1rem;
+  font-size: 0.95rem;
+  page-break-inside: avoid;
+}
+
+th, td {
+  border: 1px solid var(--border);
+  padding: 0.35rem 0.5rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background: #f0f0f0;
+  font-weight: 600;
+}
+
+code, kbd {
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 0.9em;
+  background: #f4f4f4;
+  padding: 0.05rem 0.25rem;
+  border-radius: 2px;
+}
+
+pre {
+  background: #f8f8f8;
+  border: 1px solid #ddd;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.85rem;
+  overflow-x: auto;
+  page-break-inside: avoid;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+}
+
+hr.separador {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 1rem 0;
+}
+
+strong {
+  font-weight: 700;
+}
+
+.meta {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 0 0 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.subtitol {
+  font-size: 1.1rem;
+  color: var(--muted);
+  margin-top: 0;
+}
+
+.capcalera-doc {
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--accent);
+}
+
+.peu-doc {
+  margin-top: 2rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #ccc;
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.instruccions {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1rem;
+  background: #f5f5f5;
+  border: 1px dashed #999;
+  font-size: 0.9rem;
+}
+
+.enllac-index {
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.enllac-index a {
+  color: var(--accent);
+}
+
+/* Portada índex */
+.portada {
+  text-align: center;
+  padding: 2rem 0 1.5rem;
+}
+
+.portada h1 {
+  font-size: 2rem;
+  margin-bottom: 0.25rem;
+}
+
+.instruccions-impressio {
+  background: #f9faf9;
+  border: 1px solid #ddd;
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  border-radius: 4px;
+}
+
+.boto {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  text-decoration: none;
+  border-radius: 4px;
+  font-family: system-ui, sans-serif;
+  font-size: 0.95rem;
+}
+
+.boto-principal {
+  background: var(--accent);
+  color: #fff !important;
+}
+
+.llista-guies ol {
+  font-size: 1.05rem;
+}
+
+.llista-guies a {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.hint {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.resum-index {
+  margin-top: 2rem;
+}
+
+.index-complet {
+  text-align: left;
+  display: inline-block;
+  margin: 1.5rem auto;
+}
+
+.capcalera-seccio {
+  margin-bottom: 0.75rem;
+}
+
+.capcalera-seccio h1 {
+  margin-top: 0;
+}
+
+/* Impressió */
+@media print {
+  body {
+    padding: 0;
+    max-width: none;
+    font-size: 10.5pt;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .salt-pagina {
+    page-break-before: always;
+  }
+
+  .salt-pagina-despres {
+    page-break-after: always;
+  }
+
+  h2, h3 {
+    page-break-after: avoid;
+  }
+
+  table, pre, ul, ol {
+    page-break-inside: avoid;
+  }
+
+  .peu-doc {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-top: none;
+  }
+
+  .pagina-guia .peu-doc,
+  .pagina-completa > .peu-doc:last-of-type {
+    position: static;
+  }
+}
+
+@page {
+  size: A4;
+  margin: 15mm 14mm 18mm;
+}

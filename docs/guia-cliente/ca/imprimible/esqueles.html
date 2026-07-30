@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Esqueles — Guia funerària (imprimible)</title>
+  <link rel="stylesheet" href="_estils-impressio.css">
+</head>
+<body class="pagina-guia" data-slug="esqueles">
+  <p class="no-print enllac-index"><a href="index.html">← Tornar a l'índex</a></p>
+  <header class="capcalera-doc">
+    <p class="meta">Guia d'ús — Funerària · Versió imprimible · Català</p>
+    <h1 class="titol-portada">Esqueles</h1>
+  </header>
+  <main class="contingut">
+<h2>Per a què serveix</h2>
+<p>Aquí prepares l'<strong>esquela</strong> de cada difunt: textos, església, cementiri, foto, codi per a la família i publicació a la web.</p>
+<p><strong>Important:</strong> abans de la primera esquela, has de tenir com a mínim <strong>una església, un cementiri i una sala de vetlla</strong> al catàleg. Si no, vegeu Llocs.</p>
+<hr class="separador">
+<h2>1. Veure totes les esqueles</h2>
+<ol>
+<li>Entra al panell (Accés admin).</li>
+<li>Al menú esquerre, prem <strong>«Esquelas»</strong>.</li>
+<li>Veuràs una <strong>taula</strong> amb columnes: nom, codi, activa, visible, foto familiar, missatges, etc.</li>
+<li>Per <strong>editar</strong> una esquela, prem sobre el <strong>nom</strong> del difunt.</li>
+</ol>
+<p>Al <strong>Dashboard</strong> també veuràs avisos grocs si hi ha <strong>fotos de familiars pendents</strong> o <strong>missatges sense revisar</strong>.</p>
+<hr class="separador">
+<h2>2. Crear una esquela nova</h2>
+<ol>
+<li>Menú <strong>Esquelas</strong> → botó <strong>«Nova esquela»</strong> (a dalt a la dreta).</li>
+<li>Omple el formulari de l'<strong>esquerra</strong>. A la <strong>dreta</strong> veus una <strong>vista prèvia</strong> de com quedarà.</li>
+</ol>
+<h3>Dades del difunt</h3>
+<table>
+<thead><tr>
+<th>Camp</th>
+<th>Què posar (exemple)</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Nom complet</strong></td>
+<td>Nom en majúscules: <code>RAMON SANT TORNER</code></td>
+</tr>
+<tr>
+<td><strong>Lloc de defunció</strong></td>
+<td>Ciutat: <code>Berga</code></td>
+</tr>
+<tr>
+<td><strong>Dia</strong></td>
+<td>Dia del defunció: <code>1</code></td>
+</tr>
+<tr>
+<td><strong>Edat</strong></td>
+<td>Edat: <code>75</code></td>
+</tr>
+</tbody></table>
+<h3>Funeral</h3>
+<table>
+<thead><tr>
+<th>Camp</th>
+<th>Què posar</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Data i hora del funeral</strong></td>
+<td>Text lliure: <code>dimarts dia 3 a les 11:00</code></td>
+</tr>
+<tr>
+<td><strong>Església</strong></td>
+<td>Tria de la llista desplegable</td>
+</tr>
+<tr>
+<td><strong>Cementiri</strong></td>
+<td>Tria de la llista desplegable</td>
+</tr>
+</tbody></table>
+<h3>Vetlla</h3>
+<table>
+<thead><tr>
+<th>Camp</th>
+<th>Què posar</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Sala de vetlla</strong></td>
+<td>Tria de la llista</td>
+</tr>
+<tr>
+<td><strong>Horari de vetlla</strong></td>
+<td>Exemple: <code>Dilluns de 17:00 a 19:00</code></td>
+</tr>
+<tr>
+<td><strong>Casa mortuòria</strong></td>
+<td>Adreça (sol omplir-se sola amb la de configuració)</td>
+</tr>
+<tr>
+<td><strong>Mostrar «E.P.D.»</strong></td>
+<td>Deixa marcat si vols que surti «E.P.D.» a l'esquela</td>
+</tr>
+</tbody></table>
+<h3>Foto (en esquela nova)</h3>
+<ul>
+<li>La primera vegada <strong>no pots pujar foto</strong>: primer cal <strong>desar</strong> l'esquela.</li>
+<li>Després de desar, entra un altre cop a editar-la (pas 3).</li>
+</ul>
+<h3>Publicació</h3>
+<table>
+<thead><tr>
+<th>Camp</th>
+<th>Significat</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Codi d'accés familiar</strong></td>
+<td>Codi que donaràs a la família (8 caràcters). Prem <strong>«Generar»</strong> si en vols un automàtic. <strong>Anota'l</strong> i dona'l al familiar.</td>
+</tr>
+<tr>
+<td><strong>Slug URL</strong></td>
+<td>Part de l'adreça web (exemple: <code>ramon-sant-torner</code>). Es genera sol del nom; no cal tocar-lo llevat que hi hagi conflicte.</td>
+</tr>
+<tr>
+<td><strong>Codi d'expedient</strong></td>
+<td>Opcional, per a ús intern</td>
+</tr>
+<tr>
+<td><strong>Activa (familiar pot accedir amb codi)</strong></td>
+<td>✅ = la família pot entrar amb el codi</td>
+</tr>
+<tr>
+<td><strong>Visible al llistat públic</strong></td>
+<td>✅ = apareix a <code>/esquelas</code> i a la home</td>
+</tr>
+<tr>
+<td><strong>Esquela completa</strong></td>
+<td>✅ = marques que ja està acabada (control intern)</td>
+</tr>
+</tbody></table>
+<ol>
+<li>Prem <strong>«Desar esquela»</strong> a baix.</li>
+<li>Tornaràs al llistat. <strong>Entra un altre cop</strong> a l'esquela per pujar la foto.</li>
+</ol>
+<hr class="separador">
+<h2>3. Pujar o canviar la foto de l'esquela</h2>
+<p>*(Només en <strong>editar</strong> esquela, secció <strong>§ Foto</strong>)*</p>
+<h3>Opció A — Escaneig o foto ja retocada (empleat)</h3>
+<ol>
+<li>A <strong>§ Foto</strong>, prem <strong>«Escollir fitxer»</strong> / <strong>Examinar</strong> i tria la imatge de l'ordinador (JPG, PNG o WebP; màxim 5 MB).</li>
+<li>Prem <strong>«Pujar foto retocada»</strong>.</li>
+<li>Veuràs la <strong>foto publicada</strong> en miniatura. Aquesta és la que veuen família i visitants.</li>
+</ol>
+<h3>Opció B — Foto enviada pel familiar</h3>
+<p>Si el familiar ha pujat una foto des de la seva zona privada:</p>
+<ol>
+<li>Apareix un requadre <strong>groc</strong>: «Foto pendent del familiar».</li>
+<li>Prem <strong>«Descarregar per retocar»</strong> i obre-la al teu programa de retoc.</li>
+<li>Retoca la foto <strong>fora</strong> de la web.</li>
+<li>Puja la versió retocada amb <strong>«Pujar foto retocada»</strong> (com opció A).</li>
+<li><strong>Mai</strong> es publica la foto original del familiar sense retocar.</li>
+</ol>
+<p>Si la foto no serveix:</p>
+<ul>
+<li>Prem <strong>«Rebutjar foto»</strong>. El familiar podrà enviar-ne una altra.</li>
+</ul>
+<hr class="separador">
+<h2>4. Missatges conmemoratius (visitants)</h2>
+<p>Els visitants poden deixar un missatge <strong> privat</strong> per a la família (no es publica a la web).</p>
+<ol>
+<li>Obre l'esquela → pestanya <strong>«Missatges»</strong> (a dalt).</li>
+<li>Llegeix cada missatge (nom + text).</li>
+<li>Marca <strong>«Revisat»</strong> quan la família ja l'hagi vist o anotat.</li>
+<li>Pots filtrar només els no revisats.</li>
+</ol>
+<hr class="separador">
+<h2>5. Comandes de flors d'aquesta esquela</h2>
+<ol>
+<li>Obre l'esquela → pestanya <strong>«Flors»</strong> (a dalt).</li>
+<li>Veuràs comandes: producte, dedicatòria, comprador, estat.</li>
+<li>Per veure <strong>totes</strong> les comandes de la funerària: menú <strong>Flors</strong> → enllaç a comandes (vegeu Flors).</li>
+</ol>
+<hr class="separador">
+<h2>6. Com comprovar que l'esquela és a la web</h2>
+<ol>
+<li>Menú <strong>«← Web pública»</strong> (a baix del menú admin).</li>
+<li>Prem <strong>«Esqueles»</strong> a la web.</li>
+<li>Si has marcat <strong>Visible</strong>, ha d'aparèixer la targeta del difunt.</li>
+<li>Prem la targeta: veuràs l'esquela completa, mapes, flors i formulari de missatge.</li>
+</ol>
+<p>També pots obrir directament (substitueix l'adreça base):</p>
+<p><code>https://LA-TEVA-WEB/esquelas/nom-del-slug</code></p>
+<p>Exemple demo local: <code>/esquelas/ramon-sant-torner</code></p>
+<hr class="separador">
+<h2>7. Resum ràpid del dia a dia</h2>
+<pre><code>
+Crear esquela → Desar → Pujar foto retocada
+→ Marcar Activa + Visible → Donar codi a la família
+→ Revisar foto pendent / missatges al Dashboard
+→ Comprovar a web pública
+</code></pre>
+<hr class="separador">
+<h2>Problemes freqüents</h2>
+<table>
+<thead><tr>
+<th>Problema</th>
+<th>Solució</th>
+</tr></thead><tbody>
+<tr>
+<td>No deixa desar: avís groc de llocs</td>
+<td>Crea església, cementiri i sala a Llocs</td>
+</tr>
+<tr>
+<td>Slug o codi duplicat</td>
+<td>Canvia el codi o el slug manualment</td>
+</tr>
+<tr>
+<td>La família no entra</td>
+<td>Comprova que <strong>Activa</strong> estigui marcada i el codi sigui correcte</td>
+</tr>
+<tr>
+<td>No surt al llistat públic</td>
+<td>Marca <strong>Visible al llistat públic</strong></td>
+</tr>
+<tr>
+<td>Error en pujar foto</td>
+<td>Fes servir JPG/PNG/WebP i menys de 5 MB</td>
+</tr>
+</tbody></table>
+<hr class="separador">
+<h2>Següent lectura</h2>
+<ul>
+<li>Zona familiar — què fa la família amb el codi  </li>
+<li>Web pública — què veuen els visitants</li>
+</ul>
+  </main>
+  <footer class="peu-doc">
+    <p>Document intern d'ús · Funerària</p>
+  </footer>
+  <p class="no-print instruccions">Prem <kbd>Ctrl</kbd>+<kbd>P</kbd> (o <kbd>⌘</kbd>+<kbd>P</kbd>) per imprimir o desar com a PDF.</p>
+</body>
+</html>

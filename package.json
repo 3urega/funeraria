@@ -15,7 +15,8 @@
     "db:push:staging": "drizzle-kit push --config drizzle.config.prod.ts",
     "db:seed:staging": "tsx --env-file=.env.staging scripts/seed.ts",
     "db:setup:staging": "tsx --env-file=.env.staging scripts/setup-staging-db.ts",
-    "storage:clean": "tsx scripts/clean-storage.ts"
+    "storage:clean": "tsx scripts/clean-storage.ts",
+    "guia:imprimible:ca": "node scripts/build-guia-imprimible-ca.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.111.0",

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Web pública — Guia funerària (imprimible)</title>
+  <link rel="stylesheet" href="_estils-impressio.css">
+</head>
+<body class="pagina-guia" data-slug="web-publica">
+  <p class="no-print enllac-index"><a href="index.html">← Tornar a l'índex</a></p>
+  <header class="capcalera-doc">
+    <p class="meta">Guia d'ús — Funerària · Versió imprimible · Català</p>
+    <h1 class="titol-portada">Web pública</h1>
+  </header>
+  <main class="contingut">
+<h2>Per a què serveix aquesta guia</h2>
+<p>Explica què pot fer <strong>qualsevol persona</strong> que entra a la web <strong>sense</strong> ser empleat ni familiar. Útil per a formació interna i per respondre dubtes de clients.</p>
+<hr class="separador">
+<h2>Pàgina d'inici</h2>
+<p><strong>Adreça:</strong> l'arrel del lloc (exemple: <code>www.pujols.cat</code>).</p>
+<p>El visitant veu:</p>
+<ul>
+<li>Nom i logo de la funerària.</li>
+<li>Titular i textos de serveis (editables a Contingut home).</li>
+<li><strong>Esqueles recents</strong> — targetes de difunts amb esquela <strong>visible</strong>.</li>
+<li>Telèfon i enllaços del peu de pàgina (Configuració).</li>
+</ul>
+<p>Pot canviar idioma <strong>Català / Castellà</strong> a dalt a la dreta.</p>
+<hr class="separador">
+<h2>Llistat d'esqueles</h2>
+<ol>
+<li>Menú → <strong>Esqueles</strong>.</li>
+<li>Llista de targetes de difunts <strong>visibles</strong>.</li>
+<li>Prem una targeta → pàgina del difunt.</li>
+</ol>
+<p>Només apareixen esqueles amb <strong>Visible</strong> marcat a l'admin (Esqueles).</p>
+<hr class="separador">
+<h2>Pàgina d'una esquela (detall)</h2>
+<p>El visitant veu, de dalt a baix:</p>
+<h3>1. Esquela impresa (format formal)</h3>
+<ul>
+<li>Nom del difunt, edat, lloc i dia de defunció.</li>
+<li>Data/hora del funeral, església.</li>
+<li>Vetlla, casa mortuòria.</li>
+<li><strong>E.P.D.</strong> si està activat.</li>
+<li><strong>Foto</strong> només si l'empleat ha publicat una (retocada).</li>
+</ul>
+<h3>2. Obituari (si n'hi ha)</h3>
+<ul>
+<li>Bloc <strong>separat</strong> amb text poètic.</li>
+<li>L'escriu el <strong>familiar</strong> des de la seva zona privada; el visitant només el llegeix.</li>
+</ul>
+<h3>3. Llocs / mapes</h3>
+<ul>
+<li>Targetes d'<strong>església</strong> i <strong>cementiri</strong>.</li>
+<li>Botó <strong>«Com arribar (Google Maps)»</strong> → obre Google Maps.</li>
+</ul>
+<h3>4. Compra de flors</h3>
+<ul>
+<li>Catàleg amb foto i preu (Flors).</li>
+<li>Botó <strong>Comprar</strong> → formulari: - Dedicatòria (obligatòria) - Nom, email, telèfon del comprador</li>
+<li>Després de confirmar, la comanda arriba a l'admin.</li>
+</ul>
+<h3>5. Missatge conmemoratiu</h3>
+<ul>
+<li>Formulari: <strong>nom</strong> + <strong>missatge</strong>.</li>
+<li><strong>No es publica a la web.</strong></li>
+<li>El rep la família a la sala de vetlla; l'empleat el revisa a l'admin (Esqueles → pestanya Missatges).</li>
+</ul>
+<hr class="separador">
+<h2>Sales de vetlla</h2>
+<p>Menú → <strong>Sales de vetlla</strong>.</p>
+<ul>
+<li>Informació de les sales actives (nom, foto, text).</li>
+<li>Catàleg gestionat a Llocs.</li>
+</ul>
+<hr class="separador">
+<h2>Accés familiars (menú)</h2>
+<ul>
+<li>Porta a la pantalla de <strong>codi</strong>.</li>
+<li>No és per a visitants generals; vegeu Zona familiar.</li>
+</ul>
+<hr class="separador">
+<h2>Què NO pot fer un visitant</h2>
+<ul>
+<li>Entrar a l'<strong>admin</strong> (<code>/admin</code>) sense usuari i contrasenya d'empleat.</li>
+<li>Veure esqueles <strong>no visibles</strong> (encara que conegui l'adreça, no surten als llistats).</li>
+<li>Publicar missatges a la web (només enviament privat a família).</li>
+<li>Pujar foto a l'esquela pública (només la família envia foto privada; publicació = empleat).</li>
+</ul>
+<hr class="separador">
+<h2>Comprovar que tot funciona (empleat)</h2>
+<table>
+<thead><tr>
+<th>Comprovar</th>
+<th>On</th>
+</tr></thead><tbody>
+<tr>
+<td>Home amb textos correctes</td>
+<td><code>/</code></td>
+</tr>
+<tr>
+<td>Esquela al llistat</td>
+<td><code>/esquelas</code></td>
+</tr>
+<tr>
+<td>Esquela completa</td>
+<td><code>/esquelas/[slug]</code></td>
+</tr>
+<tr>
+<td>Flors i missatge</td>
+<td>Mateixa pàgina, scroll avall</td>
+</tr>
+<tr>
+<td>Sales</td>
+<td><code>/sales-de-vetlla</code></td>
+</tr>
+<tr>
+<td>Accés familiar</td>
+<td><code>/acceso</code> + codi</td>
+</tr>
+</tbody></table>
+<p>Des de l'admin: enllaç <strong>«← Web pública»</strong> obre la home en una altra pestanya.</p>
+<hr class="separador">
+<h2>Mapa ràpid</h2>
+<pre><code>
+Visitant │ ├─ Home ─────────────── textos CMS + esqueles recents ├─ Esqueles ─────────── llistat → detall (mapes, flors, missatge) ├─ Sales de vetlla ──── catàleg sales └─ Accés familiars ── només amb codi (zona privada)
+
+Empleat ──► /admin (panell)
+
+Familiar ──► codi → la meva esquela (foto + obituari)
+</code></pre>
+<hr class="separador">
+<h2>Índex de guies per a empleats</h2>
+<p>Torna al README d'aquesta carpeta.</p>
+  </main>
+  <footer class="peu-doc">
+    <p>Document intern d'ús · Funerària</p>
+  </footer>
+  <p class="no-print instruccions">Prem <kbd>Ctrl</kbd>+<kbd>P</kbd> (o <kbd>⌘</kbd>+<kbd>P</kbd>) per imprimir o desar com a PDF.</p>
+</body>
+</html>

@@ -24,6 +24,8 @@ Aquesta carpeta explica **pas a pas** com utilitzar la web. Està pensada per a 
 | [Contingut de la pàgina d'inici](./contingut-home.md) | Textos i imatges de la home |
 | [Zona familiar (codi d'accés)](./zona-familiar.md) | Què fa el familiar amb el codi — per explicar-li |
 | [Web pública (visitants)](./web-publica.md) | Què ve qui entra sense ser empleat ni familiar |
+| **[Itinerari de demo amb el client](./itinerari-demo.md)** | Sessió en viu 45–60 min (admin → esquela → web → familiar) |
+| **[Versions imprimibles (PDF)](./imprimible/)** | Guies en català per imprimir o desar com a PDF |
 
 ## Ordre recomanat la primera vegada
 

@@ -24,6 +24,7 @@ Esta carpeta explica **paso a paso** cómo usar la web. Está pensada para perso
 | [Contenido de la página de inicio](./contenido-home.md) | Textos e imágenes de la home |
 | [Zona familiar (código de acceso)](./zona-familiar.md) | Qué hace el familiar con el código — para explicárselo |
 | [Web pública (visitantes)](./web-publica.md) | Qué ve quien entra sin ser empleado ni familiar |
+| **[Itinerario de demo con el cliente](./itinerario-demo.md)** | Sesión en vivo 45–60 min (admin → esquela → web → familiar) |
 
 ## Orden recomendado la primera vez
 
