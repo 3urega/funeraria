@@ -158,18 +158,66 @@ type EsquelaToggleFilterKey =
   | "photoPending"
   | "messagesPending";
 
+export const ESQUELA_FILTER_KEYS: EsquelaToggleFilterKey[] = [
+  "active",
+  "visible",
+  "ready",
+  "photoPending",
+  "messagesPending",
+];
+
 /** Enllaç per activar/desactivar un chip de filtre (reset `page`). */
 export function esquelaToggleFilterHref(
   basePath: string,
   params: EsquelaListParams,
   key: EsquelaToggleFilterKey,
 ): string {
-  const query = esquelaFiltersToQuery(params);
+  return buildEsquelaListHref(basePath, toggleEsquelaFilter(params, key), {
+    resetPage: true,
+  });
+}
+
+/** Activa o desactiva un filtre booleà. */
+export function toggleEsquelaFilter(
+  params: EsquelaListParams,
+  key: EsquelaToggleFilterKey,
+): EsquelaListParams {
+  const next: EsquelaListParams = { ...params, page: 1 };
   if (params[key]) {
-    query[key] = undefined;
-  } else {
-    query[key] = "1";
+    const copy = { ...next };
+    delete copy[key];
+    return copy;
   }
-  query.page = undefined;
+  return { ...next, [key]: true };
+}
+
+/** Elimina tots els filtres booleans; conserva la cerca `q`. */
+export function clearEsquelaBooleanFilters(
+  params: EsquelaListParams,
+): EsquelaListParams {
+  return {
+    page: 1,
+    pageSize: params.pageSize,
+    q: params.q,
+  };
+}
+
+export function countEsquelaBooleanFilters(params: EsquelaListParams): number {
+  return ESQUELA_FILTER_KEYS.filter((key) => params[key] === true).length;
+}
+
+/** URL de llista d'esqueles des de params parsejats. */
+export function buildEsquelaListHref(
+  basePath: string,
+  params: EsquelaListParams,
+  options?: { resetPage?: boolean },
+): string {
+  const query = esquelaFiltersToQuery({
+    ...params,
+    page: options?.resetPage ? 1 : params.page,
+  });
+  if (!options?.resetPage && params.page > 1) {
+    query.page = params.page;
+  }
   return `${basePath}${buildListQueryString(query)}`;
 }

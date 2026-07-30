@@ -1,4 +1,4 @@
-import { and, asc, count, desc, eq, exists, inArray, like, or } from "drizzle-orm";
+import { and, asc, count, desc, eq, inArray, like, or } from "drizzle-orm";
 import type { PaginatedResult } from "@/lib/admin/pagination";
 import {
   clampPage,
@@ -231,16 +231,12 @@ function obituaryListConditions(filters: Omit<ObituaryListFilters, "page" | "pag
   }
   if (filters.messagesPending === true) {
     conditions.push(
-      exists(
+      inArray(
+        obituaries.id,
         db
-          .select({ one: commemorativeMessages.id })
+          .select({ id: commemorativeMessages.obituaryId })
           .from(commemorativeMessages)
-          .where(
-            and(
-              eq(commemorativeMessages.obituaryId, obituaries.id),
-              eq(commemorativeMessages.reviewed, false),
-            ),
-          ),
+          .where(eq(commemorativeMessages.reviewed, false)),
       ),
     );
   }

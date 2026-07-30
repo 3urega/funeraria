@@ -1,14 +1,10 @@
 import Link from "next/link";
+import { EsquelasListFilters } from "@/components/admin/esquelas-list-filters";
 import { EsquelasListLegend } from "@/components/admin/esquelas-list-legend";
 import { EsquelasTable } from "@/components/admin/esquelas-table";
-import { AdminListSearch } from "@/components/admin/list/admin-list-search";
-import { AdminListToolbar } from "@/components/admin/list/admin-list-toolbar";
 import { AdminPagination } from "@/components/admin/list/admin-pagination";
 import {
-  booleanOnToParam,
-  buildListQueryString,
   esquelaFiltersToQuery,
-  esquelaToggleFilterHref,
   parseEsquelaListParams,
 } from "@/lib/admin/list-params";
 import {
@@ -44,57 +40,6 @@ export default async function AdminEsquelasPage({ searchParams }: Props) {
   );
 
   const queryBase = esquelaFiltersToQuery(params);
-  const hasBooleanFilters =
-    params.active === true ||
-    params.visible === true ||
-    params.ready === true ||
-    params.photoPending === true ||
-    params.messagesPending === true;
-
-  const toolbarItems = [
-    {
-      label: "Actives",
-      href: esquelaToggleFilterHref(BASE_PATH, params, "active"),
-      active: params.active === true,
-    },
-    {
-      label: "Visibles",
-      href: esquelaToggleFilterHref(BASE_PATH, params, "visible"),
-      active: params.visible === true,
-    },
-    {
-      label: "Llestes",
-      href: esquelaToggleFilterHref(BASE_PATH, params, "ready"),
-      active: params.ready === true,
-    },
-    {
-      label: "Foto pendent",
-      href: esquelaToggleFilterHref(BASE_PATH, params, "photoPending"),
-      active: params.photoPending === true,
-    },
-    {
-      label: "Missatges pendents",
-      href: esquelaToggleFilterHref(BASE_PATH, params, "messagesPending"),
-      active: params.messagesPending === true,
-    },
-    ...(hasBooleanFilters
-      ? [
-          {
-            label: "Netejar filtres",
-            href: `${BASE_PATH}${buildListQueryString({ q: params.q })}`,
-            active: false,
-          },
-        ]
-      : []),
-  ];
-
-  const searchHiddenParams: Record<string, string | undefined> = {
-    active: booleanOnToParam(params.active),
-    visible: booleanOnToParam(params.visible),
-    ready: booleanOnToParam(params.ready),
-    photoPending: booleanOnToParam(params.photoPending),
-    messagesPending: booleanOnToParam(params.messagesPending),
-  };
 
   return (
     <div>
@@ -113,13 +58,7 @@ export default async function AdminEsquelasPage({ searchParams }: Props) {
         </Link>
       </div>
 
-      <AdminListSearch
-        basePath={BASE_PATH}
-        q={params.q}
-        hiddenParams={searchHiddenParams}
-      />
-
-      <AdminListToolbar items={toolbarItems} ariaLabel="Filtrar esqueles" />
+      <EsquelasListFilters basePath={BASE_PATH} params={params} />
 
       <EsquelasListLegend />
 

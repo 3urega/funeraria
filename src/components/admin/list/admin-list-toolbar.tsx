@@ -27,7 +27,7 @@ export function AdminListToolbar({
     >
       {items.map((item) => (
         <Link
-          key={item.href}
+          key={item.label}
           href={item.href}
           role="tab"
           aria-selected={item.active}
