@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AdminTableHeader } from "@/components/admin/list/admin-table-header";
 import { getAllCemeteries } from "@/lib/db/queries";
 
 export const metadata = { title: "Admin — Cementiris" };
@@ -27,11 +28,19 @@ export default async function AdminCemeteriesPage() {
         <table className="w-full text-left text-sm">
           <thead className="bg-zinc-50">
             <tr>
-              <th className="px-4 py-3 font-medium">Nom</th>
-              <th className="px-4 py-3 font-medium">Ciutat</th>
-              <th className="px-4 py-3 font-medium">Geoloc.</th>
-              <th className="px-4 py-3 font-medium">Foto</th>
-              <th className="px-4 py-3 font-medium"></th>
+              <AdminTableHeader hint="Nom oficial del cementiri tal com apareix a l'esquela.">
+                Nom
+              </AdminTableHeader>
+              <AdminTableHeader hint="Població on es troba el cementiri.">
+                Ciutat
+              </AdminTableHeader>
+              <AdminTableHeader hint="Si té coordenades GPS, es mostrarà un mapa a la pàgina pública de l'esquela.">
+                Geoloc.
+              </AdminTableHeader>
+              <AdminTableHeader hint="Si té foto, es mostra a la secció de llocs de l'esquela.">
+                Foto
+              </AdminTableHeader>
+              <AdminTableHeader hint="Obrir el formulari d'edició del cementiri." />
             </tr>
           </thead>
           <tbody>

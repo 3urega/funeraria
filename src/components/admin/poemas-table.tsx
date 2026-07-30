@@ -12,10 +12,28 @@ type Props = {
 };
 
 const COLUMNS = [
-  { key: "title", label: "Títol" },
-  { key: "active", label: "Actiu" },
-  { key: "excerpt", label: "Extracte", className: "max-w-md" },
-  { key: "actions", label: "", className: "text-right" },
+  {
+    key: "title",
+    label: "Títol",
+    hint: "Nom del poema al catàleg. El familiar el pot triar per a l'obituari des de la zona familiar.",
+  },
+  {
+    key: "active",
+    label: "Actiu",
+    hint: "Si està actiu, el familiar el pot seleccionar. Inactiu: ocult del catàleg familiar.",
+  },
+  {
+    key: "excerpt",
+    label: "Extracte",
+    className: "max-w-md",
+    hint: "Primera línia del text, per orientar-te ràpidament sense obrir el formulari.",
+  },
+  {
+    key: "actions",
+    label: "",
+    className: "text-right",
+    hint: "Obrir el formulari d'edició del poema.",
+  },
 ];
 
 export function PoemasTable({ poems }: Props) {

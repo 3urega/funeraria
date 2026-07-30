@@ -15,14 +15,47 @@ type Props = {
 type FlagField = "isActive" | "isVisible" | "isReady";
 
 const COLUMNS = [
-  { key: "name", label: "Nom" },
-  { key: "code", label: "Codi" },
-  { key: "active", label: "Activa" },
-  { key: "visible", label: "Visible" },
-  { key: "ready", label: "Llista" },
-  { key: "photo", label: "Foto familiar" },
-  { key: "messages", label: "Missatges" },
-  { key: "actions", label: "Accions", className: "text-right" },
+  {
+    key: "name",
+    label: "Nom",
+    hint: "Nom del difunt tal com apareix a l'esquela impresa i a la web.",
+  },
+  {
+    key: "code",
+    label: "Codi",
+    hint: "Codi de visita per a familiars i visitants (zona familiar i accés privat). Es pot copiar des d'aquí.",
+  },
+  {
+    key: "active",
+    label: "Activa",
+    hint: "Esquela operativa al sistema. Inactiva: encara no es pot usar o s'ha desactivat temporalment.",
+  },
+  {
+    key: "visible",
+    label: "Visible",
+    hint: "Si és visible, l'esquela apareix al llistat públic de la web (/esquelas).",
+  },
+  {
+    key: "ready",
+    label: "Llesta",
+    hint: "Esquela llesta i validada per publicar o compartir amb la família.",
+  },
+  {
+    key: "photo",
+    label: "Foto familiar",
+    hint: "Estat de la foto enviada pel familiar: pendent que l'empleat la retoci, o rebutjada si no és utilitzable.",
+  },
+  {
+    key: "messages",
+    label: "Missatges",
+    hint: "Missatges conmemoratius de visitants que encara no s'han revisat des del panell de l'esquela.",
+  },
+  {
+    key: "actions",
+    label: "Accions",
+    className: "text-right",
+    hint: "Editar l'esquela o obrir la pàgina pública en una pestanya nova.",
+  },
 ];
 
 export function EsquelasTable({ obituaries, unreviewedCounts }: Props) {
@@ -128,7 +161,7 @@ export function EsquelasTable({ obituaries, unreviewedCounts }: Props) {
                 <AdminBooleanToggle
                   checked={o.isReady}
                   disabled={updatingKey === `${o.id}:isReady`}
-                  ariaLabel={`Esquela ${o.name}: ${o.isReady ? "llista" : "no llista"}`}
+                  ariaLabel={`Esquela ${o.name}: ${o.isReady ? "llesta" : "no llesta"}`}
                   onToggle={(next) => toggleFlag(o.id, "isReady", next)}
                 />
               </td>

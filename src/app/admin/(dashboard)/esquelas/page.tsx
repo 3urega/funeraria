@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { EsquelasListLegend } from "@/components/admin/esquelas-list-legend";
 import { EsquelasTable } from "@/components/admin/esquelas-table";
 import { AdminListSearch } from "@/components/admin/list/admin-list-search";
 import { AdminListToolbar } from "@/components/admin/list/admin-list-toolbar";
@@ -62,7 +63,7 @@ export default async function AdminEsquelasPage({ searchParams }: Props) {
       active: params.visible === true,
     },
     {
-      label: "Llistes",
+      label: "Llestes",
       href: esquelaToggleFilterHref(BASE_PATH, params, "ready"),
       active: params.ready === true,
     },
@@ -119,6 +120,8 @@ export default async function AdminEsquelasPage({ searchParams }: Props) {
       />
 
       <AdminListToolbar items={toolbarItems} ariaLabel="Filtrar esqueles" />
+
+      <EsquelasListLegend />
 
       <EsquelasTable
         obituaries={result.items}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AdminTableHeader } from "@/components/admin/list/admin-table-header";
 import { getAllWakeRooms } from "@/lib/db/queries";
 
 export const metadata = { title: "Admin — Sales de vetlla" };
@@ -27,10 +28,16 @@ export default async function AdminWakeRoomsPage() {
         <table className="w-full text-left text-sm">
           <thead className="bg-zinc-50">
             <tr>
-              <th className="px-4 py-3 font-medium">Nom</th>
-              <th className="px-4 py-3 font-medium">Activa</th>
-              <th className="px-4 py-3 font-medium">Foto</th>
-              <th className="px-4 py-3 font-medium"></th>
+              <AdminTableHeader hint="Nom de la sala de vetlla tal com apareix a la web i a l'esquela.">
+                Nom
+              </AdminTableHeader>
+              <AdminTableHeader hint="Si està activa, la sala apareix a /sales-de-vetlla i es pot assignar a esqueles.">
+                Activa
+              </AdminTableHeader>
+              <AdminTableHeader hint="Foto de la sala visible a la pàgina pública de sales de vetlla.">
+                Foto
+              </AdminTableHeader>
+              <AdminTableHeader hint="Obrir el formulari d'edició de la sala." />
             </tr>
           </thead>
           <tbody>

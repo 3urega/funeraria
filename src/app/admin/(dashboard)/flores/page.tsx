@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AdminTableHeader } from "@/components/admin/list/admin-table-header";
 import { getAllFlowerProducts } from "@/lib/db/queries";
 import { getStorage } from "@/lib/storage";
 import { formatPriceCents } from "@/lib/flowers/types";
@@ -38,12 +39,22 @@ export default async function AdminFloresPage() {
         <table className="w-full text-left text-sm">
           <thead className="bg-zinc-50">
             <tr>
-              <th className="px-4 py-3 font-medium">Foto</th>
-              <th className="px-4 py-3 font-medium">Nom</th>
-              <th className="px-4 py-3 font-medium">Preu</th>
-              <th className="px-4 py-3 font-medium">Actiu</th>
-              <th className="px-4 py-3 font-medium">Ordre</th>
-              <th className="px-4 py-3 font-medium"></th>
+              <AdminTableHeader hint="Imatge del producte al catàleg de flors.">
+                Foto
+              </AdminTableHeader>
+              <AdminTableHeader hint="Nom del ram o producte visible per als visitants a l'esquela.">
+                Nom
+              </AdminTableHeader>
+              <AdminTableHeader hint="Preu de venda en la moneda configurada.">
+                Preu
+              </AdminTableHeader>
+              <AdminTableHeader hint="Només els productes actius es mostren al checkout de flors de l'esquela.">
+                Actiu
+              </AdminTableHeader>
+              <AdminTableHeader hint="Ordre de visualització al catàleg (menor número = més amunt).">
+                Ordre
+              </AdminTableHeader>
+              <AdminTableHeader hint="Obrir el formulari d'edició del producte." />
             </tr>
           </thead>
           <tbody>

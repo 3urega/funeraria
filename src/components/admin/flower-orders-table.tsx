@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { AdminTableHeader } from "@/components/admin/list/admin-table-header";
 import {
   FLOWER_ORDER_STATUSES,
   FLOWER_ORDER_STATUS_LABELS,
@@ -82,15 +83,29 @@ export function FlowerOrdersTable({ orders, showObituary = true }: Props) {
         <table className="w-full text-left text-sm">
           <thead className="bg-zinc-50">
             <tr>
-              <th className="px-4 py-3 font-medium">Data</th>
+              <AdminTableHeader hint="Data i hora en què es va registrar la comanda.">
+                Data
+              </AdminTableHeader>
               {showObituary && (
-                <th className="px-4 py-3 font-medium">Difunt</th>
+                <AdminTableHeader hint="Esquela / difunt al qual s'envien les flors.">
+                  Difunt
+                </AdminTableHeader>
               )}
-              <th className="px-4 py-3 font-medium">Producte</th>
-              <th className="px-4 py-3 font-medium">Dedicatòria</th>
-              <th className="px-4 py-3 font-medium">Comprador</th>
-              <th className="px-4 py-3 font-medium">Import</th>
-              <th className="px-4 py-3 font-medium">Estat</th>
+              <AdminTableHeader hint="Producte de flors comprat des del catàleg.">
+                Producte
+              </AdminTableHeader>
+              <AdminTableHeader hint="Text personalitzat que acompanya el ram enviat a la família.">
+                Dedicatòria
+              </AdminTableHeader>
+              <AdminTableHeader hint="Nom, correu i telèfon de qui ha fet la comanda.">
+                Comprador
+              </AdminTableHeader>
+              <AdminTableHeader hint="Import total pagat per la comanda.">
+                Import
+              </AdminTableHeader>
+              <AdminTableHeader hint="Estat del procés (pendent, confirmada, lliurada…). Canvia'l quan correspongui.">
+                Estat
+              </AdminTableHeader>
             </tr>
           </thead>
           <tbody>

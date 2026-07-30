@@ -1,13 +1,16 @@
 import type { ReactNode } from "react";
+import { AdminTableHeader } from "@/components/admin/list/admin-table-header";
 
-type Column = {
+export type AdminDataTableColumn = {
   key: string;
   label: string;
   className?: string;
+  /** Text explicatiu al fer hover sobre la capçalera. */
+  hint?: string;
 };
 
 type Props = {
-  columns: Column[];
+  columns: AdminDataTableColumn[];
   children: ReactNode;
   emptyMessage?: string;
   isEmpty?: boolean;
@@ -37,12 +40,13 @@ export function AdminDataTable({
         <thead className="bg-zinc-50">
           <tr>
             {columns.map((col) => (
-              <th
+              <AdminTableHeader
                 key={col.key}
-                className={`px-4 py-3 font-medium ${col.className ?? ""}`}
+                hint={col.hint}
+                className={col.className}
               >
                 {col.label}
-              </th>
+              </AdminTableHeader>
             ))}
           </tr>
         </thead>
