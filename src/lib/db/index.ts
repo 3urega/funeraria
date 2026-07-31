@@ -53,7 +53,10 @@ function createPostgresDb(): PostgresJsDatabase<typeof pgSchema> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const postgres = require("postgres") as typeof import("postgres").default;
+  const postgres = require("postgres") as (
+    url: string,
+    options?: import("postgres").Options<{ prepare: false }>,
+  ) => import("postgres").Sql;
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { drizzle } = require("drizzle-orm/postgres-js") as {
     drizzle: (
