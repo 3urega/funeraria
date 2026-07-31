@@ -20,7 +20,7 @@ Settings → Environment Variables → añadir **todas** las de `.env.staging` e
 | `NODE_ENV` | `production` |
 | `NEXT_PUBLIC_APP_URL` | Tras 1.er deploy: `https://tu-proyecto.vercel.app` |
 | `DATABASE_DRIVER` | `postgres` |
-| `DATABASE_URL` | **Pooler transaction 6543**: `postgresql://postgres.pmvvnfjiccmxwrilmqnl:[PASSWORD]@aws-1-eu-west-2.pooler.supabase.com:6543/postgres` |
+| `DATABASE_URL` | **Obligatorio puerto 6543** (transaction pooler). Si usas 5432 verás `EMAXCONNSESSION`. Valor: `postgresql://postgres.pmvvnfjiccmxwrilmqnl:[PASSWORD]@aws-1-eu-west-2.pooler.supabase.com:6543/postgres` |
 | `STORAGE_DRIVER` | `supabase` |
 | `AUTH_DRIVER` | `supabase` |
 | `STORAGE_PUBLIC_BASE` | `https://pmvvnfjiccmxwrilmqnl.supabase.co/storage/v1/object/public/media` |

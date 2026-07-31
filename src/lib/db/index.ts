@@ -70,7 +70,14 @@ function createPostgresDb(): PostgresJsDatabase<typeof pgSchema> {
     throw new Error("DATABASE_URL is required when DATABASE_DRIVER=postgres");
   }
 
-  const client = postgres(url, { prepare: false, max: 10 });
+  // Vercel/serverless: max 1 conexión por instancia + transaction pooler (6543)
+  const poolMax = process.env.VERCEL === "1" ? 1 : 10;
+  const client = postgres(url, {
+    prepare: false,
+    max: poolMax,
+    idle_timeout: 20,
+    connect_timeout: 10,
+  });
   global.__funeralPostgresClient = client;
   global.__funeralPostgresDb = drizzle(client, { schema: pgSchema });
   return global.__funeralPostgresDb;
