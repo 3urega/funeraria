@@ -55,7 +55,7 @@ function createPostgresDb(): PostgresJsDatabase<typeof pgSchema> {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const postgres = require("postgres") as (
     url: string,
-    options?: import("postgres").Options,
+    options: { prepare: boolean; max: number },
   ) => import("postgres").Sql;
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { drizzle } = require("drizzle-orm/postgres-js") as {
@@ -75,8 +75,6 @@ function createPostgresDb(): PostgresJsDatabase<typeof pgSchema> {
   const client = postgres(url, {
     prepare: false,
     max: poolMax,
-    idle_timeout: 20,
-    connect_timeout: 10,
   });
   global.__funeralPostgresClient = client;
   global.__funeralPostgresDb = drizzle(client, { schema: pgSchema });
