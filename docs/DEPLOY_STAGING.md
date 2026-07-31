@@ -29,11 +29,24 @@ USING (bucket_id = 'media');
 
 ## 2. Variables locales para seed
 
+**Opción automática** (recomendada):
+
 ```powershell
-copy .env.staging.example .env.staging
-# Editar .env.staging con valores reales
-# SEED_ADMIN_AUTH_USER_ID = UUID del usuario Auth creado en paso 1.5
+# Opción A — variables de sesión
+$env:STAGING_DB_PASSWORD="password-de-postgres"
+$env:STAGING_ANON_KEY="eyJ..."
+$env:STAGING_SERVICE_ROLE_KEY="eyJ..."
+npm run staging:bootstrap
+
+# Opción B — archivo local (no commitear)
+copy .env.staging.secrets.example .env.staging.secrets
+# Editar .env.staging.secrets con los 3 valores
+npm run staging:bootstrap
 ```
+
+Genera `.env.staging` con JWT secrets aleatorios. El usuario admin Auth lo crea el script del paso 3.
+
+**Opción manual:** `copy .env.staging.example .env.staging` y rellenar.
 
 ## 3. Schema + seed en Supabase
 
@@ -41,11 +54,15 @@ copy .env.staging.example .env.staging
 npm run db:setup:staging
 ```
 
+El script aplica política Storage, crea usuario Auth admin (`SEED_ADMIN_EMAIL`), push schema y seed demo. Imprime email/password admin al terminar.
+
 ## 4. Vercel
 
+Checklist detallada: [`VERCEL_STAGING_CHECKLIST.md`](./VERCEL_STAGING_CHECKLIST.md).
+
 1. Importar repo `3urega/funeraria`.
-2. **Production Branch** = `develop` (staging).
-3. Añadir las mismas variables que `.env.staging` en **Settings → Environment Variables** (Production + Preview).
+2. **Production Branch** = `main` (staging).
+3. Añadir variables de `.env.staging` en **Settings → Environment Variables** (Production + Preview). **`DATABASE_URL` en Vercel = pooler puerto 6543**, no 5432.
 4. Deploy.
 
 Build command: `npm run build`  

@@ -370,7 +370,18 @@ async function seed() {
   console.log("Seed completado.");
 }
 
-seed().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+async function main() {
+  try {
+    await seed();
+  } catch (err) {
+    console.error(err);
+    process.exitCode = 1;
+  } finally {
+    if (global.__funeralPostgresClient) {
+      await global.__funeralPostgresClient.end({ timeout: 5 });
+    }
+    process.exit(process.exitCode ?? 0);
+  }
+}
+
+main();
